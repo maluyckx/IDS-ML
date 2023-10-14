@@ -1,9 +1,13 @@
+"""
+Goal of the script : Evaluating the model
+
+Authors : 
+    - LUYCKX Marco 496283
+    - BOUHNINE Ayoub ?
+"""
+
 import argparse
 import pathlib
-
-
-# Command from the pdf : python eval.py --trained_model path/to/trained_model --dataset path/to/dataset --output path/to/suspicious.txt
-
 
 
 parser = argparse.ArgumentParser(description="Dataset evaluation")

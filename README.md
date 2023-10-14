@@ -33,6 +33,27 @@ They both cintain **human** and **bot** traffic.
 - `eval2_botlist.txt` : list of bots
 
 
+## Report
+
+The report is located in the [report folder](report/report_LUYCKX_BOUHNINE.pdf) .
+
 ## Commands
 
+To train the model, run the following command:
+
+```bash
+python3 train.py --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt --bots ../training_datasets/tcpdumps/bots_tcpdump.txt --output ../trained_models/trained_model1.jesaispasl'extension
+```
+
+To evaluate the model, run the following command:
+
+```bash
+python3 eval.py --trained_model ../trained_models/trained_model1.jesaispasl'extension --dataset path/to/dataset --output path/to/suspicious.txt
+```
+
+To do both, run the following command:
+
+```bash
+python3 main.py TODO
+```
 

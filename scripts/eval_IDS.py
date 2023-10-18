@@ -9,6 +9,27 @@ Authors :
 import argparse
 import pathlib
 
+import constants
+
+
+def get_botlists():
+    botlist1 = []
+    with open(f"{constants.PATH_TO_BOTLISTS}eval1_botlist.txt", "r") as f:
+        for line in f:
+            botlist1.append(line.strip())
+    
+    botlist2 = []
+    with open(f"{constants.PATH_TO_BOTLISTS}eval2_botlist.txt", "r") as f:
+        for line in f:
+            botlist2.append(line.strip())
+            
+    return botlist1, botlist2
+
+
+def writing_suspicious_hosts(suspicious_hosts):
+    with open(f"{constants.PATH_TO_SUSPICIOUS_HOSTS}", "w") as f:
+        for host in suspicious_hosts:
+            f.write(host + "\n")
 
 
 def main_eval(dataset, trained_model, output):

@@ -8,7 +8,7 @@ Authors :
 
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
+# from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 
 import pandas as pd
@@ -168,7 +168,7 @@ def encoding_features(combined_df):
 
 
 def train_decision_tree(combined_df):
-
+    print("####\nTraining the decision tree classifier...")
     # Split the data into training and testing sets
     list_of_features = ['query_type_encoded',
                         'domain_encoded', 'host_encoded', 'timestamp_encoded', 'length_request_encoded', 'length_response_encoded', 'responses_encoded']
@@ -183,18 +183,18 @@ def train_decision_tree(combined_df):
     clf = DecisionTreeClassifier()
     clf.fit(X_train, y_train)
     # clf.fit(X, y)
-
+    print("Decision tree classifier trained successfully!\n####\n")
     return clf, X_test, y_test
 
 
-def testing_eval(path_to_test_tcpdump, path_to_test_tcpdump2,  clf):
+def testing_eval(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
+    print("####\nTesting the decision tree classifier...")
+    eval_data1, eval_data2 = parser.parse_training_data(
+        path_to_eval_tcpdump1, path_to_eval_tcpdump2)
 
-    eval_data1, eval_data2 = parse_training_data(
-        path_to_test_tcpdump, path_to_test_tcpdump2)
+    combined_df = features.convert_to_dataframe(eval_data1, eval_data2)
 
-    combined_df = convert_to_dataframe(eval_data1, eval_data2)
-
-    combined_df = encoding_features(combined_df)
+    combined_df = features.encoding_features(combined_df)
 
     list_of_features = ['query_type_encoded',
                         'domain_encoded', 'host_encoded', 'timestamp_encoded', 'length_request_encoded', 'length_response_encoded', 'responses_encoded']
@@ -202,24 +202,40 @@ def testing_eval(path_to_test_tcpdump, path_to_test_tcpdump2,  clf):
     X_test = combined_df[list_of_features]
     y_test = combined_df['label']
 
+    print("Decision tree classifier tested successfully!\n####\n")
     return X_test, y_test
+
+def load_saved_decision_tree():
+    with open('trained_model.pkl', 'rb') as file:
+        loaded_clf = pickle.load(file)
+    return loaded_clf
+
+def save_decision_tree(clf):
+    with open(f"../../../trained_models/decision_tree/{constants.NAME_TRAINED_MODEL_DECISION_TREE}", "wb") as file:
+        pickle.dump(clf, file)
+
+def diagram_decision_tree(clf):
+    # find a way to make a diagram of the decision tree
+    pass
 
 
 def main_decision_tree():
     # Use a first dataset to train the classifier
-    bots_data, webclients_data = parse_training_data(
+    bots_data, webclients_data = parser.parse_training_data(
         constants.PATH_TO_BOTS_TCPDUMP, constants.PATH_TO_WEBCLIENTS_TCPDUMP)
 
-    combined_df = convert_to_dataframe(bots_data, webclients_data)
+    combined_df = features.convert_to_dataframe(bots_data, webclients_data)
 
-    combined_df = encoding_features(combined_df)
+    combined_df = features.encoding_features(combined_df)
 
     clf, X_test, y_test = train_decision_tree(combined_df)
 
     # Using another dataset to test the classifier
     X_test, y_test = testing_eval(
-        constants.PATH_TO_EVAL_TCPDUMP1, constants.PATH_TO_EVAL_TCPDUMP2, clf)
+        constants.PATH_TO_EVAL_TCPDUMP1, constants.PATH_TO_EVAL_TCPDUMP2)
 
+    save_decision_tree(clf)
+    diagram_decision_tree(clf)
     # Test the classifier's accuracy on the test set
     accuracy = clf.score(X_test, y_test)
     print("Accuracy of the model : ", accuracy)

@@ -24,6 +24,9 @@ NAME_TRAINED_MODEL_LOGISTIC_REGRESSION = "trained_model_logistic_regression.pkl"
 NAME_TRAINED_MODEL_NEURAL_NETWORK = "trained_model_neural_network.pkl"
 
 
+## Path to botlists
+PATH_TO_BOTLISTS = "../evaluation_datasets/botlists/"
+
 ## Path to suspicious hosts file
 PATH_TO_SUSPICIOUS_HOSTS = "../suspicious_hosts/suspicious_hosts.txt"
 

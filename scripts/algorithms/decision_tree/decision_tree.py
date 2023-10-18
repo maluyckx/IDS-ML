@@ -17,44 +17,8 @@ import re
 import sys
 sys.path.append("../../")
 import constants
+import parsing_dns_trace as parser
 
-
-
-def parse_dns_trace(line):
-    """Parse a single line from the DNS trace dataset with additional features."""
-    # Extract timestamp
-    timestamp_match = re.search(r"(\d{2}:\d{2}:\d{2}\.\d{6})", line)
-    timestamp = timestamp_match.group(1) if timestamp_match else None
-
-    # Extract host name
-    host_match = re.search(r"IP (\w+)", line)
-    host = host_match.group(1) if host_match else None
-
-    # Extract DNS query type (e.g., A, AAAA)
-    # Adjusted to also capture the query type in the new format
-    query_type_match = re.search(r"\s(A|AAAA)(?=[\s\?])", line)
-    query_type = query_type_match.group(1) if query_type_match else None
-
-    # Extract domain being queried
-    domain_match = re.search(r"\? ([\w\.-]+)\.", line)
-    domain = domain_match.group(1) if domain_match else None
-
-    # Extract length
-    length_match = re.search(r"\((\d+)\)$", line)
-    length = int(length_match.group(1)) if length_match else None
-
-    # Extract DNS responses
-    # Assuming the response format is "A IP_address"
-    responses = re.findall(r"(A|AAAA) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", line)
-
-    return {
-        "timestamp": timestamp,
-        "host": host,
-        "query_type": query_type,
-        "domain": domain,
-        "length": length,
-        "responses": responses
-    }
 
 
 def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
@@ -63,7 +27,7 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
     bots_data = []
     with open(path_to_bots_tcpdump, 'r') as file:
         for line in file:
-            parsed_data = parse_dns_trace(line)
+            parsed_data = parser.parse_dns_trace(line)
             if parsed_data["domain"]:  # Only consider lines with domain information
                 bots_data.append(parsed_data)
 
@@ -72,7 +36,7 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
     webclients_data = []
     with open(path_to_webclients_tcpdump, 'r') as file:
         for line in file:
-            parsed_data = parse_dns_trace(line)
+            parsed_data = parser.parse_dns_trace(line)
             if parsed_data["domain"]:  # Only consider lines with domain information
                 webclients_data.append(parsed_data)
 

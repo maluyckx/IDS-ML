@@ -6,13 +6,14 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
-## Training datasets
+## Path to training datasets for algos
 PATH_TO_BOTS_TCPDUMP = "../../../training_datasets/tcpdumps/bots_tcpdump.txt"
 PATH_TO_WEBCLIENTS_TCPDUMP = "../../../training_datasets/tcpdumps/webclients_tcpdump.txt"
 
-## Evaluation datasets
+## Path to evaluation datasets for algos
 PATH_TO_EVAL_TCPDUMP1 = "../../../evaluation_datasets/tcpdumps/eval1_tcpdump.txt"
 PATH_TO_EVAL_TCPDUMP2 = "../../../evaluation_datasets/tcpdumps/eval2_tcpdump.txt"
+
 
 
 

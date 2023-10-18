@@ -42,6 +42,8 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
             if parsed_data["domain"]:  # Only consider lines with domain information
                 bots_data.append(parsed_data)
 
+    print(parsed_data)
+    
     webclients_data = []
     with open(path_to_webclients_tcpdump, 'r') as file:
         for line in file:
@@ -96,8 +98,10 @@ def encoding_features(combined_df):
 def train_decision_tree(combined_df):
 
     # Split the data into training and testing sets
-    X = combined_df[['query_type_encoded', 'domain_encoded',
-                     'host_encoded', 'timestamp_encoded']]
+    list_of_features = ['query_type_encoded',
+                        'domain_encoded', 'host_encoded', 'timestamp_encoded']
+    
+    X = combined_df[list_of_features]
     y = combined_df['label']
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -120,8 +124,10 @@ def testing_eval(path_to_test_tcpdump, path_to_test_tcpdump2,  clf):
 
     combined_df = encoding_features(combined_df)
 
-    X_test = combined_df[['query_type_encoded',
-                          'domain_encoded', 'host_encoded', 'timestamp_encoded']]
+    list_of_features = ['query_type_encoded',
+                        'domain_encoded', 'host_encoded', 'timestamp_encoded']
+
+    X_test = combined_df[list_of_features]
     y_test = combined_df['label']
 
     return X_test, y_test
@@ -148,11 +154,12 @@ def main_decision_tree():
 
     # Predict the labels of new and unseen data from X_test and y_test
     y_pred = clf.predict(X_test)
-    print("Prediction :", y_test.tolist())
+    # print("Prediction :", y_pred.tolist())
+    # print("Prediction :", y_test.tolist())
 
-    # Count the number of 'human' and the number of 'bot' predictions
-    print("Number of 'human' predictions :", y_test.tolist().count('human'))
-    print("Number of 'bot' predictions :", y_test.tolist().count('bot'))
+    # # Count the number of 'human' and the number of 'bot' predictions
+    # print("Number of 'human' predictions :", y_test.tolist().count('human'))
+    # print("Number of 'bot' predictions :", y_test.tolist().count('bot'))
 
 
 if __name__ == "__main__":

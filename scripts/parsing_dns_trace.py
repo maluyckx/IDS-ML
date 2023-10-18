@@ -57,4 +57,22 @@ def parse_dns_trace(line):
         "responses": responses
     }
 
+def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
+    print("####\nParsing the DNS trace datasets...")
+    # Parse both datasets
+    bots_data = []
+    with open(path_to_bots_tcpdump, 'r') as file:
+        for line in file:
+            parsed_data = parse_dns_trace(line)
+            if parsed_data["domain"]:  # Only consider lines with domain information
+                bots_data.append(parsed_data)
+    
+    webclients_data = []
+    with open(path_to_webclients_tcpdump, 'r') as file:
+        for line in file:
+            parsed_data = parse_dns_trace(line)
+            if parsed_data["domain"]:  # Only consider lines with domain information
+                webclients_data.append(parsed_data)
 
+    print("Parsing completed!\n####\n")
+    return bots_data, webclients_data

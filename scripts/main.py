@@ -6,11 +6,16 @@ Authors :
     - BOUHNINE Ayoub ?
 """
 
-import eval
-import train
+import scripts.eval_IDS as eval_IDS
+import scripts.train_IDS as train_IDS
 
 
 def main():
+    train_IDS.main_train()
+    eval_IDS.main_eval()
+    
+def getting_args():
+    # Full de paramètres a demander en args ici
     pass
 
 

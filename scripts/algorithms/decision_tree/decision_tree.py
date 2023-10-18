@@ -69,6 +69,10 @@ def save_decision_tree(clf):
     with open(f"../../../trained_models/decision_tree/{constants.NAME_TRAINED_MODEL_DECISION_TREE}", "wb") as file:
         pickle.dump(clf, file)
 
+def diagram_decision_tree(clf):
+    # find a way to make a diagram of the decision tree
+    pass
+
 
 def main_decision_tree():
     # Use a first dataset to train the classifier
@@ -86,7 +90,7 @@ def main_decision_tree():
         constants.PATH_TO_EVAL_TCPDUMP1, constants.PATH_TO_EVAL_TCPDUMP2)
 
     save_decision_tree(clf)
-
+    diagram_decision_tree(clf)
     # Test the classifier's accuracy on the test set
     accuracy = clf.score(X_test, y_test)
     print("Accuracy of the model : ", accuracy)

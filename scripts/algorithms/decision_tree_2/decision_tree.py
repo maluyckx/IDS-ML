@@ -113,6 +113,10 @@ def testing_eval(path_to_test_tcpdump, path_to_test_tcpdump2,  clf):
 
     return X_test, y_test
 
+def test_print():
+    print("test")
+
+
 if __name__ == "__main__":
 
     path_to_bots_tcpdump = "../../../training_datasets/tcpdumps/bots_tcpdump.txt"

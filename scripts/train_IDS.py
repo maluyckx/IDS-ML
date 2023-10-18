@@ -9,12 +9,55 @@ Authors :
 
 import argparse
 import pathlib
+import sys 
+
+#### Importing the algorithms
+sys.path.append("algorithms/decision_tree_2/")
+# sys.path.append("algorithms/random_forest/")
+# sys.path.append("algorithms/logistic_regression/")
+# sys.path.append("algorithms/neural_network/")
+
+import decision_tree
+# import random_forest
+# import logistic_regression
+# import neural_network
+
+#######################################
+
+def train_decision_tree(webclients, bots, output):
+    decision_tree.test_print()
 
 
-def main_train(webclients, bots, output):
+
+def train_random_forest(webclients, bots, output):
     pass
 
 
+
+def train_logistic_regression(webclients, bots, output):
+    pass
+
+
+
+def train_neural_network(webclients, bots, output):
+    pass
+
+
+
+def main_train(webclients, bots, output):
+    ### Decision Tree
+    train_decision_tree(webclients, bots, output)
+    
+    ### Random Forest
+    # train_random_forest(webclients, bots, output)
+    
+    ### Logistic Regression
+    # train_logistic_regression(webclients, bots, output)
+    
+    ### Neural Network
+    # train_neural_network(webclients, bots, output)
+    
+    
 
 def getting_args():
     parser = argparse.ArgumentParser(description="Optional classifier training")

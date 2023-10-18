@@ -21,7 +21,7 @@ def extract_hostname(line):
 
 def extract_dns_query_type(line):
     """Extract DNS query type from a single line of the DNS trace dataset."""
-    query_type_match = re.search(r"\s(A|AAAA)(?=[\s\?])", line)
+    query_type_match = re.search(r"\s(A|AAAA|NXDomain|CNAME)(?=[\s\?])", line) # TODO: checker CNAME
     return query_type_match.group(1) if query_type_match else None
 
 def extract_domain_being_queried(line):
@@ -36,7 +36,19 @@ def extract_length(line):
 
 def extract_DNS_response(line):
     """Extract DNS response from a single line of the DNS trace dataset."""
-    return re.findall(r"(A|AAAA) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", line)
+    return tuple(re.findall(r"(A|AAAA) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", line))
+
+def extract_request_id(line):
+    """Extract request ID from a single line of the DNS trace dataset."""
+    id_match = re.search(r": (\d+)", line)
+    return int(id_match.group(1)) if id_match else None
+
+def extract_counts(line):
+    """Extract counts from a single line of the DNS trace dataset."""
+    counts_match = re.search(r"(\d+)/(\d+)/(\d+)", line)
+    return tuple(map(int, counts_match.groups())) if counts_match else None
+
+
 
 def parse_dns_trace(line):
     """Parse a single line from the DNS trace dataset with additional features."""
@@ -47,6 +59,8 @@ def parse_dns_trace(line):
     domain = extract_domain_being_queried(line)
     length = extract_length(line)
     responses = extract_DNS_response(line)
+    counts = extract_counts(line)
+    request_id = extract_request_id(line)
 
     return {
         "timestamp": timestamp,
@@ -54,7 +68,9 @@ def parse_dns_trace(line):
         "query_type": query_type,
         "domain": domain,
         "length": length,
-        "responses": responses
+        "responses": responses,
+        "counts": counts,
+        "request_id": request_id
     }
 
 

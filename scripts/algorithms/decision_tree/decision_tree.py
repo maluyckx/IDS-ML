@@ -1,3 +1,12 @@
+"""
+Goal of the script : Using a decision tree classifier to detect bots in a network traffic trace 
+
+Authors : 
+    - LUYCKX Marco 496283
+    - BOUHNINE Ayoub 500048
+"""
+
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
@@ -12,7 +21,7 @@ import constants
 
 
 def parse_dns_trace(line):
-    """Parse a single line from the DNS trace dataset."""
+    """Parse a single line from the DNS trace dataset with additional features."""
     # Extract timestamp
     timestamp_match = re.search(r"(\d{2}:\d{2}:\d{2}\.\d{6})", line)
     timestamp = timestamp_match.group(1) if timestamp_match else None
@@ -22,14 +31,30 @@ def parse_dns_trace(line):
     host = host_match.group(1) if host_match else None
 
     # Extract DNS query type (e.g., A, AAAA)
-    query_type_match = re.search(r"\s(A|AAAA)\?", line)
+    # Adjusted to also capture the query type in the new format
+    query_type_match = re.search(r"\s(A|AAAA)(?=[\s\?])", line)
     query_type = query_type_match.group(1) if query_type_match else None
 
     # Extract domain being queried
     domain_match = re.search(r"\? ([\w\.-]+)\.", line)
     domain = domain_match.group(1) if domain_match else None
 
-    return {"timestamp": timestamp, "host": host, "query_type": query_type, "domain": domain}
+    # Extract length
+    length_match = re.search(r"\((\d+)\)$", line)
+    length = int(length_match.group(1)) if length_match else None
+
+    # Extract DNS responses
+    # Assuming the response format is "A IP_address"
+    responses = re.findall(r"(A|AAAA) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", line)
+
+    return {
+        "timestamp": timestamp,
+        "host": host,
+        "query_type": query_type,
+        "domain": domain,
+        "length": length,
+        "responses": responses
+    }
 
 
 def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
@@ -70,7 +95,8 @@ def convert_to_dataframe(bots_data, webclients_data):
     combined_df['domain'] = combined_df['domain'].astype('category')
     combined_df['host'] = combined_df['host'].astype('category')
     combined_df['timestamp'] = combined_df['timestamp'].astype('category')
-
+    combined_df['length'] = combined_df['length'].astype('int64')
+    
     return combined_df
 
 
@@ -92,6 +118,10 @@ def encoding_features(combined_df):
     combined_df['timestamp_encoded'] = label_encoder_timestamp.fit_transform(
         combined_df['timestamp'])
 
+    label_encoder_length = LabelEncoder()
+    combined_df['length_encoded'] = label_encoder_length.fit_transform(
+        combined_df['length'])
+
     return combined_df
 
 
@@ -99,7 +129,7 @@ def train_decision_tree(combined_df):
 
     # Split the data into training and testing sets
     list_of_features = ['query_type_encoded',
-                        'domain_encoded', 'host_encoded', 'timestamp_encoded']
+                        'domain_encoded', 'host_encoded', 'timestamp_encoded', 'length_encoded']
     
     X = combined_df[list_of_features]
     y = combined_df['label']
@@ -125,7 +155,7 @@ def testing_eval(path_to_test_tcpdump, path_to_test_tcpdump2,  clf):
     combined_df = encoding_features(combined_df)
 
     list_of_features = ['query_type_encoded',
-                        'domain_encoded', 'host_encoded', 'timestamp_encoded']
+                        'domain_encoded', 'host_encoded', 'timestamp_encoded', 'length_encoded']
 
     X_test = combined_df[list_of_features]
     y_test = combined_df['label']

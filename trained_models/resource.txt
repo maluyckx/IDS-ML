@@ -3,3 +3,13 @@ https://stackoverflow.com/questions/61116190/what-are-all-the-formats-to-save-ma
 
 https://scikit-learn.org/stable/model_persistence.html
 
+
+import pickle
+
+# Save the trained model to a .pkl file
+with open('trained_model.pkl', 'wb') as file:
+    pickle.dump(clf, file)
+
+# Load the trained model from a .pkl file
+with open('trained_model.pkl', 'rb') as file:
+    loaded_clf = pickle.load(file)

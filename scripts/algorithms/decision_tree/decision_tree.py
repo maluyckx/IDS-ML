@@ -20,7 +20,7 @@ import constants
 import parsing_dns_trace as parser
 import features
 
-
+import pickle
 
 def train_decision_tree(combined_df):
     print("####\nTraining the decision tree classifier...")
@@ -60,6 +60,15 @@ def testing_eval(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
     print("Decision tree classifier tested successfully!\n####\n")
     return X_test, y_test
 
+def load_saved_decision_tree():
+    with open('trained_model.pkl', 'rb') as file:
+        loaded_clf = pickle.load(file)
+    return loaded_clf
+
+def save_decision_tree(clf):
+    with open(f"../../../trained_models/decision_tree/{constants.NAME_TRAINED_MODEL_DECISION_TREE}", "wb") as file:
+        pickle.dump(clf, file)
+
 
 def main_decision_tree():
     # Use a first dataset to train the classifier
@@ -75,6 +84,8 @@ def main_decision_tree():
     # Using another dataset to test the classifier
     X_test, y_test = testing_eval(
         constants.PATH_TO_EVAL_TCPDUMP1, constants.PATH_TO_EVAL_TCPDUMP2)
+
+    save_decision_tree(clf)
 
     # Test the classifier's accuracy on the test set
     accuracy = clf.score(X_test, y_test)

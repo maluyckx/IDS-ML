@@ -17,3 +17,10 @@ PATH_TO_EVAL_TCPDUMP2 = "../../../evaluation_datasets/tcpdumps/eval2_tcpdump.txt
 
 
 
+## Name for the trained models
+NAME_TRAINED_MODEL_DECISION_TREE = "trained_model_decision_tree.pkl"
+NAME_TRAINED_MODEL_RANDOM_FOREST = "trained_model_random_forest.pkl"
+NAME_TRAINED_MODEL_LOGISTIC_REGRESSION = "trained_model_logistic_regression.pkl"
+NAME_TRAINED_MODEL_NEURAL_NETWORK = "trained_model_neural_network.pkl"
+
+

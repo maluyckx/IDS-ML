@@ -3,7 +3,7 @@ Goal of the script : Training the model
 
 Authors : 
     - LUYCKX Marco 496283
-    - BOUHNINE Ayoub ?
+    - BOUHNINE Ayoub 500048
 """
 
 
@@ -12,7 +12,7 @@ import pathlib
 import sys 
 
 #### Importing the algorithms
-sys.path.append("algorithms/decision_tree_2/")
+sys.path.append("algorithms/decision_tree/")
 # sys.path.append("algorithms/random_forest/")
 # sys.path.append("algorithms/logistic_regression/")
 # sys.path.append("algorithms/neural_network/")

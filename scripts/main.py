@@ -3,7 +3,7 @@ Goal of the script : Launching the training of the model and the evaluation of t
 
 Authors : 
     - LUYCKX Marco 496283
-    - BOUHNINE Ayoub ?
+    - BOUHNINE Ayoub 500048
 """
 
 import scripts.eval_IDS as eval_IDS

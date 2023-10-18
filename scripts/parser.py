@@ -3,7 +3,7 @@ Goal of the script : Parsing the data
 
 Authors : 
     - LUYCKX Marco 496283
-    - BOUHNINE Ayoub ?
+    - BOUHNINE Ayoub 500048
 """
 
 import re

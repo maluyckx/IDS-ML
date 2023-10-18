@@ -9,6 +9,12 @@ Authors :
 import argparse
 import pathlib
 
+import constants
+
+def writing_suspicious_hosts(suspicious_hosts):
+    with open(f"{constants.PATH_TO_SUSPICIOUS_HOSTS}", "w") as f:
+        for host in suspicious_hosts:
+            f.write(host + "\n")
 
 
 def main_eval(dataset, trained_model, output):

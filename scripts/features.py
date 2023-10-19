@@ -15,14 +15,10 @@ def aggregate_data(data):
     # Aggregate data
     # {18712: {'request': {'timestamp': '13:22:44.546969', 'host': 'unamur021', 'query_type': 'A', 'domain': 'kumparan.com', 'length': 30, 'responses': [], 'counts': None, 'request_id': 18712}, 'response': {'timestamp': '13:22:44.580851', 'host': 'one', 'query_type': 'A', 'domain': None, 'length': 62, 'responses': [('A', '104.18.130.231'), ('A', '104.18.129.231')], 'counts': (2, 0, 0), 'request_id': 18712}}}
 
-    # TODO: double check -> no responses
+    # TODO: double check -> no request
 
     request = data['request']
     response = data['response']
-
-    print(request)
-    print(response)
-    time.sleep(2)
 
     if len(request) == 0:
         timestamp = '0'

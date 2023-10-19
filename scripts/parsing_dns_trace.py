@@ -6,7 +6,7 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
-import re
+import re, time
 
 
 def extract_timestamp(line):
@@ -96,8 +96,8 @@ def parsing_file(traces):
         paired_data[trace_id][trace_type] = parsed_trace
 
         # if no request at the end, delete the ID
-        if trace_type == 'request' and paired_data[trace_id]['response'] == {}:
-            del paired_data[trace_id]
+        # if trace_type == 'request' and paired_data[trace_id]['response'] == {}:
+        #    del paired_data[trace_id]
 
     return paired_data
 

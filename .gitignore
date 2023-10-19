@@ -1,4 +1,6 @@
-# forlders to ignore
+# folders to ignore
 .venv/
 
 # files to ignore
+
+.vscode/

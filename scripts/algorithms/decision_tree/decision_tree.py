@@ -21,54 +21,11 @@ import parsing_dns_trace as parser
 
 import features, pickle
 
-def parsing_file(traces):
-    """Pair DNS traces based on their IDs using the adjusted parser."""
-    paired_data = {}
-    
-    for trace in traces:
-        parsed_trace = parser.parse_dns_trace(trace)
-        
-        # Check if ID is present and valid
-        trace_id = parsed_trace.get("request_id")
-        if trace_id is None:
-            continue
-
-        # Initialize dictionary for the ID if not present
-        if trace_id not in paired_data:
-            paired_data[trace_id] = {"request": {}, "response": {}}  # Initialize dictionary for the ID
-
-        # Determine if the trace is a request or response based on the domain (if "one" or not)
-        if parsed_trace["host"] == "one":
-            trace_type = "response"
-        else:
-            trace_type = "request"
-
-        paired_data[trace_id][trace_type] = parsed_trace
-
-        # if no request at the end, delete the ID
-        if trace_type == 'request' and paired_data[trace_id]['response'] == {}:
-            del paired_data[trace_id]
-
-    return paired_data
-
-
-def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
-    # Parse both datasets
-    bots_data = {}
-    with open(path_to_bots_tcpdump, 'r') as file:
-        bots_data = parsing_file(file)
-    
-    webclients_data = []
-    with open(path_to_webclients_tcpdump, 'r') as file:
-        webclients_data = parsing_file(file)
-
-    return bots_data, webclients_data
-
 def train_decision_tree(combined_df):
     print("####\nTraining the decision tree classifier...")
     # Split the data into training and testing sets
     list_of_features = ['query_type_encoded',
-                        'domain_encoded', 'host_encoded', 'timestamp_encoded', 'length_request_encoded', 'length_response_encoded', 'responses_encoded', 'counts_encoded']
+                        'domain_encoded', 'length_request_encoded', 'length_response_encoded', 'responses_encoded', 'counts_encoded']
     
     X = combined_df[list_of_features]
     y = combined_df['label']
@@ -94,7 +51,7 @@ def testing_eval(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
     combined_df = features.encoding_features(combined_df)
 
     list_of_features = ['query_type_encoded',
-                        'domain_encoded', 'host_encoded', 'timestamp_encoded', 'length_request_encoded', 'length_response_encoded', 'responses_encoded', 'counts_encoded']
+                        'domain_encoded', 'length_request_encoded', 'length_response_encoded', 'responses_encoded', 'counts_encoded']
 
     X_test = combined_df[list_of_features]
     y_test = combined_df['label']

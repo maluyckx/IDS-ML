@@ -45,10 +45,8 @@ def extract_request_id(line):
 
 def extract_counts(line):
     """Extract counts from a single line of the DNS trace dataset."""
-    counts_match = re.search(r"(\d+)/(\d+)/(\d+)", line)
-    return tuple(map(int, counts_match.groups())) if counts_match else None
-
-
+    count_match = re.search(r"(\d+)/(\d+)/(\d+)", line)
+    return tuple(int(count) for count in count_match.groups()) if count_match else None
 
 def parse_dns_trace(line):
     """Parse a single line from the DNS trace dataset with additional features."""
@@ -73,22 +71,46 @@ def parse_dns_trace(line):
         "request_id": request_id
     }
 
+def parsing_file(traces):
+    """Pair DNS traces based on their IDs using the adjusted parser."""
+    paired_data = {}
+    
+    for trace in traces:
+        parsed_trace = parse_dns_trace(trace)
+        
+        # Check if ID is present and valid
+        trace_id = parsed_trace.get("request_id")
+        if trace_id is None:
+            continue
+
+        # Initialize dictionary for the ID if not present
+        if trace_id not in paired_data:
+            paired_data[trace_id] = {"request": {}, "response": {}}  # Initialize dictionary for the ID
+
+        # Determine if the trace is a request or response based on the domain (if "one" or not)
+        if parsed_trace["host"] == "one":
+            trace_type = "response"
+        else:
+            trace_type = "request"
+
+        paired_data[trace_id][trace_type] = parsed_trace
+
+        # if no request at the end, delete the ID
+        if trace_type == 'request' and paired_data[trace_id]['response'] == {}:
+            del paired_data[trace_id]
+
+    return paired_data
+
 def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
     print("####\nParsing the DNS trace datasets...")
     # Parse both datasets
-    bots_data = []
+    bots_data = {}
     with open(path_to_bots_tcpdump, 'r') as file:
-        for line in file:
-            parsed_data = parse_dns_trace(line)
-            if parsed_data["domain"]:  # Only consider lines with domain information
-                bots_data.append(parsed_data)
+        bots_data = parsing_file(file)
     
     webclients_data = []
     with open(path_to_webclients_tcpdump, 'r') as file:
-        for line in file:
-            parsed_data = parse_dns_trace(line)
-            if parsed_data["domain"]:  # Only consider lines with domain information
-                webclients_data.append(parsed_data)
+        webclients_data = parsing_file(file)
 
     print("Parsing completed!\n####\n")
     return bots_data, webclients_data

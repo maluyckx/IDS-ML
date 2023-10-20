@@ -10,6 +10,10 @@ Authors :
 from sklearn.tree import DecisionTreeClassifier
 import pickle
 
+# Graphics dependencies
+from sklearn.tree import export_graphviz
+import graphviz
+
 # Personal dependencies
 import sys
 sys.path.append("../../")
@@ -60,8 +64,16 @@ def save_decision_tree(clf):
         pickle.dump(clf, decision_tree_saved_model)
 
 def diagram_decision_tree(clf):
-    # find a way to make a diagram of the decision tree
-    pass
+    
+    ## COULD NOT BE TESTED YET
+    dot_data = export_graphviz(clf, out_file=None,
+                            feature_names=constants.LIST_OF_FEATURES,
+                            class_names=['bot', 'webclient'],
+                            filled=True, rounded=True, special_characters=True)
+
+    graph = graphviz.Source(dot_data)
+    graph.render("decision_tree")
+
 
 
 def main_decision_tree():

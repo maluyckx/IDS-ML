@@ -51,13 +51,13 @@ def eval_decision_tree(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
     return X_test, y_test
 
 def load_saved_decision_tree():
-    with open('trained_model.pkl', 'rb') as file:
-        loaded_clf = pickle.load(file)
+    with open(f"../../../trained_models/decision_tree/{constants.NAME_TRAINED_MODEL_DECISION_TREE}", 'rb') as decision_tree_saved_model:
+        loaded_clf = pickle.load(decision_tree_saved_model)
     return loaded_clf
 
 def save_decision_tree(clf):
-    with open(f"../../../trained_models/decision_tree/{constants.NAME_TRAINED_MODEL_DECISION_TREE}", "wb") as file:
-        pickle.dump(clf, file)
+    with open(f"../../../trained_models/decision_tree/{constants.NAME_TRAINED_MODEL_DECISION_TREE}", "wb") as decision_tree_saved_model:
+        pickle.dump(clf, decision_tree_saved_model)
 
 def diagram_decision_tree(clf):
     # find a way to make a diagram of the decision tree

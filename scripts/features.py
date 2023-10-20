@@ -10,6 +10,12 @@ from sklearn.preprocessing import LabelEncoder
 
 # Other dependencies
 import pandas as pd
+import itertools
+
+# Personal dependencies
+import sys
+sys.path.append("../../")
+import constants
 
 def aggregate_data(data):
     # Aggregate data
@@ -130,3 +136,18 @@ def encoding_features(combined_df):
         combined_df['counts'])
 
     return combined_df
+
+
+
+def combinations_of_features():
+    all_combinations = []
+    for r in range(1, len(constants.LIST_OF_FEATURES) + 1):
+        combinations = itertools.combinations(constants.LIST_OF_FEATURES, r)
+        all_combinations.extend(combinations)
+
+    all_combinations = [list(combination) for combination in all_combinations]
+
+    # print(len(all_combinations))
+    # for combination in all_combinations:
+    #     print(combination)
+    return all_combinations

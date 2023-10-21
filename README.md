@@ -12,7 +12,7 @@ We are free to choose the method to classify but we need to justify our choice o
 
 ## Datasets
 
-- **Public resolver** : `1.1.1.1`
+- **Public resolver** : `1.1.1.1` (`one.one.one.one`)
 - Some of their DNS traffic has been captured from a vantage point in the network using tcpdump on port `53`.
 
 ### Training datasets
@@ -35,25 +35,34 @@ They both cintain **human** and **bot** traffic.
 
 ## Report
 
-The report is located in the [report folder](report/report_LUYCKX_BOUHNINE.pdf) .
+The report is located in the [report folder](report/IDS_ML_LUYCKX_BOUHNINE.pdf) .
 
 ## Commands
 
-To train the model, run the following command:
+In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
+
+To train the model, run the following command :
 
 ```bash
-python3 train.py --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt --bots ../training_datasets/tcpdumps/bots_tcpdump.txt --output ../trained_models/trained_model1.jesaispasl'extension
+python3 train.py --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt --bots ../training_datasets/tcpdumps/bots_tcpdump.txt --output ../trained_models/<algo>/trained_model_<algo>.pkl
 ```
 
-To evaluate the model, run the following command:
+To evaluate the model, run the following command :
 
 ```bash
-python3 eval.py --trained_model ../trained_models/trained_model1.jesaispasl'extension --dataset path/to/dataset --output path/to/suspicious.txt
+python3 eval.py --trained_model ../trained_models/<algo>/trained_model_<algo>.pkl --dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt --output suspicious_hosts/suspicious_hosts.txt
 ```
 
-To do both, run the following command:
+To do both, run the following command :
 
 ```bash
-python3 main.py TODO
+python3 main.py \
+--webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
+--bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
+--output ../trained_models/trained_model_<algo>.pkl \
+--trained_model ../trained_models/trained_model_<algo>.pkl \
+--dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
+--output suspicious_hosts/suspicious_hosts.txt 
 ```
+
 

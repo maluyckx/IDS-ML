@@ -66,13 +66,13 @@ def save_decision_tree(clf):
 def diagram_decision_tree(clf):
     
     ## COULD NOT BE TESTED YET
-    dot_data = export_graphviz(clf, out_file=None,
+   """dot_data = export_graphviz(clf, out_file=None,
                             feature_names=constants.LIST_OF_FEATURES,
                             class_names=['bot', 'webclient'],
                             filled=True, rounded=True, special_characters=True)
 
     graph = graphviz.Source(dot_data)
-    graph.render("decision_tree")
+    graph.render("decision_tree")"""
 
 
 

@@ -122,14 +122,8 @@ def encoding_features(combined_df):
         combined_df['length_response'])
 
     label_encoder_responses = LabelEncoder()
-    #try:
     combined_df['responses_encoded'] = label_encoder_responses.fit_transform(
             combined_df['responses'])
-    #except:
-       # print("############################################################")
-       # print(combined_df['responses'])
-       # print(type(combined_df['responses']))
-       # print("############################################################")
 
     label_encoder_counts = LabelEncoder()
     combined_df['counts_encoded'] = label_encoder_counts.fit_transform(

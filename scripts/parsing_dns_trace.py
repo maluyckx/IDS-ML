@@ -8,6 +8,7 @@ Authors :
 
 import re
 
+from datetime import timedelta
 
 def extract_timestamp(line):
     """Extract timestamp from a single line of the DNS trace dataset."""
@@ -63,6 +64,12 @@ def parse_dns_trace(line):
         "counts": extract_counts(line), # only for the response
     }
 
+def parse_timestamp(ts):
+    hours, minutes, seconds = ts.strip().split(':')
+    seconds, microseconds = seconds.split('.')
+    return timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds), microseconds=int(microseconds))
+
+
 def parsing_file(lines):
     """Pair DNS lines based on their IDs using the adjusted parser."""
     paired_data = {}
@@ -78,15 +85,20 @@ def parsing_file(lines):
         # Initialize dictionary for the ID if not present
         if trace_id not in paired_data:
             paired_data[trace_id] = {"request": {}, "response": {}}  # Initialize dictionary for the ID
-        elif paired_data[trace_id]["request"] != {}:
-            i = 1
-            trace_id = f"{trace_id}_{i}"
-            while trace_id in paired_data:
-                trace_id = trace_id.replace(f"_{i}", f"_{i+1}")
-                i += 1
-            paired_data[trace_id] = {"request": {}, "response": {}}
-            print(f"Duplicate ID found: {trace_id}")
-
+        elif paired_data[trace_id]["request"] != {} and paired_data[trace_id]["response"] != {}:
+            timestamp_req = parse_timestamp(paired_data[trace_id]["request"]["timestamp"])
+            timestamp_resp = parse_timestamp(paired_data[trace_id]["response"]["timestamp"])
+            difference = abs(timestamp_resp - timestamp_req)
+            if difference <= timedelta(seconds=1):
+                pass
+            else:
+                i = 1
+                trace_id = f"{trace_id}_{i}"
+                while trace_id in paired_data:
+                    trace_id = trace_id.replace(f"_{i}", f"_{i+1}")
+                    i += 1
+                paired_data[trace_id] = {"request": {}, "response": {}}
+                
         # Determine if the line is a request or response based on the domain (if "one" or not)
         if parsed_line["host"] == "one":
             trace_type = "response"

@@ -16,13 +16,15 @@ import graphviz
 
 # Personal dependencies
 import sys
+
 sys.path.append("../../")
 import constants
 import parsing_dns_trace as parser
 import features
+import colors
 
 def train_decision_tree(bots_data, webclients_data):
-    print("####\nTraining the decision tree classifier...")
+    print(colors.Colors.CYAN + "####\nTraining the decision tree classifier..." + colors.Colors.RESET)
 
     combined_df = features.convert_to_dataframe(bots_data, webclients_data)
 
@@ -35,15 +37,14 @@ def train_decision_tree(bots_data, webclients_data):
     clf = DecisionTreeClassifier()
     clf.fit(X_train, y_train)
     
-    print("Decision tree classifier trained successfully!\n####\n")
+    print(colors.Colors.CYAN + "Decision tree classifier trained successfully!\n####\n" + colors.Colors.RESET)
     return clf
 
 
 def eval_decision_tree(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
-    print("####\nTesting the decision tree classifier...")
-    eval_data1, eval_data2 = parser.parse_training_data(
-        path_to_eval_tcpdump1, path_to_eval_tcpdump2)
-
+    eval_data1, eval_data2 = parser.parse_training_data(path_to_eval_tcpdump1, path_to_eval_tcpdump2)
+    
+    print(colors.Colors.RED + "####\nTesting the decision tree classifier..."  + colors.Colors.RESET)
     combined_df = features.convert_to_dataframe(eval_data1, eval_data2)
 
     combined_df = features.encoding_features(combined_df)
@@ -51,7 +52,7 @@ def eval_decision_tree(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
     X_test = combined_df[constants.LIST_OF_FEATURES]
     y_test = combined_df['label']
 
-    print("Decision tree classifier tested successfully!\n####\n")
+    print(colors.Colors.RED + "Decision tree classifier tested successfully!\n####\n" + colors.Colors.RESET)
     return X_test, y_test
 
 def load_saved_decision_tree():

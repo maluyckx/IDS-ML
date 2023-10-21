@@ -66,3 +66,9 @@ python3 main.py \
 ```
 
 
+
+## Colors
+
+- **Green** : preprocessing phase
+- **Blue** : training phase
+- **Red** : evaluation phase

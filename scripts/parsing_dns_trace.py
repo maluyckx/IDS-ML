@@ -6,9 +6,10 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
+# 
 import re
-
 from datetime import timedelta
+import colors
 
 def extract_timestamp(line):
     """Extract timestamp from a single line of the DNS trace dataset."""
@@ -110,7 +111,8 @@ def parsing_file(lines):
     return paired_data
 
 def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
-    print("####\nParsing the DNS line datasets...")
+    print(colors.Colors.GREEN + "####\nParsing the DNS line datasets..." + colors.Colors.RESET)
+    
     # Parse both datasets
     bots_data = {}
     with open(path_to_bots_tcpdump, 'r') as bot_file:
@@ -120,5 +122,5 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
     with open(path_to_webclients_tcpdump, 'r') as webclient_file:
         webclients_data = parsing_file(webclient_file)
 
-    print("Parsing completed!\n####\n")
+    print(colors.Colors.GREEN + "Parsing completed!\n####\n" + colors.Colors.RESET)
     return bots_data, webclients_data

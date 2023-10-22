@@ -11,7 +11,7 @@ import pathlib
 import scripts.eval_IDS as eval_IDS
 import scripts.train_IDS as train_IDS
 
-import constants
+import scripts.utils.constants as constants
 
 def main():
     getting_args()

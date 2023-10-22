@@ -9,7 +9,8 @@ Authors :
 # 
 import re
 from datetime import timedelta
-import colors
+
+import utils.colors as colors
 
 def extract_timestamp(line):
     """Extract timestamp from a single line of the DNS trace dataset."""

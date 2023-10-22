@@ -17,7 +17,7 @@ sys.path.append("algorithms/decision_tree/")
 # sys.path.append("algorithms/logistic_regression/")
 # sys.path.append("algorithms/neural_network/")
 
-import decision_tree
+# import decision_tree
 # import random_forest
 # import logistic_regression
 # import neural_network
@@ -25,7 +25,8 @@ import decision_tree
 #######################################
 
 def train_decision_tree(webclients, bots, output):
-    decision_tree.test_print()
+    # decision_tree.test_print()
+    pass
 
 
 

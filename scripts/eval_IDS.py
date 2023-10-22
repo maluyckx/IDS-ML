@@ -9,7 +9,7 @@ Authors :
 import argparse
 import pathlib
 
-import constants
+import scripts.utils.constants as constants
 
 
 def get_botlists():

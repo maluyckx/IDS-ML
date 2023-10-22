@@ -15,7 +15,7 @@ import itertools
 # Personal dependencies
 import sys
 sys.path.append("../../")
-import constants
+import scripts.utils.constants as constants
 
 def aggregate_data(data):
     # Aggregate data

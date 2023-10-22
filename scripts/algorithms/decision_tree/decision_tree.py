@@ -19,9 +19,9 @@ import graphviz
 import sys
 
 sys.path.append("../../")
-import constants
+import scripts.utils.constants as constants
 import parsing_dns_trace as parser
-import features
+import scripts.utils.features as features
 import colors
 
 def train_decision_tree(bots_data, webclients_data):

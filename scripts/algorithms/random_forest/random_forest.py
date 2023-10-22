@@ -13,9 +13,9 @@ import pickle
 # Personal dependencies
 import sys
 sys.path.append("../../")
-import constants
+import scripts.utils.constants as constants
 import parsing_dns_trace as parser
-import features
+import scripts.utils.features as features
 
 def train_random_forest(bots_data, webclients_data):
     pass

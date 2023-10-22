@@ -14,9 +14,9 @@ import pickle
 # Personal dependencies
 import sys
 sys.path.append("../../")
-import constants
+import scripts.utils.constants as constants
 import parsing_dns_trace as parser
-import features
+import scripts.utils.features as features
 import colors
 
 def train_logistic_regression(bots_data, webclients_data):

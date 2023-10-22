@@ -7,10 +7,7 @@ Authors :
 """
 
 # ML dependencies
-import colors
-import features
-import parsing_dns_trace as parser
-import constants
+
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
@@ -20,11 +17,13 @@ import pickle
 from sklearn.tree import export_graphviz
 import graphviz
 
-# Personal dependencies
+# # Personal dependencies
 import sys
 sys.path.append("../")
-
-sys.path.append("../../")
+import utils.parsing_dns_trace as parser
+import utils.constants as constants
+import utils.features as features
+import utils.colors as colors
 
 
 def train_model(bots_data, webclients_data, algorithm):

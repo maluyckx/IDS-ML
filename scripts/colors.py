@@ -17,10 +17,11 @@ class Colors:
     CYAN = "\033[96m"
     ## Evaluation
     RED = "\033[91m"
+    ## Classification
+    YELLOW = "\033[93m"
     
     
     ## Future use
     PURPLE = "\033[95m"
     LIGHTCYAN = "\033[94m"
-    YELLOW = "\033[93m"
     

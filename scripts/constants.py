@@ -6,13 +6,17 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
+## List of algorithms
+ALGORITHMS_NAMES = {"decision_tree" : "Decision tree", "logistic_regression" : "Logistic regression", "random_forest" : "Random forest", "neural_networks":"Neural networks"}
+
+
 ## Path to training datasets for algos
-PATH_TO_BOTS_TCPDUMP = "../../../training_datasets/tcpdumps/bots_tcpdump.txt"
-PATH_TO_WEBCLIENTS_TCPDUMP = "../../../training_datasets/tcpdumps/webclients_tcpdump.txt"
+PATH_TO_BOTS_TCPDUMP = "../../training_datasets/tcpdumps/bots_tcpdump.txt"
+PATH_TO_WEBCLIENTS_TCPDUMP = "../../training_datasets/tcpdumps/webclients_tcpdump.txt"
 
 ## Path to evaluation datasets for algos
-PATH_TO_EVAL_TCPDUMP1 = "../../../evaluation_datasets/tcpdumps/eval1_tcpdump.txt"
-PATH_TO_EVAL_TCPDUMP2 = "../../../evaluation_datasets/tcpdumps/eval2_tcpdump.txt"
+PATH_TO_EVAL_TCPDUMP1 = "../../evaluation_datasets/tcpdumps/eval1_tcpdump.txt"
+PATH_TO_EVAL_TCPDUMP2 = "../../evaluation_datasets/tcpdumps/eval2_tcpdump.txt"
 
 ## List of features
 LIST_OF_FEATURES = [
@@ -35,6 +39,14 @@ NAME_TRAINED_MODEL_DECISION_TREE = "trained_model_decision_tree.pkl"
 NAME_TRAINED_MODEL_RANDOM_FOREST = "trained_model_random_forest.pkl"
 NAME_TRAINED_MODEL_LOGISTIC_REGRESSION = "trained_model_logistic_regression.pkl"
 NAME_TRAINED_MODEL_NEURAL_NETWORK = "trained_model_neural_network.pkl"
+
+## Dictionary to math the name of the trained model with the name of the algorithm
+NAME_TRAINED_MODEL = {
+    "decision_tree" : NAME_TRAINED_MODEL_DECISION_TREE,
+    "random_forest" : NAME_TRAINED_MODEL_RANDOM_FOREST,
+    "logistic_regression" : NAME_TRAINED_MODEL_LOGISTIC_REGRESSION,
+    "neural_networks" : NAME_TRAINED_MODEL_NEURAL_NETWORK
+}
 
 
 ## Path to botlists

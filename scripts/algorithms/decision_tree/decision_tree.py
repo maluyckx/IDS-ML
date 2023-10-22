@@ -8,6 +8,7 @@ Authors :
 
 # ML dependencies
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import classification_report
 import pickle
 
 # Graphics dependencies
@@ -33,15 +34,31 @@ def train_decision_tree(bots_data, webclients_data):
     X_train = combined_df[constants.LIST_OF_FEATURES]
     y_train = combined_df['label']
 
+    # print("X train : ", X_train)
+    # print("y train : ", y_train)
+    
     # Train the decision tree classifier
-    clf = DecisionTreeClassifier()
+    clf = DecisionTreeClassifier(
+                                criterion='gini',
+                                splitter='best',
+                                max_depth=100, # completement arbitraire
+                                min_samples_split=20, # completement arbitraire
+                                min_samples_leaf=10, # completement arbitraire
+                                min_weight_fraction_leaf=0.0, # completement arbitraire
+                                max_features=None, # use all features
+                                random_state=None, # random seed
+                                max_leaf_nodes=None, # completement arbitraire
+                                min_impurity_decrease=0.0, # completement arbitraire
+                                class_weight=None, # use all classes
+                                ccp_alpha=0.0 # completement arbitraire
+                                )
     clf.fit(X_train, y_train)
     
     print(colors.Colors.CYAN + "Decision tree classifier trained successfully!\n####\n" + colors.Colors.RESET)
     return clf
 
 
-def eval_decision_tree(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
+def eval_decision_tree(clf, path_to_eval_tcpdump1, path_to_eval_tcpdump2):
     eval_data1, eval_data2 = parser.parse_training_data(path_to_eval_tcpdump1, path_to_eval_tcpdump2)
     
     print(colors.Colors.RED + "####\nTesting the decision tree classifier..."  + colors.Colors.RESET)
@@ -52,8 +69,16 @@ def eval_decision_tree(path_to_eval_tcpdump1, path_to_eval_tcpdump2):
     X_test = combined_df[constants.LIST_OF_FEATURES]
     y_test = combined_df['label']
 
+    # Test the classifier's accuracy on the test set
+    y_pred = clf.predict(X_test)
+    accuracy = clf.score(X_test, y_test)
+    print("Accuracy of the model : ", accuracy)
+
+    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['human', 'bot'])
+    print(colors.Colors.YELLOW + "Classification report : \n", classification + colors.Colors.RESET)
+
     print(colors.Colors.RED + "Decision tree classifier tested successfully!\n####\n" + colors.Colors.RESET)
-    return X_test, y_test
+    
 
 def load_saved_decision_tree():
     with open(f"../../../trained_models/decision_tree/{constants.NAME_TRAINED_MODEL_DECISION_TREE}", 'rb') as decision_tree_saved_model:
@@ -65,13 +90,14 @@ def save_decision_tree(clf):
         pickle.dump(clf, decision_tree_saved_model)
 
 def diagram_decision_tree(clf):
-    dot_data = export_graphviz(clf, out_file=None,
+    """dot_data = export_graphviz(clf, out_file=None,
                             feature_names=constants.LIST_OF_FEATURES,
                             class_names=['bot', 'webclient'],
                             filled=True, rounded=True, special_characters=True)
 
     graph = graphviz.Source(dot_data)
-    graph.render("decision_tree")
+    graph.render("decision_tree")"""
+    pass
 
 
 
@@ -83,14 +109,12 @@ def main_decision_tree():
     clf = train_decision_tree(bots_data, webclients_data)
 
     # Use a second dataset to test the classifier
-    X_test, y_test = eval_decision_tree(
-        constants.PATH_TO_EVAL_TCPDUMP1, constants.PATH_TO_EVAL_TCPDUMP2)
-
-    # Test the classifier's accuracy on the test set
-    accuracy = clf.score(X_test, y_test)
-    print("Accuracy of the model : ", accuracy)
-
+    eval_decision_tree(clf, constants.PATH_TO_EVAL_TCPDUMP1, constants.PATH_TO_EVAL_TCPDUMP2)
+    
+    # Diagram of the decision tree
     diagram_decision_tree(clf)
+    
+    # Save the trained classifier
     save_decision_tree(clf)
     
 if __name__ == "__main__":

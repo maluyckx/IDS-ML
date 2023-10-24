@@ -10,6 +10,7 @@ Authors :
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
 import pickle
 
@@ -24,6 +25,7 @@ import utils.parsing_dns_trace as parser
 import utils.constants as constants
 import utils.features as features
 import utils.colors as colors
+import utils.diagrams as diagrams
 
 
 def train_model(bots_data, webclients_data, algorithm):
@@ -77,23 +79,35 @@ def train_model(bots_data, webclients_data, algorithm):
         pass
     elif algorithm == "neural_networks":
         pass
+    
+    elif algorithm == "knn":
+        clf = KNeighborsClassifier(
+            n_neighbors=5,
+            weights="uniform",
+            algorithm="auto",
+            leaf_size=30,
+            p=2,
+            metric="minkowski",
+            metric_params=None,
+            n_jobs=None
+        )
+        
+        diagrams.diagram_knn(clf, X_train, y_train)
+    
     else:
-        print("You fucked up with the algortihm")
+        print("You fucked up with the algorithm")
         exit(0)
 
     clf.fit(X_train, y_train)
 
-    print(colors.Colors.CYAN +
-          f"{constants.ALGORITHMS_NAMES[algorithm]} classifier trained successfully!\n####\n" + colors.Colors.RESET)
+    print(colors.Colors.CYAN + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier trained successfully!\n####\n" + colors.Colors.RESET)
     return clf
 
 
 def eval_model(clf, path_to_eval_tcpdump1, path_to_eval_tcpdump2, algorithm):
-    eval_data1, eval_data2 = parser.parse_training_data(
-        path_to_eval_tcpdump1, path_to_eval_tcpdump2)
+    eval_data1, eval_data2 = parser.parse_training_data(path_to_eval_tcpdump1, path_to_eval_tcpdump2)
 
-    print(colors.Colors.RED +
-          f"####\nTesting the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
+    print(colors.Colors.RED + f"####\nTesting the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
     combined_df = features.convert_to_dataframe(eval_data1, eval_data2)
 
     combined_df = features.encoding_features(combined_df)
@@ -135,6 +149,8 @@ def diagram(clf):
     graph = graphviz.Source(dot_data)
     graph.render("decision_tree")"""
     pass
+    
+    
 
 
 def main():
@@ -162,8 +178,9 @@ def main():
     print("2. Logistic regression")
     print("3. Random forest")
     print("4. Neural networks")
+    print("5. KNN")
 
-    answer = input("Chose a model to train : ")
+    answer = input("Choose a model to train : ")
     if answer == "1":
         algorithm = "decision_tree"
     elif answer == "2":
@@ -172,6 +189,8 @@ def main():
         algorithm = "random_forest"
     elif answer == "4":
         algorithm = "neural_networks"
+    elif answer == "5":
+        algorithm = "knn"
     else:
         print("Wrong input, please try again")
         exit(0)
@@ -187,8 +206,22 @@ def main():
     eval_model(clf, constants.PATH_TO_EVAL_TCPDUMP1,
                constants.PATH_TO_EVAL_TCPDUMP2, algorithm)
 
-    # Diagram of the decision tree
-    diagram(clf)
+
+    # degeulasse mais j'ai pas le temps de faire mieux
+    # if algorithm == "decision_tree":
+    #     diagram.diagram_decision_tree(clf)
+
+    # elif algorithm == "logistic_regression":
+    #     pass
+    
+    # elif algorithm == "knn":
+    #     diagrams.diagram_knn(clf)
+        
+    # elif algorithm == "random_forest":
+    #     pass
+    
+    # elif algorithm == "neural_networks":
+    #     pass
 
     # Save the trained classifier
     save_trained_model(clf, algorithm)

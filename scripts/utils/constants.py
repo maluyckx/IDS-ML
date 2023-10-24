@@ -7,7 +7,13 @@ Authors :
 """
 
 ## List of algorithms
-ALGORITHMS_NAMES = {"decision_tree" : "Decision tree", "logistic_regression" : "Logistic regression", "random_forest" : "Random forest", "neural_networks":"Neural networks"}
+ALGORITHMS_NAMES = {
+                    "decision_tree" : "Decision tree", 
+                    "logistic_regression" : "Logistic regression", 
+                    "random_forest" : "Random forest", 
+                    "neural_networks":"Neural networks",
+                    "knn" : "KNN",
+                    }
 
 
 ## Path to training datasets for algos

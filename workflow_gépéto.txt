@@ -1,0 +1,25 @@
+1) Understanding and Exploring the Data
+    Data Loading: Load the labeled datasets.
+    Exploratory Data Analysis (EDA): Explore the patterns in the datasets. Some tasks could be:
+        Distribution of the number of requests per host.
+        Frequency distribution of different types of DNS requests.
+        Temporal patterns, e.g., distribution of requests over time.
+
+2 )Data Pre-processing
+    Feature Engineering: Based on the EDA findings, create new features that might be relevant for classification. For example:
+        Number of unique domain requests by a host.
+        Ratio of requests to unique domains.
+        Frequency of repeated requests in a short time frame.
+        Temporal behavior, e.g., making requests during unusual hours.
+    Data Cleaning: Handle missing values, outliers, etc.
+    Scaling and Normalization: Ensure the data is on a comparable scale.
+
+3) Model Selection
+    Baseline Model: Start with a simple model (e.g., Logistic Regression) to set a baseline.
+    Advanced Models: Consider models like Random Forest, Gradient Boosted Trees, Neural Networks, and SVM.
+    Hyperparameter Tuning: Use methods like grid search or random search to find the best hyperparameters.
+    
+4) Training and Validation
+    Splitting the Data: Separate the data into training, validation, and test sets. Cross-validation can also be used.
+    Model Training: Train the selected models using the training dataset.
+    Model Evaluation: Validate the models on the validation set using appropriate metrics (accuracy, F1-score, ROC-AUC, etc.).

@@ -5,7 +5,7 @@
         Frequency distribution of different types of DNS requests.
         Temporal patterns, e.g., distribution of requests over time.
 
-2 )Data Pre-processing
+2) Data Pre-processing
     Feature Engineering: Based on the EDA findings, create new features that might be relevant for classification. For example:
         Number of unique domain requests by a host.
         Ratio of requests to unique domains.

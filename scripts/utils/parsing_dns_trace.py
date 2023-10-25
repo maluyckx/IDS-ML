@@ -6,7 +6,7 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
-# 
+
 import re
 from datetime import timedelta
 
@@ -125,3 +125,5 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
 
     print(colors.Colors.GREEN + "Parsing completed!\n####\n" + colors.Colors.RESET)
     return bots_data, webclients_data
+
+

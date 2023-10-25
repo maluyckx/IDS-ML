@@ -132,7 +132,6 @@ def get_timing_for_a_session():
     pass
 
 
-
 def  get_number_of_unique_domains(): # and we should also get the ratio of those domains
     pass
 

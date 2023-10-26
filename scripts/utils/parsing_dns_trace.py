@@ -16,15 +16,47 @@ import colors
 
 ##### \ BEGINNING OF RAW FEATURES / ##### 
 
+"""
+Taken example for the next function : 
+Request  : 13:22:44.546969 IP unamur021.55771 > one.one.one.one.domain: 18712+ A? kumparan.com. (30)
+Response : 13:22:44.580851 IP one.one.one.one.domain > unamur021.55771: 18712 2/0/0 A 104.18.130.231, A 104.18.129.231 (62)
+
+
+"""
+
+
 def extract_timestamp(line):
-    """Extract timestamp from a single line of the DNS trace dataset."""
+    """
+    Extract timestamp from a single line of the DNS trace dataset.
+    Request and response : 13:22:44.546969
+    """
     timestamp_match = re.search(r"(\d{2}:\d{2}:\d{2}\.\d{6})", line)
     return timestamp_match.group(1) if timestamp_match else None
 
+# No need to extract protocol since it is always IP
+
+
 def extract_hostname(line):
-    """Extract hostname from a single line of the DNS trace dataset."""
+    """
+    Extract hostname from a single line of the DNS trace dataset.
+    Request  : unamur021 
+    Response : one
+    
+    The 'one' is the response will be used later to determine if the line is a request or a response
+    """
     hostname_match = re.search(r"IP (\w+)", line)
     return hostname_match.group(1) if hostname_match else None
+
+
+def extract_query_id(line):
+    """
+    Extract request ID from a single line of the DNS trace dataset.
+    Request  : 18712(+)
+    Response : 18712
+    """
+    id_match = re.search(r": (\d+)", line)
+    return int(id_match.group(1)) if id_match else None
+
 
 # def extract_dns_query_type(line):
 #     """Extract DNS query type from a single line of the DNS trace dataset."""
@@ -82,7 +114,11 @@ def extract_hostname(line):
 
 
 def extract_dns_query_type(line):
-    """Extract DNS query type from a single line of the DNS trace dataset."""
+    """
+    Extract DNS query type from a single line of the DNS trace dataset.
+    Request  : A
+    Response : A A
+    """
     # query_type_match = re.search(r"\s(A|AAAA|NXDomain|CNAME|ServFail)(?=[\s\?])", line) # TODO: checker CNAME 
     possible_query_types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
     pattern_to_find = r'\b(?:' + '|'.join(re.escape(word) for word in possible_query_types) + r')\b'
@@ -134,26 +170,40 @@ def extract_dns_query_type(line):
     
 
 def extract_domain_being_queried(line):
-    """Extract domain from a single line of the DNS trace dataset."""
+    """
+    Extract domain from a single line of the DNS trace dataset.
+    Request  : kumparan.com
+    Response : None
+    """
     domain_match = re.search(r"\? ([\w\.-]+)\.", line)
     return domain_match.group(1) if domain_match else None
 
+
 def extract_length(line):
-    """Extract length from a single line of the DNS trace dataset."""
+    """
+    Extract length from a single line of the DNS trace dataset.
+    Request : (30)
+    Response : (62)
+    """
     length_match = re.search(r"\((\d+)\)$", line)
     return int(length_match.group(1)) if length_match else None
 
+
 def extract_DNS_response(line):
-    """Extract DNS response from a single line of the DNS trace dataset."""
+    """
+    Extract DNS response from a single line of the DNS trace dataset.
+    Request : None
+    Response : TODO
+    """
     return tuple(re.findall(r"(A|AAAA) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", line))
 
-def extract_query_id(line):
-    """Extract request ID from a single line of the DNS trace dataset."""
-    id_match = re.search(r": (\d+)", line)
-    return int(id_match.group(1)) if id_match else None
 
 def extract_counts(line):
-    """Extract counts from a single line of the DNS trace dataset."""
+    """
+    Extract counts from a single line of the DNS trace dataset.
+    Request : None
+    Response : (2, 0, 0)
+    """
     count_match = re.search(r"(\d+)/(\d+)/(\d+)", line)
     return tuple(int(count) for count in count_match.groups()) if count_match else None
 

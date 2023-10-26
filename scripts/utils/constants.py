@@ -36,7 +36,11 @@ LIST_OF_FEATURES = [
                     'counts_encoded'
                     ]
 
+
+NOT_A_RESSOURCE_RECORD = "not_a_ressource_record_constant"
 AUTHORITATIVE_SERVER_RESPONSE = "authoritative_server_response_constant"
+NON_EXISTENT_DOMAIN_ERROR = "non_existent_domain_error_constant"
+SERVFAIL_ERROR = "servfail_error_constant"
 
 
 

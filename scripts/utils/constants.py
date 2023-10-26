@@ -36,7 +36,7 @@ LIST_OF_FEATURES = [
                     'counts_encoded'
                     ]
 
-
+AUTHORITATIVE_SERVER_RESPONSE = "authoritative_server_response_constant"
 
 
 

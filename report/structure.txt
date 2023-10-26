@@ -1,0 +1,8 @@
+14:26:53.517145 IP unamur22.37524 > one.one.one.one.domain: 32826+ A? biblegateway.com. (34)
+14:26:53.531017 IP one.one.one.one.domain > unamur22.37524: 32826 4/0/0 A 18.66.2.79, A 18.66.2.8, A 18.66.2.43, A 18.66.2.67 (98)
+
+
+
+
+13:23:45.986174 IP one.one.one.one.domain > unamur033.34855: 47310 NXDomain 0/1/0 (100)
+13:58:22.070017 IP one.one.one.one.domain > unamur138.51631: 45536 ServFail 0/0/0 (35)

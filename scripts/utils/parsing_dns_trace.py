@@ -10,7 +10,7 @@ Authors :
 import re
 from datetime import timedelta
 
-import utils.colors as colors
+import colors
 
 def extract_timestamp(line):
     """Extract timestamp from a single line of the DNS trace dataset."""
@@ -22,10 +22,104 @@ def extract_hostname(line):
     hostname_match = re.search(r"IP (\w+)", line)
     return hostname_match.group(1) if hostname_match else None
 
+# def extract_dns_query_type(line):
+#     """Extract DNS query type from a single line of the DNS trace dataset."""
+#     query_type_match = re.search(r"\s(A|AAAA|NXDomain|CNAME|ServFail)(?=[\s\?])", line) # TODO: checker CNAME 
+#     return query_type_match.group(1) if query_type_match else None
+
+
+
+
+
+# def extract_dns_query_type(line):
+#     """Extract DNS query type from a single line of the DNS trace dataset."""
+#     query_type_match = re.search(r"\s(A|AAAA|NXDomain|CNAME|ServFail)(?=[\s\?])", line)
+
+#     if query_type_match == None:
+#         return None, None
+
+#     query_type = query_type_match.group(1)
+
+#     # Depending on the type of query, we will extract the domain differently
+#     if query_type == "A" : 
+#         query_type_match = re.search(r"\sA\??\s(\S+)", line)
+#         list_of_domains = []
+        
+#         count_match = extract_counts(line)
+#         if not(count_match == None):
+#             answers = count_match[0]
+#             authority = count_match[1]
+#             additional = count_match[2]
+            
+#             if int(answers) == 0:
+#                 print("No answer WTF")
+#                 exit(0)
+#             else : 
+#                 query_in_list_format = line.split()
+#                 for i in range(len(query_in_list_format)):
+#                     if query_in_list_format[i] == "A" :
+#                         list_of_domains.append(query_in_list_format[i+1])
+        
+    
+#     elif query_type == "AAAA":
+#         pass
+
+#     elif query_type == "NXDomain":
+#         pass
+
+#     elif query_type == "CNAME":
+#         pass
+#     elif query_type == "ServFail":
+#         pass
+    
+#     else :
+#         print("Error : the query type is not A, AAAA, NXDomain, CNAME or ServFail")
+#         exit(1)
+
+
 def extract_dns_query_type(line):
-    """Extract DNS query type from a single line of the DNS trace dataset."""
-    query_type_match = re.search(r"\s(A|AAAA|NXDomain|CNAME)(?=[\s\?])", line) # TODO: checker CNAME
-    return query_type_match.group(1) if query_type_match else None
+    """Extract all DNS query types and their associated domains from a single line of the DNS trace dataset."""
+    types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
+    results = {}
+
+    # Extract counts
+    count_match = extract_counts(line)
+    if not count_match:
+        return None
+
+    answers, _, _ = count_match
+    if answers == 0: # will always be (0, 1, 0)
+        #print("No answer for the query")
+        print(line)
+        return None
+
+    # Use the split line to extract domains for each query type based on the count of answers
+    query_in_list_format = line.split()
+    
+    for t in types:
+        list_of_domains = []
+        for i in range(len(query_in_list_format)):
+            if query_in_list_format[i] == t:
+                domain = query_in_list_format[i + 1].rstrip(",?")
+                list_of_domains.append(domain)
+                answers -= 1
+                if answers == 0:
+                    break
+        if list_of_domains:
+            results[t] = list_of_domains
+    print(results)
+    return results
+
+
+
+    #     domain_match = re.search(r"\s" + query_type + r"\??\s(\S+)", line)
+    #     domain = domain_match.group(1).rstrip(",?") if domain_match else None
+    #     print(f"Query type : {query_type} | Domain : {domain}")
+    #     return query_type, domain
+    # return None, None
+    
+
+    
 
 def extract_domain_being_queried(line):
     """Extract domain from a single line of the DNS trace dataset."""
@@ -78,7 +172,7 @@ def parsing_file(lines):
     
     for line in lines:
         parsed_line = parse_dns_trace(line)
-        
+        # print(parsed_line)
         # Check if ID is present and valid
         trace_id = parsed_line.get("query_id")
         if trace_id is None:
@@ -119,12 +213,20 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
     with open(path_to_bots_tcpdump, 'r') as bot_file:
         bots_data = parsing_file(bot_file)
     
+    print("######SWITCH BOT FROM HUMAN######")
     webclients_data = []
     with open(path_to_webclients_tcpdump, 'r') as webclient_file:
         webclients_data = parsing_file(webclient_file)
 
     print(colors.Colors.GREEN + "Parsing completed!\n####\n" + colors.Colors.RESET)
     return bots_data, webclients_data
+
+
+def parsing_cleaning_testing_data(list_of_test_datasets):
+    # Y'a des flags de TCP dans le fichier de test, faut qu'on parse les données qui sont pas du DNS 
+    # Example de eval 1 : 11:12:37.412776 IP one.one.one.one.domain > unamur036.39802: Flags [S.], seq 3634935584, ack 3866216491, win 65535, options [mss 1452,nop,nop,sackOK,nop,wscale 10], length 0
+    for i in list_of_test_datasets:
+        pass
 
 
 
@@ -139,3 +241,12 @@ def  get_number_of_unique_domains(): # and we should also get the ratio of thos
 def frequency_of_repeated_requests_in_a_short_time_frame():
     pass
 
+
+
+if __name__ == "__main__":
+    parse_training_data("../../training_datasets/tcpdumps/bots_tcpdump.txt", "../../training_datasets/tcpdumps/webclients_tcpdump.txt")
+
+
+
+    # parsing_cleaning_testing_data(["../../testing_datasets/tcpdumps/eval1_tcpdump.txt", "../../testing_datasets/tcpdumps/eval2_tcpdump.txt"])
+    

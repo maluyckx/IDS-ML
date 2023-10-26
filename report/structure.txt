@@ -4,5 +4,47 @@
 
 
 
+
 13:23:45.986174 IP one.one.one.one.domain > unamur033.34855: 47310 NXDomain 0/1/0 (100)
 13:58:22.070017 IP one.one.one.one.domain > unamur138.51631: 45536 ServFail 0/0/0 (35)
+
+
+
+
+BOTS:
+
+13:22:44.546969 IP unamur021.55771 > one.one.one.one.domain: 18712+ A? kumparan.com. (30)
+13:22:44.580851 IP one.one.one.one.domain > unamur021.55771: 18712 2/0/0 A 104.18.130.231, A 104.18.129.231 (62)
+
+13:23:19.602852 IP one.one.one.one.domain > unamur019.34259: 21488 1/0/0 A 151.101.18.62 (46)
+13:23:19.610773 IP one.one.one.one.domain > unamur026.40012: 55892 0/1/0 (84)
+
+13:23:19.615774 IP unamur026.51950 > one.one.one.one.domain: 48904+ A? ytimg.com.fritz.box. (37)
+13:23:19.641074 IP one.one.one.one.domain > unamur026.51950: 48904 NXDomain 0/1/0 (102)
+
+13:23:43.649185 IP unamur021.38752 > one.one.one.one.domain: 45342+ A? oschina.net. (29)
+13:23:43.892598 IP one.one.one.one.domain > unamur021.38752: 45342 2/0/0 CNAME fn0wz54v.dayugslb.com., A 212.64.62.183 (80)
+
+
+
+
+
+WEBCLIENTS : 
+
+11:44:12.890000 IP unamur035.52474 > one.one.one.one.domain: 26778+ AAAA? services.addons.mozilla.org. (45)
+11:44:12.902661 IP one.one.one.one.domain > unamur035.52474: 26778 0/1/0 (126)
+
+11:44:12.905410 IP unamur035.52474 > one.one.one.one.domain: 17559+ A? services.addons.mozilla.org. (45)
+11:44:12.918400 IP one.one.one.one.domain > unamur035.52474: 17559 4/0/0 A 13.225.20.73, A 13.225.20.125, A 13.225.20.60, A 13.225.20.43 (109)
+
+11:44:12.939623 IP unamur035.40375 > one.one.one.one.domain: 60614+ A? location.services.mozilla.com. (47)
+11:44:12.953147 IP one.one.one.one.domain > unamur035.40375: 60614 7/0/0 CNAME locprod2-elb-us-west-2.prod.mozaws.net., A 54.148.18.111, A 15.254.24.110, A 35.160.240.234, A 34.223.166.69, A 35.161.134.161, A 54.148.72.145 (195)
+
+11:44:12.958090 IP unamur035.40375 > one.one.one.one.domain: 31426+ AAAA? location.services.mozilla.com. (47)
+11:44:12.970302 IP one.one.one.one.domain > unamur035.40375: 31426 1/1/0 CNAME locprod2-elb-us-west-2.prod.mozaws.net. (181)
+
+
+11:46:13.952688 IP one.one.one.one.domain > unamur040.46229: 35946 ServFail 0/0/0 (30)
+
+
+

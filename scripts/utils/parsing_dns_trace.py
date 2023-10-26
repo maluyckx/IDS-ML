@@ -12,6 +12,10 @@ from datetime import timedelta
 
 import colors
 
+
+
+##### \ BEGINNING OF RAW FEATURES / ##### 
+
 def extract_timestamp(line):
     """Extract timestamp from a single line of the DNS trace dataset."""
     timestamp_match = re.search(r"(\d{2}:\d{2}:\d{2}\.\d{6})", line)
@@ -78,37 +82,45 @@ def extract_hostname(line):
 
 
 def extract_dns_query_type(line):
-    """Extract all DNS query types and their associated domains from a single line of the DNS trace dataset."""
-    types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
-    results = {}
-
-    # Extract counts
-    count_match = extract_counts(line)
-    if not count_match:
-        return None
-
-    answers, _, _ = count_match
-    if answers == 0: # will always be (0, 1, 0)
-        #print("No answer for the query")
-        print(line)
-        return None
-
-    # Use the split line to extract domains for each query type based on the count of answers
-    query_in_list_format = line.split()
+    """Extract DNS query type from a single line of the DNS trace dataset."""
+    # query_type_match = re.search(r"\s(A|AAAA|NXDomain|CNAME|ServFail)(?=[\s\?])", line) # TODO: checker CNAME 
+    possible_query_types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
+    pattern_to_find = r'\b(?:' + '|'.join(re.escape(word) for word in possible_query_types) + r')\b'
+    query_type_match = re.findall(pattern_to_find, line) # TODO: checker CNAME 
+    print(query_type_match)
+    return query_type_match if query_type_match else None
     
-    for t in types:
-        list_of_domains = []
-        for i in range(len(query_in_list_format)):
-            if query_in_list_format[i] == t:
-                domain = query_in_list_format[i + 1].rstrip(",?")
-                list_of_domains.append(domain)
-                answers -= 1
-                if answers == 0:
-                    break
-        if list_of_domains:
-            results[t] = list_of_domains
-    print(results)
-    return results
+    # """Extract all DNS query types and their associated domains from a single line of the DNS trace dataset."""
+    # types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
+    # results = {}
+
+    # # Extract counts
+    # count_match = extract_counts(line)
+    # if not count_match:
+    #     return None
+
+    # answers, _, _ = count_match
+    # if answers == 0: # will always be (0, 1, 0)
+    #     #print("No answer for the query")
+    #     print(line)
+    #     return None
+
+    # # Use the split line to extract domains for each query type based on the count of answers
+    # query_in_list_format = line.split()
+    
+    # for t in types:
+    #     list_of_domains = []
+    #     for i in range(len(query_in_list_format)):
+    #         if query_in_list_format[i] == t:
+    #             domain = query_in_list_format[i + 1].rstrip(",?")
+    #             list_of_domains.append(domain)
+    #             answers -= 1
+    #             if answers == 0:
+    #                 break
+    #     if list_of_domains:
+    #         results[t] = list_of_domains
+    # print(results)
+    # return results
 
 
 
@@ -145,6 +157,9 @@ def extract_counts(line):
     count_match = re.search(r"(\d+)/(\d+)/(\d+)", line)
     return tuple(int(count) for count in count_match.groups()) if count_match else None
 
+
+##### \ END OF RAW FEATURES / ##### 
+
 def parse_dns_trace(line):
     """Parse a single line from the DNS trace dataset with additional features."""
     return {
@@ -170,9 +185,15 @@ def parsing_file(lines):
     """Pair DNS lines based on their IDs using the adjusted parser."""
     paired_data = {}
     
+    # compteur = 0
+    
     for line in lines:
+        # if compteur > 200:
+        #      exit(0)
         parsed_line = parse_dns_trace(line)
-        # print(parsed_line)
+
+        # print(parsed_line.get("query_type"))
+        # compteur += 1
         # Check if ID is present and valid
         trace_id = parsed_line.get("query_id")
         if trace_id is None:

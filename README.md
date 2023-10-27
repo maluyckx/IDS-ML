@@ -44,13 +44,19 @@ In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_reg
 To train the model, run the following command :
 
 ```bash
-python3 train.py --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt --bots ../training_datasets/tcpdumps/bots_tcpdump.txt --output ../trained_models/<algo>/trained_model_<algo>.pkl
+python3 train_IDS.py \
+--webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
+--bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
+--output ../trained_models/<algo>/trained_model_<algo>.pkl
 ```
 
 To evaluate the model, run the following command :
 
 ```bash
-python3 eval.py --trained_model ../trained_models/<algo>/trained_model_<algo>.pkl --dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt --output suspicious_hosts/suspicious_hosts.txt
+python3 eval_IDS.py \
+--trained_model ../trained_models/<algo>/trained_model_<algo>.pkl \
+--dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
+--output suspicious_hosts/suspicious_hosts.txt
 ```
 
 To do both, run the following command :

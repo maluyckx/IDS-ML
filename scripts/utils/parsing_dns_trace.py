@@ -260,6 +260,12 @@ def parsing_cleaning_testing_data(list_of_test_datasets):
 if __name__ == "__main__":
     bots_data, webclients_data = parse_training_data("../../training_datasets/tcpdumps/bots_tcpdump.txt", "../../training_datasets/tcpdumps/webclients_tcpdump.txt")
 
+    bots = []
+    for key in bots_data.keys():
+        trace = features.aggregate_data(bots_data[key])
+        if trace != None:
+            bots.append(trace)
+            
     webclients = []
     for key in webclients_data.keys():
         trace = features.aggregate_data(webclients_data[key])
@@ -267,10 +273,27 @@ if __name__ == "__main__":
             webclients.append(trace)
             
     # features.get_timing_for_a_session(bots)
-    features.get_number_of_unique_domains(webclients)
+    # features.get_number_of_unique_domains(webclients)
     
-    features.get_number_of_requests_in_a_session(webclients)
+    # features.get_number_of_requests_in_a_session(webclients)
 
+    # features.get_number_of_dots_in_a_domain(bots)
+    # print("######## SWITCH FROM BOTS TO WEBCLIENTS ########")
+    # features.get_number_of_dots_in_a_domain(webclients)
+
+    # features.get_all_requests_and_responses_for_an_host(bots)
+
+    # features.get_timing_for_a_sessionV1(bots)
+
+    # features.get_timing_for_a_session(bots)
+
+    # features.get_time_between_requests(bots)
+    #features.get_time_between_requests(webclients)
+    # print(features.get_timing_for_a_session(bots))
+
+    features.get_average_of_query_length(webclients)
+
+    # features.get_time_between_requests(bots)
 
     # parsing_cleaning_testing_data(["../../testing_datasets/tcpdumps/eval1_tcpdump.txt", "../../testing_datasets/tcpdumps/eval2_tcpdump.txt"])
     

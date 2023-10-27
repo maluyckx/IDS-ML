@@ -13,6 +13,7 @@ import pandas as pd
 import itertools
 from statistics import mean
 import parsing_dns_trace as parser
+import datetime
 
 # Personal dependencies
 import sys
@@ -55,7 +56,7 @@ def aggregate_data(data):
     if len(response) == 0:
         timestamp_resp = '0'
         length_response = '0'
-        responses = ()
+        responses = {}
         counts = None
     else:
         timestamp_resp = response['timestamp']
@@ -254,22 +255,45 @@ def get_average_of_query_length(aggregated_data):
 
 def get_type_of_requests_queried_by_hosts(aggregated_data):
     """
-    Par exemple, les bots font que des queries A et AAAA donc ca peut etre intéressant de checker ce pattern
+    Getting the type of requests queried by each host
     
+    Bots : they only do "A" requests
+    Webclients : they do "A" and "AAAA" requests
     """
+    type_of_requests_queried_by_hosts = {}
+    for data in aggregated_data:
+        host = data['host']
+        if host in type_of_requests_queried_by_hosts:
+            type_of_requests_queried_by_hosts[host].append(data['request_type'])
+        else:
+            type_of_requests_queried_by_hosts[host] = [data['request_type']]
     
-    pass
+    # beautiful print
+    for key, value in type_of_requests_queried_by_hosts.items():
+        print(f"{key} : \n {value} \n \n")
+    
+    return type_of_requests_queried_by_hosts
    
    
 def get_type_of_responses_received_by_hosts(aggregated_data):   
     """
     Maybe the response type is also interesting ?? (response type received by each host)
     """
+    type_of_responses_received_by_hosts = {}
+    for data in aggregated_data:
+        host = data['host']
+        if host in type_of_responses_received_by_hosts:
+            type_of_responses_received_by_hosts[host].extend(list(data['responses'].keys()))
+        else:
+            type_of_responses_received_by_hosts[host] = list(data['responses'].keys())
     
-    pass
+    # beautiful print
+    for key, value in type_of_responses_received_by_hosts.items():
+        print(f"{key} : \n {value} \n \n")
+    
+    return type_of_responses_received_by_hosts
 
    
-        
 def get_timing_of_all_queries(aggregated_data): # NOT A FEATURE, JUST A USEFUL FUNCTION FOR THE TIMINGS
     """
     Getting all the timestamps of all requests and responses for each host
@@ -364,21 +388,41 @@ def get_time_between_requests(aggregated_data):
     print(time_between_requests)
 
 
-
-
-# def get_number_of_domains_queried_by_hosts(aggregated_data): # maybe intéressant, voir si c'est pas la meme chose que get_number_of_requests_in_a_session
-#     """
-#     Getting the number of domains queried by each host during a session
+def frequency_of_repeated_requests_in_a_short_time_frame(aggregated_data):
+    """
+    Getting the frequency of repeated requests for the same domain in a short time frame for each host
     
-#     """
+    """
+    list_of_time_frames = [datetime.timedelta(seconds=10)] # in seconds
+    frequency_of_repeated_requests_in_a_short_time_frame = {}
+    for data in aggregated_data:
+        host = data['host']
+        if host in frequency_of_repeated_requests_in_a_short_time_frame:
+            if data['domain'] in frequency_of_repeated_requests_in_a_short_time_frame[host]:
+                for time_frame in list_of_time_frames:
+                    timestamp_next_request = parser.parse_timestamp(data['timestamp_req'])
+                    timestamp_latest_request = parser.parse_timestamp(frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']][-1][-1])
+                    if timestamp_next_request - timestamp_latest_request <= time_frame:
+                        frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']][-1].append(data['timestamp_req'])
+                    else:
+                        # check if there is already two lists inside, if it is the case, take the longest list and remove the other one
+                        # if there is only one list, just append the new list
+                        # in any case we append the new list
+                        if len(frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']]) == 2:
+                            if len(frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']][0]) > len(frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']][1]):
+                                frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']].pop()
+                            else:
+                                frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']].pop(0)
+                        frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']].append([data['timestamp_req']])
+            else:
+                frequency_of_repeated_requests_in_a_short_time_frame[host][data['domain']] = [[data['timestamp_req']]]
+        else:
+            frequency_of_repeated_requests_in_a_short_time_frame[host] = {data['domain']: [[data['timestamp_req']]]}
+
+    # beautiful print
+    for key, value in frequency_of_repeated_requests_in_a_short_time_frame.items():
+        print(f"{key} : \n {value} \n \n")
     
-#     pass
-
-
-
-def frequency_of_repeated_requests_in_a_short_time_frame():
-    pass
-
 
 
 def get_number_of_dots_in_a_domain(aggregated_data):

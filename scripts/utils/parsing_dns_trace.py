@@ -272,28 +272,13 @@ if __name__ == "__main__":
         if trace != None:
             webclients.append(trace)
             
-    # features.get_timing_for_a_session(bots)
-    # features.get_number_of_unique_domains(webclients)
-    
-    # features.get_number_of_requests_in_a_session(webclients)
 
-    # features.get_number_of_dots_in_a_domain(bots)
-    # print("######## SWITCH FROM BOTS TO WEBCLIENTS ########")
-    # features.get_number_of_dots_in_a_domain(webclients)
+    print("##### Bots ######")
+    features.frequency_of_repeated_requests_in_a_short_time_frame(bots)
 
-    # features.get_all_requests_and_responses_for_an_host(bots)
+    print("##### Webclients ######")
+    features.frequency_of_repeated_requests_in_a_short_time_frame(webclients)
 
-    # features.get_timing_for_a_sessionV1(bots)
-
-    # features.get_timing_for_a_session(bots)
-
-    # features.get_time_between_requests(bots)
-    #features.get_time_between_requests(webclients)
-    # print(features.get_timing_for_a_session(bots))
-
-    features.get_average_of_query_length(webclients)
-
-    # features.get_time_between_requests(bots)
 
     # parsing_cleaning_testing_data(["../../testing_datasets/tcpdumps/eval1_tcpdump.txt", "../../testing_datasets/tcpdumps/eval2_tcpdump.txt"])
     

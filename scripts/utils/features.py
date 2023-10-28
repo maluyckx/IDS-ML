@@ -14,6 +14,13 @@ import itertools # for combinations
 
 # Personal dependencies
 import sys
+
+sys.path.append("./features/")
+import features_time as features_time
+import features_numbers as features_numbers
+import features_misc as features_misc
+
+
 sys.path.append("../../")
 import scripts.utils.constants as constants
 
@@ -54,7 +61,7 @@ def aggregate_data(data):
         timestamp_resp = '0'
         length_response = '0'
         responses = {}
-        counts = None
+        counts = (0,0,0)
     else:
         timestamp_resp = response['timestamp']
         length_response = response['length']
@@ -82,6 +89,18 @@ def aggregate_data(data):
         }
 
 
+def get_all_hosts(aggregated_data):
+    """
+    Getting all the hosts from the dataset
+    """
+
+    set_of_hosts = set()
+    for i in range(len(aggregated_data)):
+        set_of_hosts.add(aggregated_data[i]['host'])
+
+    return set_of_hosts
+
+
 
 def convert_to_dataframe(bots_data, webclients_data):
     bots = []
@@ -96,33 +115,127 @@ def convert_to_dataframe(bots_data, webclients_data):
         if trace != None:
             webclients.append(trace)
 
-
-    bots_df = pd.DataFrame(bots)
-    bots_df['label'] = 'bot'
-
-    webclients_df = pd.DataFrame(webclients)
-    webclients_df['label'] = 'human'
-
-    # Combine the two datasets
-    combined_df = pd.concat([bots_df, webclients_df], ignore_index=True)
-
-    # Convert categorical features to numerical
-    ## Request
-    combined_df['timestamp_req'] = combined_df['timestamp_req'].astype('category')
-    combined_df['host'] = combined_df['host'].astype('category')
-    combined_df['request_type'] = combined_df['request_type'].astype('category')
-    combined_df['domain'] = combined_df['domain'].astype('category')
-    combined_df['length_request'] = combined_df['length_request'].astype('int64')
+    all_bot_hosts = get_all_hosts(bots)
+    all_webclients_hosts = get_all_hosts(webclients) 
     
-    ## Request and Response
-    # combined_df['query_id'] = combined_df['query_id'].astype('int64')
     
-    ## Response
-    combined_df['length_response'] = combined_df['length_response'].astype('int64')
-    combined_df['responses'] = combined_df['responses'].astype('category')
-    combined_df['counts'] = combined_df['counts'].astype('category')
+    ## Features MISC
+    #
+    average_of_request_length_bots, average_of_response_length_bots = features_misc.get_average_of_query_length(bots)
+    average_of_request_length_webclients, average_of_response_length_webclients = features_misc.get_average_of_query_length(webclients)
+    #
+    type_of_requests_queried_by_hosts_bots = features_misc.get_type_of_requests_queried_by_hosts(bots)
+    type_of_requests_queried_by_hosts_webclients = features_misc.get_type_of_requests_queried_by_hosts(webclients)
+    #
+    type_of_responses_received_by_hosts_bots = features_misc.get_type_of_responses_received_by_hosts(bots)
+    type_of_responses_received_by_hosts_webclients = features_misc.get_type_of_responses_received_by_hosts(webclients)
+    #
+    
+    ## Features TIME
+    get_all_timing_for_each_bots = features_time.get_timing_for_a_session(bots)
+    get_all_timing_for_each_webclients = features_time.get_timing_for_a_session(webclients)
+    #
+    get_time_between_requests_bots = features_time.get_time_between_requests(bots)
+    get_time_between_requests_webclients = features_time.get_time_between_requests(webclients)
+    #
+    frequency_of_repeated_requests_in_a_short_time_frame_bots = features_time.frequency_of_repeated_requests_in_a_short_time_frame(bots)
+    frequency_of_repeated_requests_in_a_short_time_frame_webclients = features_time.frequency_of_repeated_requests_in_a_short_time_frame(webclients)
+    #
 
-    return combined_df
+    ## Features NUMBERS
+    number_of_dots_in_a_domain_bots = features_numbers.get_number_of_dots_in_a_domain(bots)
+    number_of_dots_in_a_domain_webclients = features_numbers.get_number_of_dots_in_a_domain(webclients)
+    #
+    number_of_requests_in_a_session_bots = features_numbers.get_number_of_requests_in_a_session(bots)
+    number_of_requests_in_a_session_webclients = features_numbers.get_number_of_requests_in_a_session(webclients)
+    #
+    number_of_unique_domains_bots = features_numbers.get_number_of_unique_domains(bots)
+    number_of_unique_domains_webclients = features_numbers.get_number_of_unique_domains(webclients)
+    #
+    average_counts_bots = features_numbers.get_average_counts(bots)
+    average_counts_webclients = features_numbers.get_average_counts(webclients)
+    #
+
+    bots_features = {}
+    webclients_features = {}
+    
+    for host in all_bot_hosts:
+        bots_features[host] = {}
+        ## Features MISC
+        bots_features[host]['average_of_request_length'] = average_of_request_length_bots[host]
+        bots_features[host]['average_of_response_length'] = average_of_response_length_bots[host]
+        bots_features[host]['type_of_requests_queried_by_hosts'] = type_of_requests_queried_by_hosts_bots[host]
+        bots_features[host]['type_of_responses_received_by_hosts'] = type_of_responses_received_by_hosts_bots[host]
+        
+        ## Features TIME 
+        bots_features[host]['average_time_for_a_session'] = get_all_timing_for_each_bots[host]
+        bots_features[host]['time_between_requests'] = get_time_between_requests_bots[host]
+        bots_features[host]['frequency_of_repeated_requests_in_a_short_time_frame'] = frequency_of_repeated_requests_in_a_short_time_frame_bots[host]
+        
+        ## Features NUMBERS
+        bots_features[host]['number_of_dots_in_a_domain'] = number_of_dots_in_a_domain_bots[host]
+        bots_features[host]['number_of_requests_in_a_session'] = number_of_requests_in_a_session_bots[host]
+        bots_features[host]['number_of_unique_domains'] = number_of_unique_domains_bots[host]
+        bots_features[host]['average_counts'] = average_counts_bots[host]
+
+
+    print("Hello world")
+    #####################################
+    # ## Features MISC
+    # "average_of_request_length",
+    # "average_of_response_length",
+    # "type_of_requests_queried_by_hosts",
+    # "type_of_responses_received_by_hosts",
+    
+    # ## Features TIME 
+    # "average_time_for_a_session",
+    # "time_between_requests",
+    # "frequency_of_repeated_requests_in_a_short_time_frame",
+    
+    # ## Features NUMBERS
+    # "number_of_dots_in_a_domain",
+    # "number_of_requests_in_a_session",
+    # "number_of_unique_domains"
+    # "average_counts"
+    # #####################################
+
+    
+    
+    
+    
+    
+    # bots_df = pd.DataFrame(bots)
+    # bots_df['label'] = 'bot'
+
+    # webclients_df = pd.DataFrame(webclients)
+    # webclients_df['label'] = 'human'
+
+
+
+    
+
+    # # --------------
+
+    # # Combine the two datasets
+    # combined_df = pd.concat([bots_df, webclients_df], ignore_index=True)
+
+    # # Convert categorical features to numerical
+    # ## Request
+    # combined_df['timestamp_req'] = combined_df['timestamp_req'].astype('category')
+    # combined_df['host'] = combined_df['host'].astype('category')
+    # combined_df['request_type'] = combined_df['request_type'].astype('category')
+    # combined_df['domain'] = combined_df['domain'].astype('category')
+    # combined_df['length_request'] = combined_df['length_request'].astype('int64')
+    
+    # ## Request and Response
+    # # combined_df['query_id'] = combined_df['query_id'].astype('int64')
+    
+    # ## Response
+    # combined_df['length_response'] = combined_df['length_response'].astype('int64')
+    # combined_df['responses'] = combined_df['responses'].astype('category')
+    # combined_df['counts'] = combined_df['counts'].astype('category')
+
+    # return combined_df
 
 
 def encoding_features(combined_df):

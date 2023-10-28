@@ -22,14 +22,16 @@ def get_number_of_dots_in_a_domain(aggregated_data):
         else:
             number_of_dots_domains[host] = [data['domain'].count(".")]
     
-    # beautiful print
-    for key, value in number_of_dots_domains.items():
-        print(f"{key} : \n {value} \n \n")
+    # # beautiful print
+    # for key, value in number_of_dots_domains.items():
+    #     print(f"{key} : \n {value} \n \n")
 
 
     # TODO when we decided the model, we either need to choose one of the 2 options
     # 1. on averaged sur la moyenne du nombres de dots et on passe ça en paramètre pour l'host
     # 2. on donne complétement les données brutes PAR aggrégation de request/response
+
+    return number_of_dots_domains
 
 def get_number_of_requests_in_a_session(aggregated_data): 
     """ 
@@ -44,7 +46,9 @@ def get_number_of_requests_in_a_session(aggregated_data):
         else:
             get_number_of_requests[host] = 1
     
-    print(get_number_of_requests)
+    # print(get_number_of_requests)
+
+    return get_number_of_requests
     
 
 def get_number_of_unique_domains(aggregated_data): # and we should also get the ratio of those domains
@@ -60,10 +64,31 @@ def get_number_of_unique_domains(aggregated_data): # and we should also get the
         else:
             number_of_unique_domains[host] = {data['domain']}
 
-    # beautiful print
-    for key, value in number_of_unique_domains.items():
-        print(f"{key} : \n {value} \n \n")
+    # # beautiful print
+    # for key, value in number_of_unique_domains.items():
+    #     print(f"{key} : \n {value} \n \n")
 
     number_of_unique_domains = {key: len(value) for key, value in number_of_unique_domains.items()}  
         
-    print(number_of_unique_domains)
+    # print(number_of_unique_domains)
+
+    return number_of_unique_domains
+    
+    
+def get_average_counts(aggregated_data):
+    """
+    Getting the average of counts for each host
+    
+    """
+    average_counts = {}
+    for data in aggregated_data:
+        host = data['host']
+        if host in average_counts:
+            average_counts[host].append(data['counts'])
+        else:
+            average_counts[host] = [data['counts']]      
+        
+    average_counts = {key: (sum([x[0] for x in value])/len(value)) for key, value in average_counts.items()}
+    # print(average_counts)
+    
+    return average_counts

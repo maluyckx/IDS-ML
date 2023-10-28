@@ -14,6 +14,11 @@ import colors
 import constants
 import features
 
+# Personal dependencies
+import sys
+sys.path.append("./features/")
+import features_time as features_time
+import features_numbers as features_numbers
 
 ##### \ BEGINNING OF RAW FEATURES / ##### 
 
@@ -261,24 +266,27 @@ def parsing_cleaning_testing_data(path_to_test_tcpdump):
 if __name__ == "__main__":
     bots_data, webclients_data = parse_training_data("../../training_datasets/tcpdumps/bots_tcpdump.txt", "../../training_datasets/tcpdumps/webclients_tcpdump.txt")
 
-    bots = []
-    for key in bots_data.keys():
-        trace = features.aggregate_data(bots_data[key])
-        if trace != None:
-            bots.append(trace)
+    features.convert_to_dataframe(bots_data, webclients_data)
+    # bots = []
+    # for key in bots_data.keys():
+    #     trace = features.aggregate_data(bots_data[key])
+    #     if trace != None:
+    #         bots.append(trace)
             
-    webclients = []
-    for key in webclients_data.keys():
-        trace = features.aggregate_data(webclients_data[key])
-        if trace != None:
-            webclients.append(trace)
+    # webclients = []
+    # for key in webclients_data.keys():
+    #     trace = features.aggregate_data(webclients_data[key])
+    #     if trace != None:
+    #         webclients.append(trace)
             
 
-    print("##### Bots ######")
-    features.frequency_of_repeated_requests_in_a_short_time_frame(bots)
+    # print("##### Bots ######")
+    # print(features.get_all_hosts(bots))
+    
+    # print("##### Webclients ######")
+    # print(features.get_all_hosts(webclients))
+    
 
-    print("##### Webclients ######")
-    features.frequency_of_repeated_requests_in_a_short_time_frame(webclients)
 
 
     # parsing_cleaning_testing_data(["../../testing_datasets/tcpdumps/eval1_tcpdump.txt", "../../testing_datasets/tcpdumps/eval2_tcpdump.txt"])

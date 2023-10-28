@@ -15,7 +15,7 @@ import sys
 sys.path.append("../")
 import parsing_dns_trace as parser
 
-def get_average_of_timing_for_a_session(list_of_timing_for_a_session):
+def get_average_of_timing_for_a_session(list_of_timing_for_a_session): # NOT A FEATURE, JUST FOR THE REPORT
     list_of_average_of_timing_for_a_session = []
     for key, value in list_of_timing_for_a_session.items():
         difference = value[1] - value[0]
@@ -24,7 +24,7 @@ def get_average_of_timing_for_a_session(list_of_timing_for_a_session):
         #print(f"Average of timing for {key} : {difference_in_seconds}")
         list_of_average_of_timing_for_a_session.append(difference_in_seconds)
         
-    print(mean(list_of_average_of_timing_for_a_session))
+    # print(mean(list_of_average_of_timing_for_a_session))
     
     
     
@@ -71,9 +71,7 @@ def get_timing_for_a_session(aggregated_data):
         list_of_timing_for_a_session[key] = [value[0][0], value[-1][1]] # value[0][0] : first timestamp_request of the fist timestamp_tuple and value[-1][1] : last timestamp_response of the last timestamp_tuple
 
     # get_average_of_timing_for_a_session(list_of_timing_for_a_session) # For the report
-    
-    print(list_of_timing_for_a_session)
-    
+        
     return list_of_timing_for_a_session
 
 
@@ -96,7 +94,8 @@ def get_time_between_requests(aggregated_data):
             difference_in_seconds = difference.total_seconds()
             time_between_requests[key].append(difference_in_seconds)
     
-    print(time_between_requests)
+    # print(time_between_requests)
+    return time_between_requests
 
 
 
@@ -131,14 +130,8 @@ def frequency_of_repeated_requests_in_a_short_time_frame(aggregated_data):
         else:
             frequency_of_repeated_requests_in_a_short_time_frame[host] = {data['domain']: [[data['timestamp_req']]]}
 
-    # beautiful print
-    for key, value in frequency_of_repeated_requests_in_a_short_time_frame.items():
-        print(f"{key} : \n {value} \n \n")
+    # # beautiful print
+    # for key, value in frequency_of_repeated_requests_in_a_short_time_frame.items():
+    #     print(f"{key} : \n {value} \n \n")
 
-
-
-
-
-
-
-
+    return frequency_of_repeated_requests_in_a_short_time_frame

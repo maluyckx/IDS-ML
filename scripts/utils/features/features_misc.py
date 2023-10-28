@@ -26,9 +26,9 @@ def get_average_of_query_length(aggregated_data):
     average_of_request_length = {key: mean([int(x[0]) for x in value]) for key, value in query_length_by_host.items()}
     average_of_response_length = {key: mean([int(x[1]) for x in value]) for key, value in query_length_by_host.items()}
 
-    print("Average of request length : ", average_of_request_length) 
-    print()
-    print("Average of response length : ", average_of_response_length)
+    # print("Average of request length : ", average_of_request_length) 
+    # print()
+    # print("Average of response length : ", average_of_response_length)
     
     ## Bots
     # Requests : =~ 30
@@ -56,9 +56,9 @@ def get_type_of_requests_queried_by_hosts(aggregated_data):
         else:
             type_of_requests_queried_by_hosts[host] = [data['request_type']]
     
-    # beautiful print
-    for key, value in type_of_requests_queried_by_hosts.items():
-        print(f"{key} : \n {value} \n \n")
+    # # beautiful print
+    # for key, value in type_of_requests_queried_by_hosts.items():
+    #     print(f"{key} : \n {value} \n \n")
     
     return type_of_requests_queried_by_hosts
 
@@ -75,15 +75,15 @@ def get_type_of_responses_received_by_hosts(aggregated_data):
         else:
             type_of_responses_received_by_hosts[host] = list(data['responses'].keys())
     
-    # beautiful print
-    for key, value in type_of_responses_received_by_hosts.items():
-        print(f"{key} : \n {value} \n \n")
+    # # beautiful print
+    # for key, value in type_of_responses_received_by_hosts.items():
+    #     print(f"{key} : \n {value} \n \n")
     
     return type_of_responses_received_by_hosts
 
 
 
-def get_all_requests_and_responses_for_an_host(aggregated_data): # WILL NOT BE USED DIRECTLY HAS A FEATURE
+def get_all_requests_and_responses_for_an_host(aggregated_data): # WILL NOT BE USED DIRECTLY AS A FEATURE
     """
     Getting all the aggregated data from the host
     
@@ -102,8 +102,9 @@ def get_all_requests_and_responses_for_an_host(aggregated_data): # WILL NOT BE U
         else:
             requests_and_responses_per_host[host] = {data['query_id']: data}
     
-    
-    # beautiful print
-    for key, value in requests_and_responses_per_host.items():
-        print(f"{key} : \n {value} \n \n")
+    # # beautiful print
+    # for key, value in requests_and_responses_per_host.items():
+    #     print(f"{key} : \n {value} \n \n")
+        
+    return requests_and_responses_per_host
     

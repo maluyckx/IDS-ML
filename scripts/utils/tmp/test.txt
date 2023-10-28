@@ -1,7 +1,7 @@
-####
-Parsing the DNS line datasets...
+[92m####
+Parsing the DNS line datasets...[0m
 ######SWITCH BOT FROM HUMAN######
-Parsing completed!
+[92mParsing completed!
 ####
-
+[0m
 Hello world

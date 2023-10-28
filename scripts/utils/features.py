@@ -178,8 +178,29 @@ def convert_to_dataframe(bots_data, webclients_data):
         bots_features[host]['number_of_unique_domains'] = number_of_unique_domains_bots[host]
         bots_features[host]['average_counts'] = average_counts_bots[host]
 
+    for host in all_webclients_hosts:
+        webclients_features[host] = {}
+        ## Features MISC
+        webclients_features[host]['average_of_request_length'] = average_of_request_length_webclients[host]
+        webclients_features[host]['average_of_response_length'] = average_of_response_length_webclients[host]
+        webclients_features[host]['type_of_requests_queried_by_hosts'] = type_of_requests_queried_by_hosts_webclients[host]
+        webclients_features[host]['type_of_responses_received_by_hosts'] = type_of_responses_received_by_hosts_webclients[host]
+        
+        ## Features TIME 
+        webclients_features[host]['average_time_for_a_session'] = get_all_timing_for_each_webclients[host]
+        webclients_features[host]['time_between_requests'] = get_time_between_requests_webclients[host]
+        webclients_features[host]['frequency_of_repeated_requests_in_a_short_time_frame'] = frequency_of_repeated_requests_in_a_short_time_frame_webclients[host]
+        
+        ## Features NUMBERS
+        webclients_features[host]['number_of_dots_in_a_domain'] = number_of_dots_in_a_domain_webclients[host]
+        webclients_features[host]['number_of_requests_in_a_session'] = number_of_requests_in_a_session_webclients[host]
+        webclients_features[host]['number_of_unique_domains'] = number_of_unique_domains_webclients[host]
+        webclients_features[host]['average_counts'] = average_counts_webclients[host]   
+        
+    print(bots_features)
+    print(webclients_features)
 
-    print("Hello world")
+
     #####################################
     # ## Features MISC
     # "average_of_request_length",

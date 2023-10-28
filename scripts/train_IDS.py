@@ -11,6 +11,12 @@ import argparse
 import pathlib
 import sys 
 
+
+#### Importing the utils
+import utils.parsing_dns_trace as parser
+import utils.constants as constants
+import utils.features as features
+
 #### Importing the algorithms
 sys.path.append("algorithms/decision_tree/")
 # sys.path.append("algorithms/random_forest/")
@@ -44,8 +50,22 @@ def train_neural_network(webclients, bots, output):
     pass
 
 
+def preprocessing(bots, webclients):
+    ### Parsing the datasets
+    bots_data, webclients_data = parser.parse_training_data(bots, webclients)
+    
+    combined_df = features.convert_to_dataframe(bots_data, webclients_data)
+
+    combined_df = features.encoding_features(combined_df)
+
+    X_train = combined_df[constants.LIST_OF_FEATURES]
+    y_train = combined_df['label']
 
 def main_train(webclients, bots, output):
+    ## Preprocessing before training : parsing and encoding the features
+    preprocessing(bots, webclients)
+    
+    
     ### Decision Tree
     train_decision_tree(webclients, bots, output)
     

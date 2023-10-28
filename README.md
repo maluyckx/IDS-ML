@@ -78,3 +78,4 @@ python3 main.py \
 - **Green** : preprocessing phase
 - **Blue** : training phase
 - **Red** : evaluation phase
+- **Yellow** : TODO

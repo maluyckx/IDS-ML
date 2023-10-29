@@ -19,12 +19,10 @@ def diagram_logistic_regression(clf):
 def diagram_knn(clf, x_train, y_train):
     # Because we have more features than 2, we need to reduce the dimensionality of our data to be able to visualize it
     tsne = TSNE(n_components=2, random_state=0)
-    print("la")
-    print("ca met 15 ans ici, je sais pas pourquoi")
     X_tsne = tsne.fit_transform(x_train)
-    print("ici")
+
     clf.fit(x_train, y_train) # we need to train our model with the original space, the high-dimensional one, and not the data given by t-SNE because this method just helps us to visualize data by reducing it, it is not a preprocessing step. If we train with these data using t-SNE, our model will be biased
-    print("ici")
+
 
 
     xx, yy = np.meshgrid(np.linspace(X_tsne[:, 0].min() - 1, X_tsne[:, 0].max() + 1, 100),

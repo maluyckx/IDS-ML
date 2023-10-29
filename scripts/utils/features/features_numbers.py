@@ -6,8 +6,10 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
+from statistics import mean 
 
-def get_number_of_dots_in_a_domain(aggregated_data):
+
+def get_average_number_of_dots_in_a_domain(aggregated_data):
     """
     This function is used to get the number of dots in the domains queried by each host.
     
@@ -28,8 +30,11 @@ def get_number_of_dots_in_a_domain(aggregated_data):
 
 
     # TODO when we decided the model, we either need to choose one of the 2 options
-    # 1. on averaged sur la moyenne du nombres de dots et on passe ça en paramètre pour l'host
+    # 1. on averaged sur la moyenne du nombres de dots et on passe ça en paramètre pour l'host => we choose this one
     # 2. on donne complétement les données brutes PAR aggrégation de request/response
+
+    for key, value in number_of_dots_domains.items():
+        number_of_dots_domains[key] = mean(value)
 
     return number_of_dots_domains
 

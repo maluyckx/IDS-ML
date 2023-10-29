@@ -10,15 +10,19 @@ Authors :
 import re
 from datetime import timedelta
 
-import colors
-import constants
-import features
+
 
 # Personal dependencies
 import sys
-sys.path.append("./features/")
+sys.path.append("./utils/features/")
 import features_time as features_time
 import features_numbers as features_numbers
+import features_misc as features_misc
+
+sys.path.append("../utils/")
+import colors
+import constants
+import features
 
 ##### \ BEGINNING OF RAW FEATURES / ##### 
 
@@ -266,7 +270,8 @@ def parsing_cleaning_testing_data(path_to_test_tcpdump):
 if __name__ == "__main__":
     bots_data, webclients_data = parse_training_data("../../training_datasets/tcpdumps/bots_tcpdump.txt", "../../training_datasets/tcpdumps/webclients_tcpdump.txt")
 
-    features.convert_to_dataframe(bots_data, webclients_data)
+    combined_df = features.convert_to_dataframe(bots_data, webclients_data)
+    features.encoding_features(combined_df)
     # bots = []
     # for key in bots_data.keys():
     #     trace = features.aggregate_data(bots_data[key])

@@ -68,15 +68,16 @@ def get_timing_for_a_session(aggregated_data):
     
     list_of_timing_for_a_session = {}
     for key, value in timing_for_a_session.items(): # key = host and value = list of timestamps (beginning with request and ending with response)
-        list_of_timing_for_a_session[key] = [value[0][0], value[-1][1]] # value[0][0] : first timestamp_request of the fist timestamp_tuple and value[-1][1] : last timestamp_response of the last timestamp_tuple
+        list_of_timing_for_a_session[key] = (abs(value[-1][1] - value[0][0])).total_seconds() # value[0][0] : first timestamp_request of the fist timestamp_tuple and value[-1][1] : last timestamp_response of the last timestamp_tuple
 
     # get_average_of_timing_for_a_session(list_of_timing_for_a_session) # For the report
-        
+    # print(list_of_timing_for_a_session)
+
     return list_of_timing_for_a_session
 
 
 
-def get_time_between_requests(aggregated_data):
+def get_average_time_between_requests(aggregated_data):
     """
     Prendre la difference des timestamps entre chaque requests/responses d'un host -> donc agréger les données en fonction des hosts et non en fonction du request ID seulement.
     
@@ -86,16 +87,19 @@ def get_time_between_requests(aggregated_data):
     timing_for_a_session = get_timing_of_all_queries(aggregated_data)  
 
     # for each adjacent timestamp, compute the difference between them 
-    time_between_requests = {}
+    average_time_between_requests = {}
     for key, value in timing_for_a_session.items():
-        time_between_requests[key] = []
+        average_time_between_requests[key] = []
         for i in range(len(value)-1):
             difference = value[i+1][0] - value[i][0]
             difference_in_seconds = difference.total_seconds()
-            time_between_requests[key].append(difference_in_seconds)
+            average_time_between_requests[key].append(difference_in_seconds)
     
-    # print(time_between_requests)
-    return time_between_requests
+    # Calculate the mean of the list of differences for each host
+    for key, value in average_time_between_requests.items():
+        average_time_between_requests[key] = mean(value)
+
+    return average_time_between_requests
 
 
 
@@ -133,5 +137,21 @@ def frequency_of_repeated_requests_in_a_short_time_frame(aggregated_data):
     # # beautiful print
     # for key, value in frequency_of_repeated_requests_in_a_short_time_frame.items():
     #     print(f"{key} : \n {value} \n \n")
+
+    # [[t1,t2,t3], [t3]]
+
+    # take the len of the longest timestamp list for each domain of each host (key)
+    # for each host, we take the mean of the longest timestamp list for each domain
+    for key, value in frequency_of_repeated_requests_in_a_short_time_frame.items():
+        for domain in value:
+            if len(value[domain]) == 1:
+                value[domain] = 0
+            else:
+                if len(value[domain][0]) > len(value[domain][1]):
+                    value[domain] = len(value[domain][0])
+                else:
+                    value[domain] = len(value[domain][1])
+
+        frequency_of_repeated_requests_in_a_short_time_frame[key] = mean(value.values())
 
     return frequency_of_repeated_requests_in_a_short_time_frame

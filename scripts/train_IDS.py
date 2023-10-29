@@ -64,6 +64,8 @@ def preprocessing(bots, webclients):
 
     X_train = combined_df[constants.LIST_OF_FEATURES]
     y_train = combined_df['label']
+    
+    
 
 def main_train(webclients, bots, output):
     ## Preprocessing before training : parsing and encoding the features

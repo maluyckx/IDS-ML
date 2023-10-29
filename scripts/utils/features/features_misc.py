@@ -52,14 +52,14 @@ def get_type_of_requests_queried_by_hosts(aggregated_data):
     for data in aggregated_data:
         host = data['host']
         if host in type_of_requests_queried_by_hosts:
-            type_of_requests_queried_by_hosts[host].append(data['request_type'])
+            type_of_requests_queried_by_hosts[host].update(set(data['request_type']))
         else:
-            type_of_requests_queried_by_hosts[host] = [data['request_type']]
+            type_of_requests_queried_by_hosts[host] = set(data['request_type'])
     
     # # beautiful print
     # for key, value in type_of_requests_queried_by_hosts.items():
     #     print(f"{key} : \n {value} \n \n")
-    
+
     return type_of_requests_queried_by_hosts
 
 
@@ -71,14 +71,14 @@ def get_type_of_responses_received_by_hosts(aggregated_data):
     for data in aggregated_data:
         host = data['host']
         if host in type_of_responses_received_by_hosts:
-            type_of_responses_received_by_hosts[host].extend(list(data['responses'].keys()))
+            type_of_responses_received_by_hosts[host].update(set(data['responses'].keys()))
         else:
-            type_of_responses_received_by_hosts[host] = list(data['responses'].keys())
+            type_of_responses_received_by_hosts[host] = set(data['responses'].keys())
     
-    # # beautiful print
+    # beautiful print
     # for key, value in type_of_responses_received_by_hosts.items():
     #     print(f"{key} : \n {value} \n \n")
-    
+
     return type_of_responses_received_by_hosts
 
 

@@ -17,12 +17,12 @@ ALGORITHMS_NAMES = {
 
 
 ## Path to training datasets for algos
-PATH_TO_BOTS_TCPDUMP = "../../training_datasets/tcpdumps/bots_tcpdump.txt"
-PATH_TO_WEBCLIENTS_TCPDUMP = "../../training_datasets/tcpdumps/webclients_tcpdump.txt"
+PATH_TO_BOTS_TCPDUMP = "../training_datasets/tcpdumps/bots_tcpdump.txt"
+PATH_TO_WEBCLIENTS_TCPDUMP = "../training_datasets/tcpdumps/webclients_tcpdump.txt"
 
 ## Path to evaluation datasets for algos
-PATH_TO_EVAL_TCPDUMP1 = "../../evaluation_datasets/tcpdumps/eval1_tcpdump.txt"
-PATH_TO_EVAL_TCPDUMP2 = "../../evaluation_datasets/tcpdumps/eval2_tcpdump.txt"
+PATH_TO_EVAL_TCPDUMP1 = "../evaluation_datasets/tcpdumps/eval1_tcpdump.txt"
+PATH_TO_EVAL_TCPDUMP2 = "../evaluation_datasets/tcpdumps/eval2_tcpdump.txt"
 
 ## List of features
 # LIST_OF_FEATURES = [
@@ -41,22 +41,20 @@ LIST_OF_FEATURES = [
                     ## Features MISC
                     "average_of_request_length",
                     "average_of_response_length",
-                    "type_of_requests_queried_by_hosts",
-                    "type_of_responses_received_by_hosts",
-                    "requests_and_responses_per_host",
+                    #"type_of_requests_queried_by_hosts",
+                    #"type_of_responses_received_by_hosts",
                     
                     ## Features TIME 
                     "average_time_for_a_session",
-                    "time_between_requests",
+                    "average_time_between_requests",
                     "frequency_of_repeated_requests_in_a_short_time_frame",
                     
                     ## Features NUMBERS
-                    "number_of_dots_in_a_domain",
+                    "average_number_of_dots_in_a_domain",
                     "number_of_requests_in_a_session",
-                    "number_of_unique_domains"
+                    "number_of_unique_domains",
                     "average_counts",
                     ]
-
 
 NOT_A_RESSOURCE_RECORD = "not_a_ressource_record_constant"
 AUTHORITATIVE_SERVER_RESPONSE = "authoritative_server_response_constant"

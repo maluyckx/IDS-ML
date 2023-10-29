@@ -101,6 +101,108 @@ def get_all_hosts(aggregated_data):
     return set_of_hosts
 
 
+def generate_features(all_hosts, data):
+    """
+    TODO explain function
+    
+    This function will be called with the bots and webclients data.s
+    
+    """
+    ## Features MISC
+    average_of_request_length, average_of_response_length = features_misc.get_average_of_query_length(data)
+    type_of_requests_queried_by_hosts = features_misc.get_type_of_requests_queried_by_hosts(data)
+    type_of_responses_received_by_hosts = features_misc.get_type_of_responses_received_by_hosts(data)
+
+    ## Features TIME
+    get_all_timing_for_each = features_time.get_timing_for_a_session(data)
+    get_average_time_between_requests = features_time.get_average_time_between_requests(data)
+    frequency_of_repeated_requests_in_a_short_time_frame = features_time.frequency_of_repeated_requests_in_a_short_time_frame(data)
+
+    ## Features NUMBERS
+    average_number_of_dots_in_a_domain = features_numbers.get_average_number_of_dots_in_a_domain(data)
+    number_of_requests_in_a_session = features_numbers.get_number_of_requests_in_a_session(data)
+    number_of_unique_domains = features_numbers.get_number_of_unique_domains(data)
+    average_counts = features_numbers.get_average_counts(data)
+
+    features = {}
+
+    for host in all_hosts:
+        features[host] = {}
+        ## Features MISC
+        features[host]['average_of_request_length'] = average_of_request_length[host]
+        features[host]['average_of_response_length'] = average_of_response_length[host]
+        features[host]['type_of_requests_queried_by_hosts'] = list(type_of_requests_queried_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
+        features[host]['type_of_responses_received_by_hosts'] = list(type_of_responses_received_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
+        
+        ## Features TIME 
+        features[host]['average_time_for_a_session'] = get_all_timing_for_each[host]
+        features[host]['average_time_between_requests'] = get_average_time_between_requests[host]
+        features[host]['frequency_of_repeated_requests_in_a_short_time_frame'] = frequency_of_repeated_requests_in_a_short_time_frame[host]
+        
+        ## Features NUMBERS
+        features[host]['average_number_of_dots_in_a_domain'] = average_number_of_dots_in_a_domain[host]
+        features[host]['number_of_requests_in_a_session'] = number_of_requests_in_a_session[host]
+        features[host]['number_of_unique_domains'] = number_of_unique_domains[host]
+        features[host]['average_counts'] = average_counts[host]
+
+    return features
+
+def removing_hosts_from_features(features):
+    """
+    Removing the hosts (that are the keys of the feature dictionary) to have a list of features that are not dependent on the host (since the machine learning algorithm should not depend on the host)
+    
+    """
+    return list(features.values())
+
+
+def convert_features_to_numerical(combined_df):
+    """
+    {
+    'average_of_request_length': 28.3, 
+    
+    'average_of_response_length': 55.5, 
+    
+    'type_of_requests_queried_by_hosts': ['A'], 
+    
+    'type_of_responses_received_by_hosts': ['A'],
+    
+    'average_time_for_a_session': datetime.timedelta(seconds=940, microseconds=805515), 
+    
+    'average_time_between_requests': 49.515360578947366, 
+    
+    'frequency_of_repeated_requests_in_a_short_time_frame': 0, 
+    
+    'average_number_of_dots_in_a_domain': 1.15,
+    
+    'number_of_requests_in_a_session': 20,
+    
+    'number_of_unique_domains': 20, 
+    
+    'average_counts': 1.7
+    }
+    """
+    
+    ## Features MISC
+    combined_df['average_of_request_length'] = combined_df['average_of_request_length'].astype('float64')
+    combined_df['average_of_response_length'] = combined_df['average_of_response_length'].astype('float64')
+    combined_df['type_of_requests_queried_by_hosts'] = combined_df['type_of_requests_queried_by_hosts']
+    combined_df['type_of_responses_received_by_hosts'] = combined_df['type_of_responses_received_by_hosts']
+    
+    ## Features TIME
+    combined_df['average_time_for_a_session'] = combined_df['average_time_for_a_session'].astype('float64')
+    combined_df['average_time_between_requests'] = combined_df['average_time_between_requests'].astype('float64')
+    combined_df['frequency_of_repeated_requests_in_a_short_time_frame'] = combined_df['frequency_of_repeated_requests_in_a_short_time_frame'].astype('float64')
+    
+    ## Features NUMBERS
+    combined_df['average_number_of_dots_in_a_domain'] = combined_df['average_number_of_dots_in_a_domain'].astype('float64')
+    combined_df['number_of_requests_in_a_session'] = combined_df['number_of_requests_in_a_session'].astype('float64')
+    combined_df['number_of_unique_domains'] = combined_df['number_of_unique_domains'].astype('float64')
+    combined_df['average_counts'] = combined_df['average_counts'].astype('float64')
+    
+    return combined_df
+    
+
+
 
 def convert_to_dataframe(bots_data, webclients_data):
     bots = []
@@ -117,184 +219,83 @@ def convert_to_dataframe(bots_data, webclients_data):
 
     all_bot_hosts = get_all_hosts(bots)
     all_webclients_hosts = get_all_hosts(webclients) 
-    
-    
-    ## Features MISC
-    #
-    average_of_request_length_bots, average_of_response_length_bots = features_misc.get_average_of_query_length(bots)
-    average_of_request_length_webclients, average_of_response_length_webclients = features_misc.get_average_of_query_length(webclients)
-    #
-    type_of_requests_queried_by_hosts_bots = features_misc.get_type_of_requests_queried_by_hosts(bots)
-    type_of_requests_queried_by_hosts_webclients = features_misc.get_type_of_requests_queried_by_hosts(webclients)
-    #
-    type_of_responses_received_by_hosts_bots = features_misc.get_type_of_responses_received_by_hosts(bots)
-    type_of_responses_received_by_hosts_webclients = features_misc.get_type_of_responses_received_by_hosts(webclients)
-    #
-    
-    ## Features TIME
-    get_all_timing_for_each_bots = features_time.get_timing_for_a_session(bots)
-    get_all_timing_for_each_webclients = features_time.get_timing_for_a_session(webclients)
-    #
-    get_time_between_requests_bots = features_time.get_time_between_requests(bots)
-    get_time_between_requests_webclients = features_time.get_time_between_requests(webclients)
-    #
-    frequency_of_repeated_requests_in_a_short_time_frame_bots = features_time.frequency_of_repeated_requests_in_a_short_time_frame(bots)
-    frequency_of_repeated_requests_in_a_short_time_frame_webclients = features_time.frequency_of_repeated_requests_in_a_short_time_frame(webclients)
-    #
 
-    ## Features NUMBERS
-    number_of_dots_in_a_domain_bots = features_numbers.get_number_of_dots_in_a_domain(bots)
-    number_of_dots_in_a_domain_webclients = features_numbers.get_number_of_dots_in_a_domain(webclients)
-    #
-    number_of_requests_in_a_session_bots = features_numbers.get_number_of_requests_in_a_session(bots)
-    number_of_requests_in_a_session_webclients = features_numbers.get_number_of_requests_in_a_session(webclients)
-    #
-    number_of_unique_domains_bots = features_numbers.get_number_of_unique_domains(bots)
-    number_of_unique_domains_webclients = features_numbers.get_number_of_unique_domains(webclients)
-    #
-    average_counts_bots = features_numbers.get_average_counts(bots)
-    average_counts_webclients = features_numbers.get_average_counts(webclients)
-    #
-
-    bots_features = {}
-    webclients_features = {}
+    bots_features = generate_features(all_bot_hosts, bots)
+    webclients_features = generate_features(all_webclients_hosts, webclients)
     
-    for host in all_bot_hosts:
-        bots_features[host] = {}
-        ## Features MISC
-        bots_features[host]['average_of_request_length'] = average_of_request_length_bots[host]
-        bots_features[host]['average_of_response_length'] = average_of_response_length_bots[host]
-        bots_features[host]['type_of_requests_queried_by_hosts'] = type_of_requests_queried_by_hosts_bots[host]
-        bots_features[host]['type_of_responses_received_by_hosts'] = type_of_responses_received_by_hosts_bots[host]
-        
-        ## Features TIME 
-        bots_features[host]['average_time_for_a_session'] = get_all_timing_for_each_bots[host]
-        bots_features[host]['time_between_requests'] = get_time_between_requests_bots[host]
-        bots_features[host]['frequency_of_repeated_requests_in_a_short_time_frame'] = frequency_of_repeated_requests_in_a_short_time_frame_bots[host]
-        
-        ## Features NUMBERS
-        bots_features[host]['number_of_dots_in_a_domain'] = number_of_dots_in_a_domain_bots[host]
-        bots_features[host]['number_of_requests_in_a_session'] = number_of_requests_in_a_session_bots[host]
-        bots_features[host]['number_of_unique_domains'] = number_of_unique_domains_bots[host]
-        bots_features[host]['average_counts'] = average_counts_bots[host]
-
-    for host in all_webclients_hosts:
-        webclients_features[host] = {}
-        ## Features MISC
-        webclients_features[host]['average_of_request_length'] = average_of_request_length_webclients[host]
-        webclients_features[host]['average_of_response_length'] = average_of_response_length_webclients[host]
-        webclients_features[host]['type_of_requests_queried_by_hosts'] = type_of_requests_queried_by_hosts_webclients[host]
-        webclients_features[host]['type_of_responses_received_by_hosts'] = type_of_responses_received_by_hosts_webclients[host]
-        
-        ## Features TIME 
-        webclients_features[host]['average_time_for_a_session'] = get_all_timing_for_each_webclients[host]
-        webclients_features[host]['time_between_requests'] = get_time_between_requests_webclients[host]
-        webclients_features[host]['frequency_of_repeated_requests_in_a_short_time_frame'] = frequency_of_repeated_requests_in_a_short_time_frame_webclients[host]
-        
-        ## Features NUMBERS
-        webclients_features[host]['number_of_dots_in_a_domain'] = number_of_dots_in_a_domain_webclients[host]
-        webclients_features[host]['number_of_requests_in_a_session'] = number_of_requests_in_a_session_webclients[host]
-        webclients_features[host]['number_of_unique_domains'] = number_of_unique_domains_webclients[host]
-        webclients_features[host]['average_counts'] = average_counts_webclients[host]   
-        
-    print(bots_features)
-    print(webclients_features)
-
-
-    #####################################
-    # ## Features MISC
-    # "average_of_request_length",
-    # "average_of_response_length",
-    # "type_of_requests_queried_by_hosts",
-    # "type_of_responses_received_by_hosts",
+    bots_features = removing_hosts_from_features(bots_features)
+    webclients_features = removing_hosts_from_features(webclients_features)
     
-    # ## Features TIME 
-    # "average_time_for_a_session",
-    # "time_between_requests",
-    # "frequency_of_repeated_requests_in_a_short_time_frame",
+    # print(bots_features)
     
-    # ## Features NUMBERS
-    # "number_of_dots_in_a_domain",
-    # "number_of_requests_in_a_session",
-    # "number_of_unique_domains"
-    # "average_counts"
-    # #####################################
+    bots_features_df = pd.DataFrame(bots_features)
+    bots_features_df['label'] = 'bot'
 
+    webclients_features_df = pd.DataFrame(webclients_features)
+    webclients_features_df['label'] = 'human'
+
+    # Combine the two datasets
+    combined_df = pd.DataFrame(bots_features_df)
+    combined_df = combined_df.append(pd.DataFrame(webclients_features_df), ignore_index=True)
+    # shuffle the dataset
+    # combined_df = combined_df.sample(frac=1).reset_index(drop=True)
     
-    
-    
-    
-    
-    # bots_df = pd.DataFrame(bots)
-    # bots_df['label'] = 'bot'
-
-    # webclients_df = pd.DataFrame(webclients)
-    # webclients_df['label'] = 'human'
-
-
-
-    
-
-    # # --------------
-
     # # Combine the two datasets
     # combined_df = pd.concat([bots_df, webclients_df], ignore_index=True)
 
-    # # Convert categorical features to numerical
-    # ## Request
-    # combined_df['timestamp_req'] = combined_df['timestamp_req'].astype('category')
-    # combined_df['host'] = combined_df['host'].astype('category')
-    # combined_df['request_type'] = combined_df['request_type'].astype('category')
-    # combined_df['domain'] = combined_df['domain'].astype('category')
-    # combined_df['length_request'] = combined_df['length_request'].astype('int64')
-    
-    # ## Request and Response
-    # # combined_df['query_id'] = combined_df['query_id'].astype('int64')
-    
-    # ## Response
-    # combined_df['length_response'] = combined_df['length_response'].astype('int64')
-    # combined_df['responses'] = combined_df['responses'].astype('category')
-    # combined_df['counts'] = combined_df['counts'].astype('category')
+    combined_df = convert_features_to_numerical(combined_df)
 
-    # return combined_df
+    return combined_df
 
 
 def encoding_features(combined_df):
     """
-    Encode categorical features of the input DataFrame using LabelEncoder.
-    
+    Encode categorical features of the input DataFrame using LabelEncoder.    
     """
-    label_encoder_timestamp = LabelEncoder()
-    combined_df['timestamp_encoded'] = label_encoder_timestamp.fit_transform(
-        combined_df['timestamp_req'])
+
+    label_encoder_average_of_request_length = LabelEncoder()
+    combined_df['average_of_request_length_encoded'] = label_encoder_average_of_request_length.fit_transform(
+        combined_df['average_of_request_length'])
     
-    label_encoder_host = LabelEncoder()
-    combined_df['host_encoded'] = label_encoder_host.fit_transform(
-        combined_df['host'])
+    label_encoder_average_of_response_length = LabelEncoder()
+    combined_df['average_of_response_length_encoded'] = label_encoder_average_of_response_length.fit_transform(
+        combined_df['average_of_response_length'])
     
-    label_encoder_query_type = LabelEncoder()
-    combined_df['query_type_encoded'] = label_encoder_query_type.fit_transform(
-        combined_df['query_type'].astype(str))
-
-    label_encoder_domain = LabelEncoder()
-    combined_df['domain_encoded'] = label_encoder_domain.fit_transform(
-        combined_df['domain'])
-
-    label_encoder_length_request = LabelEncoder()
-    combined_df['length_request_encoded'] = label_encoder_length_request.fit_transform(
-        combined_df['length_request'])
-
-    label_encoder_length_response = LabelEncoder()
-    combined_df['length_response_encoded'] = label_encoder_length_response.fit_transform(
-        combined_df['length_response'])
-
-    label_encoder_responses = LabelEncoder()
-    combined_df['responses_encoded'] = label_encoder_responses.fit_transform(
-            combined_df['responses'])
-
-    label_encoder_counts = LabelEncoder()
-    combined_df['counts_encoded'] = label_encoder_counts.fit_transform(
-        combined_df['counts'])
+    label_encoder_type_of_requests_queried_by_hosts = LabelEncoder()
+    combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(
+        combined_df['type_of_requests_queried_by_hosts'].astype(str))
+    
+    label_encoder_type_of_responses_received_by_hosts = LabelEncoder()
+    combined_df['type_of_responses_received_by_hosts_encoded'] = label_encoder_type_of_responses_received_by_hosts.fit_transform(
+        combined_df['type_of_responses_received_by_hosts'].astype(str))
+    
+    label_encoder_average_time_for_a_session = LabelEncoder()
+    combined_df['average_time_for_a_session_encoded'] = label_encoder_average_time_for_a_session.fit_transform(
+        combined_df['average_time_for_a_session'])
+    
+    label_encoder_average_time_between_requests = LabelEncoder()
+    combined_df['average_time_between_requests_encoded'] = label_encoder_average_time_between_requests.fit_transform(
+        combined_df['average_time_between_requests'])
+    
+    label_encoder_frequency_of_repeated_requests_in_a_short_time_frame = LabelEncoder()
+    combined_df['frequency_of_repeated_requests_in_a_short_time_frame_encoded'] = label_encoder_frequency_of_repeated_requests_in_a_short_time_frame.fit_transform(
+        combined_df['frequency_of_repeated_requests_in_a_short_time_frame'])
+    
+    label_encoder_average_number_of_dots_in_a_domain = LabelEncoder()
+    combined_df['average_number_of_dots_in_a_domain_encoded'] = label_encoder_average_number_of_dots_in_a_domain.fit_transform(
+        combined_df['average_number_of_dots_in_a_domain'])
+    
+    label_encoder_number_of_requests_in_a_session = LabelEncoder()
+    combined_df['number_of_requests_in_a_session_encoded'] = label_encoder_number_of_requests_in_a_session.fit_transform(
+        combined_df['number_of_requests_in_a_session'])
+    
+    label_encoder_number_of_unique_domains = LabelEncoder()
+    combined_df['number_of_unique_domains_encoded'] = label_encoder_number_of_unique_domains.fit_transform(
+        combined_df['number_of_unique_domains'])
+    
+    label_encoder_average_counts = LabelEncoder()
+    combined_df['average_counts_encoded'] = label_encoder_average_counts.fit_transform(
+        combined_df['average_counts'])
 
     return combined_df
 

@@ -13,8 +13,49 @@ from sklearn.manifold import TSNE
 def diagram_decision_tree(clf):
     pass
 
-def diagram_logistic_regression(clf):
-    pass
+def diagram_logistic_regression(clf, X, y):
+    clf.fit(X, y)
+
+    # Get the regression coefficients and intercept
+    beta_0 = clf.intercept_[0]
+    beta_1 = clf.coef_[0][0]
+
+    # Create an array of values for your feature
+    x_values = np.linspace(X.min(), X.max(), 300)
+
+    # Compute the sigmoid function values for each point
+    y_values = 1 / (1 + np.exp(-(beta_0 + beta_1 * x_values)))
+
+    # Plot your data points
+    plt.scatter(X, y, color='blue', label='Data points')
+    # Plot the logistic regression curve
+    plt.plot(x_values, y_values, color='red', label='Logistic Regression Curve')
+    plt.legend()
+    plt.show()
+
+    # h = .02  # step size in the mesh
+    
+    # x_min, x_max = X.iloc[:, 0].min() - .5, X.iloc[:, 0].max() + .5
+    # y_min, y_max = X.iloc[:, 1].min() - .5, X.iloc[:, 1].max() + .5
+    # hello = np.arange(x_min, x_max, h)
+    # print(hello)
+    # otherhello = np.arange(y_min, y_max, h)
+    # print(otherhello.shape)
+    # xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h), sparse=True)
+
+    # Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    # Z = Z.reshape(xx.shape)
+
+    # plt.contourf(xx, yy, Z, alpha=0.8)
+    # plt.scatter(X[:, 0], X[:, 1], c=y, edgecolors='k', marker='o', linewidth=1)
+    # plt.xlabel('Feature 1')
+    # plt.ylabel('Feature 2')
+    # plt.title('Logistic Regression Decision Boundary')
+    # plt.show()
+
+    
+    
+    
 
 def diagram_knn(clf, x_train, y_train):
     # Because we have more features than 2, we need to reduce the dimensionality of our data to be able to visualize it

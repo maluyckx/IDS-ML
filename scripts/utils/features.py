@@ -131,8 +131,8 @@ def generate_features(all_hosts, data):
         ## Features MISC
         features[host]['average_of_request_length'] = average_of_request_length[host]
         features[host]['average_of_response_length'] = average_of_response_length[host]
-        features[host]['type_of_requests_queried_by_hosts'] = list(type_of_requests_queried_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
-        features[host]['type_of_responses_received_by_hosts'] = list(type_of_responses_received_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
+        features[host]['type_of_requests_queried_by_hosts'] = tuple(type_of_requests_queried_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
+        features[host]['type_of_responses_received_by_hosts'] = tuple(type_of_responses_received_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
         
         ## Features TIME 
         features[host]['average_time_for_a_session'] = get_all_timing_for_each[host]
@@ -204,7 +204,7 @@ def convert_features_to_numerical(combined_df):
 
 
 
-def convert_to_dataframe(bots_data, webclients_data):
+def convert_to_dataframe_training(bots_data, webclients_data):
     bots = []
     for key in bots_data.keys():
         trace = aggregate_data(bots_data[key])
@@ -263,11 +263,11 @@ def encoding_features(combined_df):
     
     label_encoder_type_of_requests_queried_by_hosts = LabelEncoder()
     combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(
-        combined_df['type_of_requests_queried_by_hosts'].astype(str))
+        combined_df['type_of_requests_queried_by_hosts'])
     
     label_encoder_type_of_responses_received_by_hosts = LabelEncoder()
     combined_df['type_of_responses_received_by_hosts_encoded'] = label_encoder_type_of_responses_received_by_hosts.fit_transform(
-        combined_df['type_of_responses_received_by_hosts'].astype(str))
+        combined_df['type_of_responses_received_by_hosts'])
     
     label_encoder_average_time_for_a_session = LabelEncoder()
     combined_df['average_time_for_a_session_encoded'] = label_encoder_average_time_for_a_session.fit_transform(
@@ -298,6 +298,69 @@ def encoding_features(combined_df):
         combined_df['average_counts'])
 
     return combined_df
+
+
+def read_botlist():
+    """
+    Read the botlist file and return a list of bots
+    """
+    bots = []
+    with open("../../evaluation_datasets/botlists/eval1_botlist.txt", "r") as botlist:
+        for line in botlist:
+            bots.append(line.strip())
+    return bots
+
+
+def convert_to_dataframe_testing(eval_data):
+    evale = []
+    for key in eval_data.keys():
+        trace = aggregate_data(eval_data[key])
+        if trace != None:
+            evale.append(trace)
+
+
+
+    botlist = read_botlist()
+
+    bots_features = generate_features(all_bot_hosts, bots)
+    webclients_features = generate_features(all_webclients_hosts, webclients)
+    
+    bots_features = removing_hosts_from_features(bots_features)
+    webclients_features = removing_hosts_from_features(webclients_features)
+    
+    # print(bots_features)
+    
+    bots_features_df = pd.DataFrame(bots_features)
+    bots_features_df['label'] = 'bot'
+
+    webclients_features_df = pd.DataFrame(webclients_features)
+    webclients_features_df['label'] = 'human'
+
+    # Combine the two datasets
+    combined_df = pd.DataFrame(bots_features_df)
+    combined_df = combined_df.append(pd.DataFrame(webclients_features_df), ignore_index=True)
+    # shuffle the dataset
+    # combined_df = combined_df.sample(frac=1).reset_index(drop=True)
+    
+    # # Combine the two datasets
+    # combined_df = pd.concat([bots_df, webclients_df], ignore_index=True)
+
+    combined_df = convert_features_to_numerical(combined_df)
+
+    return combined_df
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ############################################################################################################

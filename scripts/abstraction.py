@@ -11,12 +11,15 @@ Authors :
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
+from sklearn.model_selection import KFold
+from sklearn.model_selection import train_test_split
 import pickle
 
 # Graphics dependencies
 from sklearn.tree import export_graphviz
 import graphviz
+import numpy as np
 
 # # Personal dependencies
 import sys
@@ -32,7 +35,7 @@ def train_model(bots_data, webclients_data, algorithm):
     print(colors.Colors.CYAN +
           f"####\nTraining the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
 
-    combined_df = features.convert_to_dataframe(bots_data, webclients_data)
+    combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
 
     combined_df = features.encoding_features(combined_df)
 
@@ -75,6 +78,8 @@ def train_model(bots_data, webclients_data, algorithm):
             n_jobs=None,
             l1_ratio=None
         )
+        diagrams.diagram_logistic_regression(clf, X_train, y_train)
+        
     elif algorithm == "random_forest":
         pass
     elif algorithm == "neural_networks":
@@ -92,23 +97,47 @@ def train_model(bots_data, webclients_data, algorithm):
             n_jobs=None
         )
         
-        diagrams.diagram_knn(clf, X_train, y_train)
+        # diagrams.diagram_knn(clf, X_train, y_train)
     
     else:
         print("You fucked up with the algorithm")
         exit(0)
 
+
+    # for index, row in X_train.iterrows():
+    #     print(row)
+    # k-fold cross validation 
+    
+    # kf = KFold(n_splits=5, random_state=42, shuffle=True)  # 5-fold CV
+    # for train_index, test_index in kf.split(X):
+    #     X_train, X_test = X[train_index], X[test_index]
+    #     y_train, y_test = y[train_index], y[test_index]
+
+
+
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=0)
+
+
     clf.fit(X_train, y_train)
+
+    # y_pred = clf.predict(X_test)
+    # accuracy = accuracy_score(y_test, y_pred)
+    # print(f'Accuracy: {accuracy * 100:.2f}%')
+    
+    
 
     print(colors.Colors.CYAN + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier trained successfully!\n####\n" + colors.Colors.RESET)
     return clf
 
 
 def eval_model(clf, path_to_eval_tcpdump1, path_to_eval_tcpdump2, algorithm):
-    eval_data1, eval_data2 = parser.parse_training_data(path_to_eval_tcpdump1, path_to_eval_tcpdump2)
-
+    
+    eval1_data = parser.parse_eval_data(path_to_eval_tcpdump1)
+    #eval2_data = parser.parse_eval_data(path_to_eval_tcpdump2)
+    
     print(colors.Colors.RED + f"####\nTesting the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
-    combined_df = features.convert_to_dataframe(eval_data1, eval_data2)
+    
+    combined_df = features.convert_to_dataframe_testing(eval_data1, eval_data2)
 
     combined_df = features.encoding_features(combined_df)
 
@@ -125,6 +154,8 @@ def eval_model(clf, path_to_eval_tcpdump1, path_to_eval_tcpdump2, algorithm):
     print(colors.Colors.YELLOW + "Classification report : \n",
           classification + colors.Colors.RESET)
 
+    diagrams.diagram_logistic_regression(clf, X_test, y_test)
+    
     print(colors.Colors.RED +
           f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
 

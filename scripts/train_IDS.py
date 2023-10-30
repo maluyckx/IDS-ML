@@ -58,18 +58,18 @@ def preprocessing(bots, webclients):
     ### Parsing the datasets
     bots_data, webclients_data = parser.parse_training_data(bots, webclients)
     
-    combined_df = features.convert_to_dataframe(bots_data, webclients_data)
+    combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
 
     combined_df = features.encoding_features(combined_df)
 
     X_train = combined_df[constants.LIST_OF_FEATURES]
     y_train = combined_df['label']
     
-    
+    return X_train, y_train
 
 def main_train(webclients, bots, output):
     ## Preprocessing before training : parsing and encoding the features
-    preprocessing(bots, webclients)
+    X_train, y_train = preprocessing(bots, webclients)
     
     
     ### Decision Tree

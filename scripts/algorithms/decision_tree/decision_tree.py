@@ -27,7 +27,7 @@ import colors
 def train_decision_tree(bots_data, webclients_data):
     print(colors.Colors.CYAN + "####\nTraining the decision tree classifier..." + colors.Colors.RESET)
 
-    combined_df = features.convert_to_dataframe(bots_data, webclients_data)
+    combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
 
     combined_df = features.encoding_features(combined_df)
 

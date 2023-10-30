@@ -100,6 +100,12 @@ LIST_OF_FEATURES = [
 
 
 
+[A, not_a_ressource_record_constant, NXDomain,
 
+A = 1
+not_a_ressource_record_constant = 2
+NXDomain = 3
 
+"123"
+A A A A A A
 

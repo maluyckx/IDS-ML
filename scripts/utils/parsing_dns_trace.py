@@ -258,6 +258,20 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
     return bots_data, webclients_data
 
 
+def parse_eval_data(path_to_eval_tcpdump):
+    print(colors.Colors.GREEN + "####\nParsing the DNS line datasets..." + colors.Colors.RESET)
+    
+    # Parse both datasets
+    eval_data = {}
+    with open(path_to_eval_tcpdump, 'r') as eval_file:
+        eval_data = parsing_file(eval_file)
+    
+    print(colors.Colors.GREEN + "Parsing completed!\n####\n" + colors.Colors.RESET)
+    return eval_data
+    
+    
+
+
 def parsing_cleaning_testing_data(path_to_test_tcpdump):
     # Y'a des flags de TCP dans le fichier de test, faut qu'on parse les données qui sont pas du DNS 
     # Example de eval 1 : 11:12:37.412776 IP one.one.one.one.domain > unamur036.39802: Flags [S.], seq 3634935584, ack 3866216491, win 65535, options [mss 1452,nop,nop,sackOK,nop,wscale 10], length 0

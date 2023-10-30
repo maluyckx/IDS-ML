@@ -1,0 +1,37 @@
+##################################################
+List of available models : 
+1. Decision tree
+2. Logistic regression
+3. Random forest
+4. Neural networks
+5. KNN
+Choose a model to train : ####
+Parsing the DNS line datasets...
+######SWITCH BOT FROM HUMAN######
+Parsing completed!
+####
+
+####
+Training the Logistic regression classifier...
+Logistic regression classifier trained successfully!
+####
+
+####
+Parsing the DNS line datasets...
+######SWITCH BOT FROM HUMAN######
+Parsing completed!
+####
+
+####
+Testing the Logistic regression classifier...
+Accuracy of the model :  0.10833333333333334
+Classification report : 
+               precision    recall  f1-score   support
+
+       human       1.00      0.11      0.20       120
+         bot       0.00      0.00      0.00         0
+
+    accuracy                           0.11       120
+   macro avg       0.50      0.05      0.10       120
+weighted avg       1.00      0.11      0.20       120
+

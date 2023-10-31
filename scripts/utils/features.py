@@ -300,16 +300,6 @@ def encoding_features(combined_df):
     return combined_df
 
 
-def read_botlist():
-    """
-    Read the botlist file and return a list of bots
-    """
-    bots = []
-    with open("../../evaluation_datasets/botlists/eval1_botlist.txt", "r") as botlist:
-        for line in botlist:
-            bots.append(line.strip())
-    return bots
-
 
 def convert_to_dataframe_testing(eval_data):
     evale = []

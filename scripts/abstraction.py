@@ -31,105 +31,6 @@ import utils.colors as colors
 import utils.diagrams as diagrams
 
 
-def train_model(bots_data, webclients_data, algorithm):
-    print(colors.Colors.CYAN +
-          f"####\nTraining the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
-
-    combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
-
-    combined_df = features.encoding_features(combined_df)
-
-    X_train = combined_df[constants.LIST_OF_FEATURES]
-    y_train = combined_df['label']
-
-    # print("X train : ", X_train)
-    # print("y train : ", y_train)
-
-    if algorithm == "decision_tree":
-        clf = DecisionTreeClassifier(
-            criterion='gini',
-            splitter='best',
-            max_depth=100,  # completement arbitraire
-            min_samples_split=20,  # completement arbitraire
-            min_samples_leaf=10,  # completement arbitraire
-            min_weight_fraction_leaf=0.0,  # completement arbitraire
-            max_features=None,  # use all features
-            random_state=None,  # random seed
-            max_leaf_nodes=None,  # completement arbitraire
-            min_impurity_decrease=0.0,  # completement arbitraire
-            class_weight=None,  # use all classes
-            ccp_alpha=0.0  # completement arbitraire
-        )
-    elif algorithm == "logistic_regression":
-        clf = LogisticRegression(
-            penalty="l2",
-            dual=False,
-            tol=0.0001,
-            C=1,
-            fit_intercept=True,
-            intercept_scaling=1,
-            class_weight=None,
-            random_state=42,
-            solver="liblinear",
-            max_iter=100,
-            multi_class="auto",
-            verbose=0,
-            warm_start=False,
-            n_jobs=None,
-            l1_ratio=None
-        )
-        diagrams.diagram_logistic_regression(clf, X_train, y_train)
-        
-    elif algorithm == "random_forest":
-        pass
-    elif algorithm == "neural_networks":
-        pass
-    
-    elif algorithm == "knn":
-        clf = KNeighborsClassifier(
-            n_neighbors=5,
-            weights="uniform",
-            algorithm="auto",
-            leaf_size=30,
-            p=2,
-            metric="minkowski",
-            metric_params=None,
-            n_jobs=None
-        )
-        
-        # diagrams.diagram_knn(clf, X_train, y_train)
-    
-    else:
-        print("You fucked up with the algorithm")
-        exit(0)
-
-
-    # for index, row in X_train.iterrows():
-    #     print(row)
-    # k-fold cross validation 
-    
-    # kf = KFold(n_splits=5, random_state=42, shuffle=True)  # 5-fold CV
-    # for train_index, test_index in kf.split(X):
-    #     X_train, X_test = X[train_index], X[test_index]
-    #     y_train, y_test = y[train_index], y[test_index]
-
-
-
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=0)
-
-
-    clf.fit(X_train, y_train)
-
-    # y_pred = clf.predict(X_test)
-    # accuracy = accuracy_score(y_test, y_pred)
-    # print(f'Accuracy: {accuracy * 100:.2f}%')
-    
-    
-
-    print(colors.Colors.CYAN + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier trained successfully!\n####\n" + colors.Colors.RESET)
-    return clf
-
-
 def eval_model(clf, path_to_eval_tcpdump1, path_to_eval_tcpdump2, algorithm):
     
     eval1_data = parser.parse_eval_data(path_to_eval_tcpdump1)
@@ -160,28 +61,8 @@ def eval_model(clf, path_to_eval_tcpdump1, path_to_eval_tcpdump2, algorithm):
           f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
 
 
-def load_saved_model(algorithm):
-    with open(f"../../trained_models/{algorithm}/{constants.NAME_TRAINED_MODEL[algorithm]}", 'rb') as saved_model:
-        loaded_clf = pickle.load(saved_model)
-    return loaded_clf
 
 
-def save_trained_model(clf, algorithm):
-    with open(f"../../trained_models/{algorithm}/{constants.NAME_TRAINED_MODEL[algorithm]}", "wb") as saved_model:
-        pickle.dump(clf, saved_model)
-
-
-def diagram(clf):
-    """dot_data = export_graphviz(clf, out_file=None,
-                            feature_names=constants.LIST_OF_FEATURES,
-                            class_names=['bot', 'webclient'],
-                            filled=True, rounded=True, special_characters=True)
-
-    graph = graphviz.Source(dot_data)
-    graph.render("decision_tree")"""
-    pass
-    
-    
 
 
 def main():

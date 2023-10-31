@@ -77,8 +77,8 @@ To evaluate the model, run the following command :
 ```bash
 python3 eval_IDS.py \
 --trained_model ../trained_models/<algo>/trained_model_<algo>.pkl \
---dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
---output suspicious_hosts/suspicious_hosts.txt
+--dataset ../evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
+--output ../suspicious_hosts/suspicious_hosts.txt
 ```
 
 For example, in this project, you could use the following command :
@@ -86,8 +86,8 @@ For example, in this project, you could use the following command :
 ```bash
 python3 eval_IDS.py \
 --trained_model ../trained_models/logistic_regression/trained_model_logistic_regression.pkl \
---dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
---output suspicious_hosts/suspicious_hosts.txt
+--dataset ../evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
+--output ../suspicious_hosts/suspicious_hosts.txt
 ```
 
 ---
@@ -101,9 +101,23 @@ python3 main.py \
 --algo <algo> \
 --output ../trained_models/trained_model_<algo>.pkl \
 --trained_model ../trained_models/trained_model_<algo>.pkl \
---dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
---output suspicious_hosts/suspicious_hosts.txt 
+--dataset ../evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
+--output ../suspicious_hosts/suspicious_hosts.txt 
 ```
+
+For example, in this project, you could use the following command :
+
+```bash
+python3 main.py \
+--webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
+--bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
+--algo logistic_regression \
+--output ../trained_models/trained_model_logistic_regression.pkl \
+--trained_model ../trained_models/trained_model_logistic_regression.pkl \
+--dataset ../evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
+--output ../suspicious_hosts/suspicious_hosts.txt 
+```
+
 
 ## Colors
 

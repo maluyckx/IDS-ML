@@ -46,11 +46,11 @@ def get_botlist():
             bots.append(line.strip())
     return bots
 
-def result_suspicious_hosts(suspicious_hosts):
+def result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts):
     """
     Write the result of the evaluation into a file
     """
-    with open(f"{constants.PATH_TO_SUSPICIOUS_HOSTS_EVAL1}", "w") as f:
+    with open(output_path_to_suspicious_hosts, "w") as f:
         for host in suspicious_hosts:
             f.write(host + "\n")
 
@@ -71,9 +71,9 @@ def preprocessing(path_to_eval_tcpdump1, algorithm):
 
     return X_test, y_test, hosts_lists
 
-def eval_model(clf, path_to_eval_tcpdump1, algorithm): # path_to_eval_tcpdump2,
+def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts): # path_to_eval_tcpdump2,
     
-    X_test, y_test, hosts_lists = preprocessing(path_to_eval_tcpdump1, algorithm)
+    X_test, y_test, hosts_lists = preprocessing(eval_dataset, algorithm)
 
     # Test the classifier's accuracy on the test set
     y_pred = clf.predict(X_test)
@@ -90,7 +90,7 @@ def eval_model(clf, path_to_eval_tcpdump1, algorithm): # path_to_eval_tcpdump2,
             suspicious_hosts.append(hosts_lists[i])
     
     # write the result into a file in suspicious_hosts.txt
-    result_suspicious_hosts(suspicious_hosts)
+    result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts)
 
 
     # check the accuracy
@@ -108,16 +108,15 @@ def eval_model(clf, path_to_eval_tcpdump1, algorithm): # path_to_eval_tcpdump2,
 
 
 
-def main_eval(trained_model, dataset, output):
+def main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts):
     ## Load the model
     loaded_clf = saving_model.load_saved_model(trained_model)
 
     # extract algorithm name from the path
-    # ../trained_models/logistic_regression/trained_model_logistic_regression.pkl
     algorithm = str(trained_model).split("/")[2]
 
     ## evaluate the model
-    eval_model(loaded_clf, constants.PATH_TO_EVAL_TCPDUMP1, algorithm)
+    eval_model(loaded_clf, eval_dataset, algorithm, output_path_to_suspicious_hosts)
     
 
 
@@ -128,12 +127,12 @@ def getting_args():
     parser.add_argument("--output", required=True, type=pathlib.Path)
     args = parser.parse_args()
     
-    trained_model = str(args.trained_model) # TODO: need to be checked (dunno if we will leave this to str())
-    dataset = args.dataset
-    output = args.output
+    trained_model = args.trained_model
+    eval_dataset = args.dataset
+    output_path_to_suspicious_hosts = args.output
     
-    return trained_model, dataset, output
+    return trained_model, eval_dataset, output_path_to_suspicious_hosts
 
 if __name__ == "__main__":
-    trained_model, dataset, output = getting_args()
-    main_eval(trained_model, dataset, output)
+    trained_model, eval_dataset, output_path_to_suspicious_hosts = getting_args()
+    main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts)

@@ -128,7 +128,7 @@ def getting_args():
     parser = argparse.ArgumentParser(description="Optional classifier training")
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
-    parser.add_argument("--algo", required=True, type=pathlib.Path)
+    parser.add_argument("--algo", required=False, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
     args = parser.parse_args()
     webclients = args.webclients
@@ -137,10 +137,11 @@ def getting_args():
     
     if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest":
         print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`")
-        exit(0)
-    output = args.output
+        print("The script will continue with the default algorithm : logistic_regression")
+        algo = "logistic_regression"
+    output_path_to_saved_model = args.output
 
-    return webclients, bots, algo, output
+    return webclients, bots, algo, output_path_to_saved_model
 
 if __name__ == "__main__":
     webclients, bots, algo, output_path_saved_model = getting_args()

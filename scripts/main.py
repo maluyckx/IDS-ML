@@ -8,42 +8,52 @@ Authors :
 import argparse
 import pathlib
 
-import scripts.eval_IDS as eval_IDS
-import scripts.train_IDS as train_IDS
+import eval_IDS as eval_IDS
+import train_IDS as train_IDS
 
-import scripts.utils.constants as constants
+import utils.constants as constants
 
-def main():
-    getting_args()
-    
-    train_IDS.main_train()
-    eval_IDS.main_eval()
+
     
 def getting_args():
-    ## Train IDS
-    parser = argparse.ArgumentParser(description="Optional classifier training")
+    parser = argparse.ArgumentParser(description="Main script for training and evaluating the model")    
+    
+    ## Arguments for train_IDS.py   
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
+    parser.add_argument("--algo", required=False, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
     
-    ## Eval IDS
-    parser = argparse.ArgumentParser(description="Dataset evaluation")
-    parser.add_argument("--dataset", required=True, type=pathlib.Path)
+    ## Arguments for eval_IDS.py
     parser.add_argument("--trained_model", type=pathlib.Path)
+    parser.add_argument("--dataset", required=True, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
     
     args = parser.parse_args()
     
+    ## Assigning the arguments to variables for train_IDS.py
     webclients = args.webclients
     bots = args.bots
-    output = args.output
-
-    dataset = args.dataset
-    trained_model = args.trained_model
-    output = args.output
+    algo = str(args.algo)
     
-    return webclients, bots, output, dataset, trained_model, output
+    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest":
+        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`")
+        print("The script will continue with the default algorithm : logistic_regression")
+        algo = "logistic_regression"
+    output_path_to_saved_model = args.output
 
+    ## Assigning the arguments to variables for eval_IDS.py
+    trained_model = args.trained_model 
+    eval_dataset = args.dataset
+    output_path_to_suspicious_hosts = args.output
+    
+    return webclients, bots, algo, output_path_to_saved_model, trained_model, eval_dataset, output_path_to_suspicious_hosts
+
+
+def main():
+    webclients, bots, algo, output_path_to_saved_model, trained_model, eval_dataset, output_path_to_suspicious_hosts = getting_args()
+    train_IDS.main_train(webclients, bots, algo, output_path_to_saved_model)
+    eval_IDS.main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts)
 
 if __name__ == "__main__":
     main()

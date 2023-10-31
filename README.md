@@ -75,6 +75,15 @@ python3 eval_IDS.py \
 --output suspicious_hosts/suspicious_hosts.txt
 ```
 
+For example, in this project, you could use the following command :
+
+```bash
+python3 eval_IDS.py \
+--trained_model ../trained_models/logistic_regression/trained_model_logistic_regression.pkl \
+--dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
+--output suspicious_hosts/suspicious_hosts.txt
+```
+
 ---
 
 To do both, run the following command :

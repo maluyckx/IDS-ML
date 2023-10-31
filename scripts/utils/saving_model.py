@@ -13,10 +13,10 @@ import utils.constants as constants
 import utils.colors as colors
 
 
-def load_saved_model(algorithm):
+def load_saved_model(path_saved_model):
     print(colors.Colors.YELLOW + f"Trying to load the saved model...\n####\n" + colors.Colors.RESET)
     
-    with open(f"../../trained_models/{algorithm}/{constants.NAME_TRAINED_MODEL[algorithm]}", 'rb') as saved_model:
+    with open(path_saved_model, 'rb') as saved_model:
         loaded_clf = pickle.load(saved_model)
         
     print(colors.Colors.YELLOW + f"Load the model successfully!\n####\n" + colors.Colors.RESET)

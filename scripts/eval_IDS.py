@@ -9,8 +9,8 @@ Authors :
 import argparse
 import pathlib
 
-import scripts.utils.constants as constants
-
+import utils.constants as constants
+import utils.saving_model as saving_model
 
 def get_botlists():
     botlist1 = []
@@ -26,29 +26,42 @@ def get_botlists():
     return botlist1, botlist2
 
 
+def get_botlist():
+    """
+    Read the botlist file and return a list of bots
+    """
+    bots = []
+    with open("../../evaluation_datasets/botlists/eval1_botlist.txt", "r") as botlist:
+        for line in botlist:
+            bots.append(line.strip())
+    return bots
+
+
 def writing_suspicious_hosts(suspicious_hosts):
     with open(f"{constants.PATH_TO_SUSPICIOUS_HOSTS}", "w") as f:
         for host in suspicious_hosts:
             f.write(host + "\n")
 
 
-def main_eval(dataset, trained_model, output):
-    pass
+def main_eval(trained_model, dataset, output):
+    ## Load the model
+    loaded_clf = saving_model.load_saved_model(trained_model)
+    
 
 
 def getting_args():
     parser = argparse.ArgumentParser(description="Dataset evaluation")
-    parser.add_argument("--dataset", required=True, type=pathlib.Path)
     parser.add_argument("--trained_model", type=pathlib.Path)
+    parser.add_argument("--dataset", required=True, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
     args = parser.parse_args()
     
-    dataset = args.dataset
     trained_model = args.trained_model
+    dataset = args.dataset
     output = args.output
     
-    return dataset, trained_model, output
+    return trained_model, dataset, output
 
 if __name__ == "__main__":
-    dataset, trained_model, output = getting_args()
-    main_eval(dataset, trained_model, output)
+    trained_model, dataset, output = getting_args()
+    main_eval(trained_model, dataset, output)

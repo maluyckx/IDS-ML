@@ -317,57 +317,49 @@ def read_botlist(path_to_botlist):
             botlist.append(line.strip())
     return botlist
 
-def convert_to_dataframe_testing(eval_data):
-    evale = []
+def get_associated_botlist(path_to_eval_dataset):
+    """
+    Get the botlist associated to the evaluation data
+    """
+    filename = str(path_to_eval_dataset).split('/')[-1]
+    eval_data = filename.split('_')[0]
+    return constants.PATH_TO_BOTLISTS + eval_data + "_botlist.txt"
+
+
+def convert_to_dataframe_testing(eval_data, path_to_eval_dataset):
+    eval_list = []
     for key in eval_data.keys():
         trace = aggregate_data(eval_data[key])
         if trace != None:
-            evale.append(trace)
+            eval_list.append(trace)
 
-    all_evale_hosts = get_all_hosts(evale)
+    all_eval_hosts = get_all_hosts(eval_list)
 
-    # read the real labels for the evaluation data
-    botlist = read_botlist(constants.PATH_TO_BOTLISTS + "eval1_botlist.txt")
+    # Evaluation phase : read the real labels for the evaluation data
+    botlist = read_botlist(get_associated_botlist(path_to_eval_dataset))
 
-    # generate features for the evaluation data
-    evale_features = generate_features(all_evale_hosts, evale) 
+    # Generate features for the evaluation data
+    eval_features = generate_features(all_eval_hosts, eval_list)
 
-    # put the host as a feature in the dataframe
-    for host in all_evale_hosts:
-        evale_features[host]['host'] = host
+    for host in all_eval_hosts:
+        eval_features[host]['host'] = host
+    eval_features = removing_hosts_from_features(eval_features)
 
-    # remove the key (host) from the features
-    evale_features = removing_hosts_from_features(evale_features)
-
-    # find the label for each host
-    for i in range(len(evale_features)):
-        if evale_features[i]['host'] in botlist:
-            evale_features[i]['label'] = 'bot'
+    # Find the label for each host
+    for i in range(len(eval_features)):
+        if eval_features[i]['host'] in botlist:
+            eval_features[i]['label'] = 'bot'
         else:
-            evale_features[i]['label'] = 'human'
-    
-    bots_features_df = pd.DataFrame(evale_features)
-
-    # shuffle the dataset
-    # combined_df = combined_df.sample(frac=1).reset_index(drop=True)
-    
-    # # Combine the two datasets
-    # combined_df = pd.concat([bots_df, webclients_df], ignore_index=True)
+            eval_features[i]['label'] = 'human'
+    bots_features_df = pd.DataFrame(eval_features)
 
     combined_df = convert_features_to_numerical(bots_features_df)
-
-    # TODO: don't know if necessary : convert features_to_string for host and label
-    combined_df['host'] = combined_df['host'].astype('string')
-    combined_df['label'] = combined_df['label'].astype('string')
 
     return combined_df
 
 #######################################
 ## \ Evaluation part
 #######################################
-
-
-
 
 
 #######################################

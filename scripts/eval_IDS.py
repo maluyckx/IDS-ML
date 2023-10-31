@@ -38,7 +38,7 @@ def preprocessing(path_to_eval_dataset, algorithm):
     eval_data = parser.parse_eval_data(path_to_eval_dataset)     
     print(colors.Colors.RED + f"####\nTesting the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
     
-    combined_df = features.convert_to_dataframe_testing(eval_data) 
+    combined_df = features.convert_to_dataframe_testing(eval_data, path_to_eval_dataset) 
 
     combined_df = features.encoding_features(combined_df)
 

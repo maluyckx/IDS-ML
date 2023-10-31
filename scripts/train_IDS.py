@@ -15,6 +15,8 @@ import sys
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 
 
 #### Importing the utils
@@ -45,6 +47,7 @@ def train_model(X_train, y_train, algorithm):
                 class_weight=None,  # use all classes
                 ccp_alpha=0.0  # completement arbitraire
             )
+            
     elif algorithm == "logistic_regression":
         clf = LogisticRegression(
             penalty="l2",
@@ -65,10 +68,11 @@ def train_model(X_train, y_train, algorithm):
         )
         
     elif algorithm == "random_forest":
-        pass
+        clf = RandomForestClassifier()
+        
     elif algorithm == "neural_networks":
-        pass
-    
+        clf = MLPClassifier()
+        
     elif algorithm == "knn":
         clf = KNeighborsClassifier(
             n_neighbors=5,
@@ -79,12 +83,9 @@ def train_model(X_train, y_train, algorithm):
             metric="minkowski",
             metric_params=None,
             n_jobs=None
-        )
-        
-        # diagrams.diagram_knn(clf, X_train, y_train)
-    
+        )    
     else:
-        print("You fucked up with the algorithm")
+        print("The algorithm provided is not supported")
         exit(0)
     
     
@@ -101,7 +102,6 @@ def preprocessing(bots, webclients):
     bots_data, webclients_data = parser.parse_training_data(bots, webclients)
     
     combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
-
     combined_df = features.encoding_features(combined_df)
 
     X_train = combined_df[constants.LIST_OF_FEATURES]
@@ -116,12 +116,12 @@ def main_train(webclients, bots, algorithm, output_path_saved_model):
     X_train, y_train = preprocessing(bots, webclients)
     
     ## Training the model
-    clf = train_model(X_train, y_train, algorithm) # TODO À changer
+    clf = train_model(X_train, y_train, algorithm) 
     
     ## Saving the model
-    saving_model.save_trained_model(clf, algorithm, output_path_saved_model) # TODO À changer
+    saving_model.save_trained_model(clf, algorithm, output_path_saved_model)
     
-    return clf # going to be used for evaluation
+    return clf
 
 
 def getting_args():
@@ -145,5 +145,5 @@ def getting_args():
 
 if __name__ == "__main__":
     webclients, bots, algo, output_path_saved_model = getting_args()
-    main_train(webclients, bots, algo, output_path_saved_model)
+    clf = main_train(webclients, bots, algo, output_path_saved_model)
 

@@ -82,5 +82,6 @@ NAME_TRAINED_MODEL = {
 PATH_TO_BOTLISTS = "../evaluation_datasets/botlists/"
 
 ## Path to suspicious hosts file
-PATH_TO_SUSPICIOUS_HOSTS = "../suspicious_hosts/suspicious_hosts.txt"
+PATH_TO_SUSPICIOUS_HOSTS_EVAL1 = "../suspicious_hosts/eval1_tcpdump/suspicious_hosts.txt"
+PATH_TO_SUSPICIOUS_HOSTS_EVAL2 = "../suspicious_hosts/eval2_tcpdump/suspicious_hosts.txt"
 

@@ -10,7 +10,8 @@ Authors :
 
 # Graphics dependencies
 from sklearn.tree import export_graphviz
-import graphviz
+from sklearn.metrics import classification_report
+#import graphviz
 import numpy as np
 
 # # Personal dependencies
@@ -21,38 +22,6 @@ import utils.constants as constants
 import utils.features as features
 import utils.colors as colors
 import utils.diagrams as diagrams
-
-
-def eval_model(clf, path_to_eval_tcpdump1, path_to_eval_tcpdump2, algorithm):
-    
-    eval1_data = parser.parse_eval_data(path_to_eval_tcpdump1)
-    #eval2_data = parser.parse_eval_data(path_to_eval_tcpdump2)
-    
-    print(colors.Colors.RED + f"####\nTesting the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
-    
-    combined_df = features.convert_to_dataframe_testing(eval_data1, eval_data2)
-
-    combined_df = features.encoding_features(combined_df)
-
-    X_test = combined_df[constants.LIST_OF_FEATURES]
-    y_test = combined_df['label']
-
-    # Test the classifier's accuracy on the test set
-    y_pred = clf.predict(X_test)
-    accuracy = clf.score(X_test, y_test)
-    print("Accuracy of the model : ", accuracy)
-
-    classification = classification_report(
-        y_true=y_test, y_pred=y_pred, target_names=['human', 'bot'])
-    print(colors.Colors.YELLOW + "Classification report : \n",
-          classification + colors.Colors.RESET)
-
-    diagrams.diagram_logistic_regression(clf, X_test, y_test)
-    
-    print(colors.Colors.RED +
-          f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
-
-
 
 
 

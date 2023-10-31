@@ -17,7 +17,7 @@ class Colors:
     CYAN = "\033[96m"
     ## Evaluation
     RED = "\033[91m"
-    ## Classification
+    ## Saving and loading the model
     YELLOW = "\033[93m"
     
     

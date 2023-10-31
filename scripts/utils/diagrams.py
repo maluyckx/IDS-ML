@@ -1,5 +1,5 @@
 """
-Goal of the script : Using a decision tree classifier to detect bots in a network traffic trace 
+Goal of the script : Script containing the diagrams for the different algorithms
 
 Authors : 
     - LUYCKX Marco 496283
@@ -89,22 +89,25 @@ def diagram_neural_networks(clf):
 
 
 
-def main_diagrams():
-    # Decision Tree
-    # diagram_decision_tree()
+def main_diagrams(algorithm):
+    if algorithm == "decision_tree":
+        diagram_decision_tree()
+        
+    elif algorithm == "logistic_regression":
+        diagram_logistic_regression()
+        
+    elif algorithm == "random_forest":
+        diagram_random_forest()
     
-    # Logistic Regression
-    # diagram_logistic_regression()
-    
-    # KNN
-    diagram_knn()
-    
-    # Random Forest
-    # diagram_random_forest()
-    
-    # Neural Networks
-    # diagram_neural_networks()
-    
+    elif algorithm == "neural_networks":
+        diagram_neural_networks()
+        
+    elif algorithm == "knn":
+        diagram_knn()
+    else:
+        print("Wrong algorithm")
+        exit(0)
+       
     
     
 if __name__ == "__main__":

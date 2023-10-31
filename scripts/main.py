@@ -22,7 +22,6 @@ def getting_args():
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
     parser.add_argument("--algo", required=False, type=pathlib.Path)
-    parser.add_argument("--output", required=True, type=pathlib.Path)
     
     ## Arguments for eval_IDS.py
     parser.add_argument("--trained_model", type=pathlib.Path)
@@ -40,19 +39,18 @@ def getting_args():
         print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`")
         print("The script will continue with the default algorithm : logistic_regression")
         algo = "logistic_regression"
-    output_path_to_saved_model = args.output
 
     ## Assigning the arguments to variables for eval_IDS.py
     trained_model = args.trained_model 
     eval_dataset = args.dataset
     output_path_to_suspicious_hosts = args.output
     
-    return webclients, bots, algo, output_path_to_saved_model, trained_model, eval_dataset, output_path_to_suspicious_hosts
+    return webclients, bots, algo, trained_model, eval_dataset, output_path_to_suspicious_hosts
 
 
 def main():
-    webclients, bots, algo, output_path_to_saved_model, trained_model, eval_dataset, output_path_to_suspicious_hosts = getting_args()
-    train_IDS.main_train(webclients, bots, algo, output_path_to_saved_model)
+    webclients, bots, algo, trained_model, eval_dataset, output_path_to_suspicious_hosts = getting_args()
+    train_IDS.main_train(webclients, bots, algo, trained_model)
     eval_IDS.main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts)
 
 if __name__ == "__main__":

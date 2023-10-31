@@ -6,6 +6,7 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
+#### Common dependencies
 import argparse
 import pathlib
 import numpy as np
@@ -18,8 +19,10 @@ import utils.parsing_dns_trace as parser
 import utils.constants as constants
 import utils.features as features
 import utils.colors as colors
-
 import utils.saving_model as saving_model
+import utils.diagrams as diagrams
+
+
 #######################################
 
 def get_botlists():
@@ -55,8 +58,8 @@ def result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts):
             f.write(host + "\n")
 
 
-def preprocessing(path_to_eval_tcpdump1, algorithm):
-    eval1_data = parser.parse_eval_data(path_to_eval_tcpdump1)
+def preprocessing(path_to_eval_dataset, algorithm):
+    eval1_data = parser.parse_eval_data(path_to_eval_dataset) # path_to_eval_tcpdump1
     #eval2_data = parser.parse_eval_data(path_to_eval_tcpdump2)
     
     print(colors.Colors.RED + f"####\nTesting the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
@@ -101,10 +104,8 @@ def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts): #
         y_true=y_test, y_pred=y_pred, target_names=['human', 'bot'])
     print(colors.Colors.YELLOW + "Classification report : \n", classification + colors.Colors.RESET)
 
-   # diagrams.diagram_logistic_regression(clf, X_test, y_test)
     
     print(colors.Colors.RED + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
-
 
 
 
@@ -118,6 +119,8 @@ def main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts):
     ## evaluate the model
     eval_model(loaded_clf, eval_dataset, algorithm, output_path_to_suspicious_hosts)
     
+    ## Diagrams
+    diagrams.main_diagrams(algorithm)
 
 
 def getting_args():

@@ -39,6 +39,14 @@ The report is located in the [report folder](report/IDS_ML_LUYCKX_BOUHNINE.pdf) 
 
 ## Commands
 
+First of all, navigate to the `scripts` folder :
+
+```bash 
+cd scripts
+```
+
+
+
 In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
 
 ---
@@ -51,8 +59,6 @@ python3 train_IDS.py \
 --algo <algo> \
 --output ../trained_models/<algo>/trained_model_<algo>.pkl
 ```
-
-Where `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
 
 For example, in this project, you could use the following command :
 
@@ -98,8 +104,6 @@ python3 main.py \
 --dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
 --output suspicious_hosts/suspicious_hosts.txt 
 ```
-
-Where `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
 
 ## Colors
 

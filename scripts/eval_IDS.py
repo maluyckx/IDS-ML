@@ -99,13 +99,11 @@ def eval_model(clf, path_to_eval_tcpdump1, algorithm): # path_to_eval_tcpdump2,
 
     classification = classification_report(
         y_true=y_test, y_pred=y_pred, target_names=['human', 'bot'])
-    print(colors.Colors.YELLOW + "Classification report : \n",
-          classification + colors.Colors.RESET)
+    print(colors.Colors.YELLOW + "Classification report : \n", classification + colors.Colors.RESET)
 
    # diagrams.diagram_logistic_regression(clf, X_test, y_test)
     
-    print(colors.Colors.RED +
-          f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
+    print(colors.Colors.RED + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
 
 
 

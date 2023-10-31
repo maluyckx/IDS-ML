@@ -301,12 +301,12 @@ def encoding_features(combined_df):
 
 
 
-def read_botlist():
+def read_botlist(path_to_botlist):
     """
     Read the botlist from the file
     """
     botlist = []
-    with open(f"{constants.PATH_TO_BOTLISTS}/eval1_botlist.txt", 'r') as file:
+    with open(path_to_botlist, 'r') as file:
         for line in file:
             botlist.append(line.strip())
     return botlist
@@ -321,7 +321,7 @@ def convert_to_dataframe_testing(eval_data):
     all_evale_hosts = get_all_hosts(evale)
 
     # read the real labels for the evaluation data
-    botlist = read_botlist()
+    botlist = read_botlist(constants.PATH_TO_BOTLISTS + "eval1_botlist.txt")
 
     # generate features for the evaluation data
     evale_features = generate_features(all_evale_hosts, evale) 

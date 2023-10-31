@@ -79,6 +79,8 @@ def get_type_of_responses_received_by_hosts(aggregated_data):
     # for key, value in type_of_responses_received_by_hosts.items():
     #     print(f"{key} : \n {value} \n \n")
 
+
+
     return type_of_responses_received_by_hosts
 
 

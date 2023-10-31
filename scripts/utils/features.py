@@ -134,8 +134,8 @@ def generate_features(all_hosts, data):
         ## Features MISC
         features[host]['average_of_request_length'] = average_of_request_length[host]
         features[host]['average_of_response_length'] = average_of_response_length[host]
-        features[host]['type_of_requests_queried_by_hosts'] = tuple(type_of_requests_queried_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
-        features[host]['type_of_responses_received_by_hosts'] = tuple(type_of_responses_received_by_hosts[host]) # Convert in list to be able to use 'category' in the dataframe, see convert_features_to_numerical()
+        features[host]['type_of_requests_queried_by_hosts'] = tuple(sorted(list((type_of_requests_queried_by_hosts[host])))) # sort the list to have always the same order
+        features[host]['type_of_responses_received_by_hosts'] = tuple(sorted(list((type_of_responses_received_by_hosts[host])))) # sort the list to have always the same order
         
         ## Features TIME 
         features[host]['average_time_for_a_session'] = get_all_timing_for_each[host]
@@ -219,10 +219,12 @@ def encoding_features(combined_df):
     label_encoder_average_of_response_length = LabelEncoder()
     label_encoder_type_of_requests_queried_by_hosts = LabelEncoder()
     label_encoder_type_of_responses_received_by_hosts = LabelEncoder()
+    
     ## Features TIME
     label_encoder_average_time_for_a_session = LabelEncoder()
     label_encoder_average_time_between_requests = LabelEncoder()
     label_encoder_frequency_of_repeated_requests_in_a_short_time_frame = LabelEncoder()
+    
     ## Features NUMBERS
     label_encoder_average_number_of_dots_in_a_domain = LabelEncoder()
     label_encoder_number_of_requests_in_a_session = LabelEncoder()
@@ -235,10 +237,12 @@ def encoding_features(combined_df):
     combined_df['average_of_response_length_encoded'] = label_encoder_average_of_response_length.fit_transform(combined_df['average_of_response_length'])
     combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(combined_df['type_of_requests_queried_by_hosts'])
     combined_df['type_of_responses_received_by_hosts_encoded'] = label_encoder_type_of_responses_received_by_hosts.fit_transform(combined_df['type_of_responses_received_by_hosts'])
+    
     ## Features TIME
     combined_df['average_time_for_a_session_encoded'] = label_encoder_average_time_for_a_session.fit_transform(combined_df['average_time_for_a_session'])
     combined_df['average_time_between_requests_encoded'] = label_encoder_average_time_between_requests.fit_transform(combined_df['average_time_between_requests'])
     combined_df['frequency_of_repeated_requests_in_a_short_time_frame_encoded'] = label_encoder_frequency_of_repeated_requests_in_a_short_time_frame.fit_transform(combined_df['frequency_of_repeated_requests_in_a_short_time_frame'])
+    
     ## Features NUMBERS
     combined_df['average_number_of_dots_in_a_domain_encoded'] = label_encoder_average_number_of_dots_in_a_domain.fit_transform(combined_df['average_number_of_dots_in_a_domain'])
     combined_df['number_of_requests_in_a_session_encoded'] = label_encoder_number_of_requests_in_a_session.fit_transform(combined_df['number_of_requests_in_a_session'])

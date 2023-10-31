@@ -134,12 +134,13 @@ def getting_args():
     webclients = args.webclients
     bots = args.bots
     algo = str(args.algo)
+    output_path_to_saved_model = args.output
     
     if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest":
         print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`")
         print("The script will continue with the default algorithm : logistic_regression")
         algo = "logistic_regression"
-    output_path_to_saved_model = args.output
+        # output_path_to_saved_model = TODO HERE 
 
     return webclients, bots, algo, output_path_to_saved_model
 

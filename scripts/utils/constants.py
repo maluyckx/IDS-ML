@@ -25,21 +25,21 @@ PATH_TO_EVAL_TCPDUMP2 = "../evaluation_datasets/tcpdumps/eval2_tcpdump.txt"
 #######################################
 LIST_OF_FEATURES = [
                     ## Features MISC
-                    "average_of_request_length",
-                    "average_of_response_length",
-                    # "type_of_requests_queried_by_hosts",
-                    # "type_of_responses_received_by_hosts",
+                    "average_of_request_length_encoded",
+                    "average_of_response_length_encoded",
+                    "type_of_requests_queried_by_hosts_encoded",
+                    "type_of_responses_received_by_hosts_encoded",
                     
                     ## Features TIME 
-                    "average_time_for_a_session",
-                    "average_time_between_requests",
-                    "frequency_of_repeated_requests_in_a_short_time_frame",
+                    "average_time_for_a_session_encoded",
+                    "average_time_between_requests_encoded",
+                    "frequency_of_repeated_requests_in_a_short_time_frame_encoded",
                     
                     ## Features NUMBERS
-                    "average_number_of_dots_in_a_domain",
-                    "number_of_requests_in_a_session",
-                    "number_of_unique_domains",
-                    "average_counts",
+                    "average_number_of_dots_in_a_domain_encoded",
+                    "number_of_requests_in_a_session_encoded",
+                    "number_of_unique_domains_encoded",
+                    "average_counts_encoded",
                     ]
 #######################################
 ## Constants for the features

@@ -41,14 +41,30 @@ The report is located in the [report folder](report/IDS_ML_LUYCKX_BOUHNINE.pdf) 
 
 In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
 
+---
 To train the model, run the following command :
 
 ```bash
 python3 train_IDS.py \
 --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
 --bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
+--algo <algo> \
 --output ../trained_models/<algo>/trained_model_<algo>.pkl
 ```
+
+Where `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
+
+For example, in this project, you could use the following command :
+
+```bash
+python3 train_IDS.py \
+--webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
+--bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
+--algo logistic_regression \
+--output ../trained_models/logistic_regression/trained_model_logistic_regression.pkl
+```
+
+---
 
 To evaluate the model, run the following command :
 
@@ -59,23 +75,26 @@ python3 eval_IDS.py \
 --output suspicious_hosts/suspicious_hosts.txt
 ```
 
+---
+
 To do both, run the following command :
 
 ```bash
 python3 main.py \
 --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
 --bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
+--algo <algo> \
 --output ../trained_models/trained_model_<algo>.pkl \
 --trained_model ../trained_models/trained_model_<algo>.pkl \
 --dataset evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
 --output suspicious_hosts/suspicious_hosts.txt 
 ```
 
-
+Where `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
 
 ## Colors
 
 - **Green** : preprocessing phase
 - **Blue** : training phase
 - **Red** : evaluation phase
-- **Yellow** : TODO
+- **Yellow** : saving or loading model

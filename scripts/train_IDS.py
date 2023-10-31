@@ -11,6 +11,11 @@ import argparse
 import pathlib
 import sys 
 
+#### ML dependencies
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+
 
 #### Importing the utils
 import utils.parsing_dns_trace as parser
@@ -18,35 +23,11 @@ import utils.constants as constants
 import utils.features as features
 import utils.colors as colors
 
-#### Importing the algorithms
-sys.path.append("algorithms/decision_tree/")
-# sys.path.append("algorithms/random_forest/")
-# sys.path.append("algorithms/logistic_regression/")
-# sys.path.append("algorithms/neural_network/")
-
-# import decision_tree
-# import random_forest
-# import logistic_regression
-# import neural_network
-
+import utils.saving_model as saving_model
 #######################################
 
 
-def train_model(X_train, y_train, algorithm):
-    # if algorithm == "decision_tree":
-    #     clf = decision_tree.train_model(X_train, y_train)
-    # elif algorithm == "random_forest":
-    #     clf = random_forest.train_model(X_train, y_train)
-    # elif algorithm == "logistic_regression":
-    #     clf = logistic_regression.train_model(X_train, y_train)
-    # elif algorithm == "neural_network":
-    #     clf = neural_network.train_model(X_train, y_train)
-    # else:
-    #     print(colors.Colors.RED + "Error: algorithm not found" + colors.Colors.RESET)
-    #     sys.exit(1)
-    
-    # return clf
-    
+def train_model(X_train, y_train, algorithm):    
     print(colors.Colors.CYAN + f"####\nTraining the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
     
     if algorithm == "decision_tree":
@@ -107,7 +88,6 @@ def train_model(X_train, y_train, algorithm):
         exit(0)
     
     
-    
     clf.fit(X_train, y_train)
 
     print(colors.Colors.CYAN + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier trained successfully!\n####\n" + colors.Colors.RESET)
@@ -131,29 +111,38 @@ def preprocessing(bots, webclients):
     
     return X_train, y_train
 
-def main_train(webclients, bots, output):
+def main_train(webclients, bots, algorithm, output_path_saved_model):
     ## Preprocessing before training : parsing and encoding the features
     X_train, y_train = preprocessing(bots, webclients)
     
     ## Training the model
-    clf = train_model(X_train, y_train, "logistic_regression") # TODO À changer
+    clf = train_model(X_train, y_train, algorithm) # TODO À changer
+    
+    ## Saving the model
+    saving_model.save_trained_model(clf, algorithm, output_path_saved_model) # TODO À changer
     
     return clf # going to be used for evaluation
-    
+
 
 def getting_args():
     parser = argparse.ArgumentParser(description="Optional classifier training")
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
+    parser.add_argument("--algo", required=True, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
     args = parser.parse_args()
     webclients = args.webclients
     bots = args.bots
+    algo = str(args.algo)
+    
+    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest":
+        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`")
+        exit(0)
     output = args.output
 
-    return webclients, bots, output
+    return webclients, bots, algo, output
 
 if __name__ == "__main__":
-    webclients, bots, output = getting_args()
-    main_train(webclients, bots, output)
+    webclients, bots, algo, output_path_saved_model = getting_args()
+    main_train(webclients, bots, algo, output_path_saved_model)
 

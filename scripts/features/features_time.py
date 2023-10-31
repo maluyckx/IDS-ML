@@ -13,7 +13,7 @@ import datetime
 # Personal dependencies
 import sys
 sys.path.append("../")
-import parsing_dns_trace as parser
+import utils.parsing_dns_trace as parser
 
 def get_average_of_timing_for_a_session(list_of_timing_for_a_session): # NOT A FEATURE, JUST FOR THE REPORT
     list_of_average_of_timing_for_a_session = []

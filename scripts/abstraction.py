@@ -6,15 +6,7 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
-# ML dependencies
 
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report, accuracy_score
-from sklearn.model_selection import KFold
-from sklearn.model_selection import train_test_split
-import pickle
 
 # Graphics dependencies
 from sklearn.tree import export_graphviz

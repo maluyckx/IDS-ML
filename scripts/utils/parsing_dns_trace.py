@@ -10,16 +10,14 @@ Authors :
 import re
 from datetime import timedelta
 
-
-
 # Personal dependencies
 import sys
-sys.path.append("./utils/features/")
+sys.path.append("./features/")
 import features_time as features_time
 import features_numbers as features_numbers
 import features_misc as features_misc
 
-sys.path.append("../utils/")
+sys.path.append("./utils/")
 import colors
 import constants
 import features

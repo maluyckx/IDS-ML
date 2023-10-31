@@ -37,8 +37,8 @@ def aggregate_data(data):
     response = data['response']
     
     #### Request ####
-    if len(request) == 0: # TODO: double check -> no request : There is one particular case where we have a response but no corresponding request
-    # This line : 14:55:35.387285 IP one.one.one.one.domain > unamur138.47506: 10732 NXDomain 0/1/0 (120)
+    if len(request) == 0: # No request : There is one particular case where we have a response but no corresponding request
+    # In eval2_tcpdump.txt : 14:55:35.387285 IP one.one.one.one.domain > unamur138.47506: 10732 NXDomain 0/1/0 (120)
         
     #    timestamp = '0'
     #    host = None
@@ -64,8 +64,10 @@ def aggregate_data(data):
         counts = (0,0,0)
     else:
         timestamp_resp = response['timestamp']
+        # in this project, host response is always one.one.one.one
+        # There is no domain in the response
         length_response = response['length']
-        responses = response['responses']
+        responses = response['responses'] # also combine the query_type : we did this because it would be really hard to map it accordingly
         counts = response['counts']
     #### \ Response ####
 
@@ -82,9 +84,8 @@ def aggregate_data(data):
         
         ## Response
         "timestamp_resp": timestamp_resp,
-        # in this case, host is always one.one.one.one
         "length_response": length_response, 
-        "responses": responses, # also combine the query_type : we did this because it would be really hard to map it accordingly
+        "responses": responses,
         "counts": counts
         }
 
@@ -103,10 +104,12 @@ def get_all_hosts(aggregated_data):
 
 def generate_features(all_hosts, data):
     """
-    TODO explain function
+    Combining the raw features of the datasets to create new, more relevant features.
     
-    This function will be called with the bots and webclients data.s
-    
+    This function will be called with :
+    1) bots datasets 
+    2) webclients datasets
+    3) evaluation datasets
     """
     ## Features MISC
     average_of_request_length, average_of_response_length = features_misc.get_average_of_query_length(data)
@@ -157,6 +160,9 @@ def removing_hosts_from_features(features):
 
 def convert_features_to_numerical(combined_df):
     """
+    Convert the features to numerical values to be able to use them in the machine learning algorithms.
+    
+    Example of combined_df :
     {
     'average_of_request_length': 28.3, 
     
@@ -200,11 +206,55 @@ def convert_features_to_numerical(combined_df):
     combined_df['average_counts'] = combined_df['average_counts'].astype('float64')
     
     return combined_df
+
+
+def encoding_features(combined_df):
+    """
+    Encode categorical features of the input DataFrame using LabelEncoder.    
+    """
+
+    ### Create a label encoder objects
+    ## Features MISC
+    label_encoder_average_of_request_length = LabelEncoder()
+    label_encoder_average_of_response_length = LabelEncoder()
+    label_encoder_type_of_requests_queried_by_hosts = LabelEncoder()
+    label_encoder_type_of_responses_received_by_hosts = LabelEncoder()
+    ## Features TIME
+    label_encoder_average_time_for_a_session = LabelEncoder()
+    label_encoder_average_time_between_requests = LabelEncoder()
+    label_encoder_frequency_of_repeated_requests_in_a_short_time_frame = LabelEncoder()
+    ## Features NUMBERS
+    label_encoder_average_number_of_dots_in_a_domain = LabelEncoder()
+    label_encoder_number_of_requests_in_a_session = LabelEncoder()
+    label_encoder_number_of_unique_domains = LabelEncoder()
+    label_encoder_average_counts = LabelEncoder()
     
+    ### Fit the label encoder objects
+    ## Features MISC
+    combined_df['average_of_request_length_encoded'] = label_encoder_average_of_request_length.fit_transform(combined_df['average_of_request_length'])
+    combined_df['average_of_response_length_encoded'] = label_encoder_average_of_response_length.fit_transform(combined_df['average_of_response_length'])
+    combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(combined_df['type_of_requests_queried_by_hosts'])
+    combined_df['type_of_responses_received_by_hosts_encoded'] = label_encoder_type_of_responses_received_by_hosts.fit_transform(combined_df['type_of_responses_received_by_hosts'])
+    ## Features TIME
+    combined_df['average_time_for_a_session_encoded'] = label_encoder_average_time_for_a_session.fit_transform(combined_df['average_time_for_a_session'])
+    combined_df['average_time_between_requests_encoded'] = label_encoder_average_time_between_requests.fit_transform(combined_df['average_time_between_requests'])
+    combined_df['frequency_of_repeated_requests_in_a_short_time_frame_encoded'] = label_encoder_frequency_of_repeated_requests_in_a_short_time_frame.fit_transform(combined_df['frequency_of_repeated_requests_in_a_short_time_frame'])
+    ## Features NUMBERS
+    combined_df['average_number_of_dots_in_a_domain_encoded'] = label_encoder_average_number_of_dots_in_a_domain.fit_transform(combined_df['average_number_of_dots_in_a_domain'])
+    combined_df['number_of_requests_in_a_session_encoded'] = label_encoder_number_of_requests_in_a_session.fit_transform(combined_df['number_of_requests_in_a_session'])
+    combined_df['number_of_unique_domains_encoded'] = label_encoder_number_of_unique_domains.fit_transform(combined_df['number_of_unique_domains'])
+    combined_df['average_counts_encoded'] = label_encoder_average_counts.fit_transform(combined_df['average_counts'])
+
+    return combined_df
 
 
+#######################################
+## Training part
+#######################################
 
 def convert_to_dataframe_training(bots_data, webclients_data):
+    
+    ## Aggregate the data ##
     bots = []
     for key in bots_data.keys():
         trace = aggregate_data(bots_data[key])
@@ -216,7 +266,9 @@ def convert_to_dataframe_training(bots_data, webclients_data):
         trace = aggregate_data(webclients_data[key])
         if trace != None:
             webclients.append(trace)
+    ## \ Aggregate the data ##
 
+    ## Combine raw features to create relevant features ##
     all_bot_hosts = get_all_hosts(bots)
     all_webclients_hosts = get_all_hosts(webclients) 
 
@@ -225,81 +277,35 @@ def convert_to_dataframe_training(bots_data, webclients_data):
     
     bots_features = removing_hosts_from_features(bots_features)
     webclients_features = removing_hosts_from_features(webclients_features)
+    ## \ Combine raw features to create relevant features ##
     
-    # print(bots_features)
-    
+    ## Label the data ##
     bots_features_df = pd.DataFrame(bots_features)
     bots_features_df['label'] = 'bot'
 
     webclients_features_df = pd.DataFrame(webclients_features)
     webclients_features_df['label'] = 'human'
+    ## \ Label the data ##
 
-    # Combine the two datasets
+    ## Combine the two datasets ##
     combined_df = pd.DataFrame(bots_features_df)
     combined_df = combined_df.append(pd.DataFrame(webclients_features_df), ignore_index=True)
-    # shuffle the dataset
-    # combined_df = combined_df.sample(frac=1).reset_index(drop=True)
+    ## \ Combine the two datasets ##
     
-    # # Combine the two datasets
-    # combined_df = pd.concat([bots_df, webclients_df], ignore_index=True)
-
+    ## Convert the features to numerical values ##
     combined_df = convert_features_to_numerical(combined_df)
+    ## \ Convert the features to numerical values ##
 
     return combined_df
 
-
-def encoding_features(combined_df):
-    """
-    Encode categorical features of the input DataFrame using LabelEncoder.    
-    """
-
-    label_encoder_average_of_request_length = LabelEncoder()
-    combined_df['average_of_request_length_encoded'] = label_encoder_average_of_request_length.fit_transform(
-        combined_df['average_of_request_length'])
-    
-    label_encoder_average_of_response_length = LabelEncoder()
-    combined_df['average_of_response_length_encoded'] = label_encoder_average_of_response_length.fit_transform(
-        combined_df['average_of_response_length'])
-    
-    label_encoder_type_of_requests_queried_by_hosts = LabelEncoder()
-    combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(
-        combined_df['type_of_requests_queried_by_hosts'])
-    
-    label_encoder_type_of_responses_received_by_hosts = LabelEncoder()
-    combined_df['type_of_responses_received_by_hosts_encoded'] = label_encoder_type_of_responses_received_by_hosts.fit_transform(
-        combined_df['type_of_responses_received_by_hosts'])
-    
-    label_encoder_average_time_for_a_session = LabelEncoder()
-    combined_df['average_time_for_a_session_encoded'] = label_encoder_average_time_for_a_session.fit_transform(
-        combined_df['average_time_for_a_session'])
-    
-    label_encoder_average_time_between_requests = LabelEncoder()
-    combined_df['average_time_between_requests_encoded'] = label_encoder_average_time_between_requests.fit_transform(
-        combined_df['average_time_between_requests'])
-    
-    label_encoder_frequency_of_repeated_requests_in_a_short_time_frame = LabelEncoder()
-    combined_df['frequency_of_repeated_requests_in_a_short_time_frame_encoded'] = label_encoder_frequency_of_repeated_requests_in_a_short_time_frame.fit_transform(
-        combined_df['frequency_of_repeated_requests_in_a_short_time_frame'])
-    
-    label_encoder_average_number_of_dots_in_a_domain = LabelEncoder()
-    combined_df['average_number_of_dots_in_a_domain_encoded'] = label_encoder_average_number_of_dots_in_a_domain.fit_transform(
-        combined_df['average_number_of_dots_in_a_domain'])
-    
-    label_encoder_number_of_requests_in_a_session = LabelEncoder()
-    combined_df['number_of_requests_in_a_session_encoded'] = label_encoder_number_of_requests_in_a_session.fit_transform(
-        combined_df['number_of_requests_in_a_session'])
-    
-    label_encoder_number_of_unique_domains = LabelEncoder()
-    combined_df['number_of_unique_domains_encoded'] = label_encoder_number_of_unique_domains.fit_transform(
-        combined_df['number_of_unique_domains'])
-    
-    label_encoder_average_counts = LabelEncoder()
-    combined_df['average_counts_encoded'] = label_encoder_average_counts.fit_transform(
-        combined_df['average_counts'])
-
-    return combined_df
+#######################################
+##  \ Training part
+#######################################
 
 
+#######################################
+## Evaluation part
+#######################################
 
 def read_botlist(path_to_botlist):
     """
@@ -333,7 +339,6 @@ def convert_to_dataframe_testing(eval_data):
     # remove the key (host) from the features
     evale_features = removing_hosts_from_features(evale_features)
 
-
     # find the label for each host
     for i in range(len(evale_features)):
         if evale_features[i]['host'] in botlist:
@@ -357,15 +362,17 @@ def convert_to_dataframe_testing(eval_data):
 
     return combined_df
 
+#######################################
+## \ Evaluation part
+#######################################
 
 
 
 
 
-
-############################################################################################################
+#######################################
 # Functions to get new features by combining/aggregating the existing ones
-############################################################################################################
+#######################################
 
 def combinations_of_features():
     all_combinations = []

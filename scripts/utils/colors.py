@@ -19,9 +19,9 @@ class Colors:
     RED = "\033[91m"
     ## Saving and loading the model
     YELLOW = "\033[93m"
-    
+    ## Classification and accuracy
+    PURPLE = "\033[95m"
     
     ## Future use
-    PURPLE = "\033[95m"
     LIGHTCYAN = "\033[94m"
     

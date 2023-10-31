@@ -22,16 +22,14 @@ import colors
 import constants
 import features
 
-##### \ BEGINNING OF RAW FEATURES / ##### 
 
+#########################################
+##### \ BEGINNING OF RAW FEATURES / ##### 
 """
-Taken example for the next function : 
+Taken example for the next functions from the DNS trace dataset : 
 Request  : 13:22:44.546969 IP unamur021.55771 > one.one.one.one.domain: 18712+ A? kumparan.com. (30)
 Response : 13:22:44.580851 IP one.one.one.one.domain > unamur021.55771: 18712 2/0/0 A 104.18.130.231, A 104.18.129.231 (62)
-
-
 """
-
 
 def extract_timestamp(line):
     """
@@ -109,7 +107,6 @@ def extract_DNS_response(line):
     Request : None
     Response : 104.18.130.231, 104.18.129.231
     """
-    # return tuple(re.findall(r"(A|AAAA) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", line))
     
     is_response_var = is_response(line)
     if not(is_response_var):
@@ -118,10 +115,6 @@ def extract_DNS_response(line):
     types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
     results = {}
     query_type = extract_dns_query_type(line)
-    # print("###")
-    # print("Querytype ",query_type)
-    # print("###")
-
 
     count_match = extract_counts(line)
     if not count_match:
@@ -136,11 +129,10 @@ def extract_DNS_response(line):
         elif query_type[0] == "ServFail":
             results["ServFail"] = [constants.SERVFAIL_ERROR]
         else:
-            print("You fucked up somewhere")
+            print("You should investigate for this RR type since it is not handled yet !")
             exit(0)
-            
-        # print(results)
         return results
+
 
     # Use the split line to extract domains for each query type based on the count of answers
     query_in_list_format = line.split()
@@ -156,7 +148,7 @@ def extract_DNS_response(line):
                     break
         if list_of_domains:
             results[t] = list_of_domains
-    # print(results)
+
     return results
     
 
@@ -171,7 +163,9 @@ def extract_counts(line):
     return tuple(int(count) for count in count_match.groups()) if count_match else None
 
 
-##### \ END OF RAW FEATURES / ##### 
+#####   \   END OF RAW FEATURES  /  ##### 
+#########################################
+
 
 def parse_dns_trace(line):
     """Parse a single line from the DNS trace dataset with additional features."""
@@ -198,22 +192,15 @@ def parse_timestamp(ts):
     seconds, microseconds = seconds.split('.')
     return timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds), microseconds=int(microseconds))
 
-
 def parsing_file(lines):
     """Pair DNS lines based on their IDs using the adjusted parser."""
     paired_data = {}
     
-    # compteur = 0
     for line in lines:
-        # if compteur > 200:
-        #      exit(0)
         parsed_line = parse_dns_trace(line)
 
-        # print(parsed_line.get("responses"))
-        # compteur += 1
-        # Check if ID is present and valid
         trace_id = parsed_line.get("query_id")
-        if trace_id is None: # There is some TCP flags in the file, we need to remove it since that is not DNS
+        if trace_id is None: # There is some TCP flags in the file, we need to remove it since that is not DNS queries
             continue
 
         # Initialize dictionary for the ID if not present
@@ -240,71 +227,33 @@ def parsing_file(lines):
     return paired_data
 
 def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
-    print(colors.Colors.GREEN + "####\nParsing the DNS line datasets..." + colors.Colors.RESET)
+    print(colors.Colors.GREEN + "####\nParsing the DNS line TRAINING datasets..." + colors.Colors.RESET)
     
     # Parse both datasets
     bots_data = {}
     with open(path_to_bots_tcpdump, 'r') as bot_file:
         bots_data = parsing_file(bot_file)
     
-    print("######SWITCH BOT FROM HUMAN######")
     webclients_data = []
     with open(path_to_webclients_tcpdump, 'r') as webclient_file:
         webclients_data = parsing_file(webclient_file)
 
-    print(colors.Colors.GREEN + "Parsing completed!\n####\n" + colors.Colors.RESET)
+    print(colors.Colors.GREEN + "Parsing TRAINING datasets completed!\n####\n" + colors.Colors.RESET)
     return bots_data, webclients_data
 
 
 def parse_eval_data(path_to_eval_tcpdump):
-    print(colors.Colors.GREEN + "####\nParsing the DNS line datasets..." + colors.Colors.RESET)
+    print(colors.Colors.GREEN + "####\nParsing the DNS line EVALUATION dataset..." + colors.Colors.RESET)
     
     # Parse both datasets
     eval_data = {}
     with open(path_to_eval_tcpdump, 'r') as eval_file:
         eval_data = parsing_file(eval_file)
     
-    print(colors.Colors.GREEN + "Parsing completed!\n####\n" + colors.Colors.RESET)
+    print(colors.Colors.GREEN + "Parsing EVALUATION dataset completed!\n####\n" + colors.Colors.RESET)
     return eval_data
-    
-    
-
-
-def parsing_cleaning_testing_data(path_to_test_tcpdump):
-    # Y'a des flags de TCP dans le fichier de test, faut qu'on parse les données qui sont pas du DNS 
-    # Example de eval 1 : 11:12:37.412776 IP one.one.one.one.domain > unamur036.39802: Flags [S.], seq 3634935584, ack 3866216491, win 65535, options [mss 1452,nop,nop,sackOK,nop,wscale 10], length 0
-
-    # with open(path_to_test_tcpdump, 'r') as eval_file:
-    #     = parsing_file(eval_file)
-
-    pass
 
 if __name__ == "__main__":
     bots_data, webclients_data = parse_training_data("../../training_datasets/tcpdumps/bots_tcpdump.txt", "../../training_datasets/tcpdumps/webclients_tcpdump.txt")
 
-    combined_df = features.convert_to_dataframe(bots_data, webclients_data)
-    features.encoding_features(combined_df)
-    # bots = []
-    # for key in bots_data.keys():
-    #     trace = features.aggregate_data(bots_data[key])
-    #     if trace != None:
-    #         bots.append(trace)
-            
-    # webclients = []
-    # for key in webclients_data.keys():
-    #     trace = features.aggregate_data(webclients_data[key])
-    #     if trace != None:
-    #         webclients.append(trace)
-            
-
-    # print("##### Bots ######")
-    # print(features.get_all_hosts(bots))
-    
-    # print("##### Webclients ######")
-    # print(features.get_all_hosts(webclients))
-    
-
-
-
-    # parsing_cleaning_testing_data(["../../testing_datasets/tcpdumps/eval1_tcpdump.txt", "../../testing_datasets/tcpdumps/eval2_tcpdump.txt"])
     

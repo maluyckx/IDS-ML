@@ -15,16 +15,16 @@ import sys
 sys.path.append("../")
 import utils.parsing_dns_trace as parser
 
-def get_average_of_timing_for_a_session(list_of_timing_for_a_session): # NOT A FEATURE, JUST FOR THE REPORT
-    list_of_average_of_timing_for_a_session = []
-    for key, value in list_of_timing_for_a_session.items():
-        difference = value[1] - value[0]
-        difference_in_seconds = difference.total_seconds()
+# def get_average_of_timing_for_a_session(list_of_timing_for_a_session): # NOT A FEATURE, JUST FOR THE REPORT
+#     list_of_average_of_timing_for_a_session = []
+#     for key, value in list_of_timing_for_a_session.items():
+#         difference = value[1] - value[0]
+#         difference_in_seconds = difference.total_seconds()
     
-        #print(f"Average of timing for {key} : {difference_in_seconds}")
-        list_of_average_of_timing_for_a_session.append(difference_in_seconds)
+#         #print(f"Average of timing for {key} : {difference_in_seconds}")
+#         list_of_average_of_timing_for_a_session.append(difference_in_seconds)
         
-    # print(mean(list_of_average_of_timing_for_a_session))
+#     print(mean(list_of_average_of_timing_for_a_session))
     
     
     
@@ -70,8 +70,9 @@ def get_timing_for_a_session(aggregated_data):
     for key, value in timing_for_a_session.items(): # key = host and value = list of timestamps (beginning with request and ending with response)
         list_of_timing_for_a_session[key] = (abs(value[-1][1] - value[0][0])).total_seconds() # value[0][0] : first timestamp_request of the fist timestamp_tuple and value[-1][1] : last timestamp_response of the last timestamp_tuple
 
-    # get_average_of_timing_for_a_session(list_of_timing_for_a_session) # For the report
+    # get_average_of_timing_for_a_session(list_of_timing_for_a_session) # Not sure what it is used for
     # print(list_of_timing_for_a_session)
+    # print(mean(list_of_timing_for_a_session.values())) # Not a feature, just for the report
 
     return list_of_timing_for_a_session
 
@@ -79,6 +80,7 @@ def get_timing_for_a_session(aggregated_data):
 
 def get_average_time_between_requests(aggregated_data):
     """
+    Getting the average time between each request for each host
     Prendre la difference des timestamps entre chaque requests/responses d'un host -> donc agréger les données en fonction des hosts et non en fonction du request ID seulement.
     
     En gros, après combien de temps un host fait une nouvelle requête ? 

@@ -130,3 +130,45 @@ A A A A A A
  'recall': 0.9305555555555556,
   'f1-score': 0.8627226671024677, 
   'support': 120.0}, 'weighted avg': {'precision': 0.9559680182752713, 'recall': 0.9416666666666667, 'f1-score': 0.9460042490603039, 'support': 120.0}} 
+
+
+POUR EVAL2, ON A UNE ERREUR CHELOU : 
+ 
+main.py 59 <module>
+main()
+
+main.py 56 main
+eval_IDS.main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts)
+
+eval_IDS.py 151 main_eval
+eval_model(loaded_clf, eval_dataset, algorithm, output_path_to_suspicious_hosts)
+
+eval_IDS.py 113 eval_model
+X_test, y_test, hosts_lists = preprocessing(eval_dataset, algorithm)
+
+eval_IDS.py 43 preprocessing
+combined_df = features.encoding_features(combined_df)
+
+features.py 266 encoding_features
+combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(combined_df['type_of_requests_queried_by_hosts'])
+
+_label.py 115 fit_transform
+self.classes_, y = _unique(y, return_inverse=True)
+
+_encode.py 42 _unique
+return _unique_python(
+
+_encode.py 186 _unique_python
+ret += (_map_to_integer(values, uniques),)
+
+_encode.py 164 _map_to_integer
+table = _nandict({val: i for i, val in enumerate(uniques)})
+
+_encode.py 164 <dictcomp>
+table = _nandict({val: i for i, val in enumerate(uniques)})
+
+TypeError:
+unhashable type: 'numpy.ndarray'
+
+
+

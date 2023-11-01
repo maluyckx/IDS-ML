@@ -12,9 +12,7 @@ from statistics import mean
 def get_average_number_of_dots_in_a_domain(aggregated_data):
     """
     This function is used to get the number of dots in the domains queried by each host.
-    
-    We removed one dot because in every request, the root domain is included.
-    
+        
     """
     number_of_dots_domains = {}
     for data in aggregated_data:
@@ -51,14 +49,16 @@ def get_number_of_requests_in_a_session(aggregated_data):
         else:
             get_number_of_requests[host] = 1
     
-    # print(get_number_of_requests)
+    # print(mean(get_number_of_requests.values()))
 
     return get_number_of_requests
     
 
 def get_number_of_unique_domains(aggregated_data): # and we should also get the ratio of those domains
     """
-    Pour chaque host, on regarde les domains qui query et on fait un set de ces domains et puis on fait un len de chaque host
+    Getting the number of unique domains queried by each host
+    
+    TODO: remove le français. Pour chaque host, on regarde les domains qui query et on fait un set de ces domains et puis on fait un len de chaque host
     """
 
     number_of_unique_domains = {}
@@ -74,8 +74,9 @@ def get_number_of_unique_domains(aggregated_data): # and we should also get the
     #     print(f"{key} : \n {value} \n \n")
 
     number_of_unique_domains = {key: len(value) for key, value in number_of_unique_domains.items()}  
-        
+    
     # print(number_of_unique_domains)
+    # print(mean(number_of_unique_domains.values()))
 
     return number_of_unique_domains
     
@@ -94,6 +95,5 @@ def get_average_counts(aggregated_data):
             average_counts[host] = [data['counts']]      
         
     average_counts = {key: (sum([x[0] for x in value])/len(value)) for key, value in average_counts.items()}
-    # print(average_counts)
     
     return average_counts

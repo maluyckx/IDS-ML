@@ -117,7 +117,7 @@ def generate_features(all_hosts, data):
     type_of_responses_received_by_hosts = features_misc.get_type_of_responses_received_by_hosts(data)
 
     ## Features TIME
-    get_all_timing_for_each = features_time.get_timing_for_a_session(data)
+    get_all_timing_for_each_host = features_time.get_timing_for_a_session(data)
     get_average_time_between_requests = features_time.get_average_time_between_requests(data)
     frequency_of_repeated_requests_in_a_short_time_frame = features_time.frequency_of_repeated_requests_in_a_short_time_frame(data)
 
@@ -138,7 +138,7 @@ def generate_features(all_hosts, data):
         features[host]['type_of_responses_received_by_hosts'] = tuple(sorted(list((type_of_responses_received_by_hosts[host])))) # sort the list to have always the same order
         
         ## Features TIME 
-        features[host]['average_time_for_a_session'] = get_all_timing_for_each[host]
+        features[host]['average_time_for_a_session'] = get_all_timing_for_each_host[host]
         features[host]['average_time_between_requests'] = get_average_time_between_requests[host]
         features[host]['frequency_of_repeated_requests_in_a_short_time_frame'] = frequency_of_repeated_requests_in_a_short_time_frame[host]
         
@@ -231,32 +231,32 @@ def encoding_features(combined_df):
     label_encoder_number_of_unique_domains = LabelEncoder()
     label_encoder_average_counts = LabelEncoder()
     
-    print("###") 
-    print(combined_df['average_of_response_length'])
-    print(type(combined_df['average_of_response_length']))
-    print("###") 
+    # print("###") 
+    # print(combined_df['average_of_response_length'])
+    # print(type(combined_df['average_of_response_length']))
+    # print("###") 
     
-    print(combined_df['type_of_requests_queried_by_hosts'])
-    print(combined_df['type_of_responses_received_by_hosts'])
-    print("###") 
+    # print(combined_df['type_of_requests_queried_by_hosts'])
+    # print(combined_df['type_of_responses_received_by_hosts'])
+    # print("###") 
     
-    print(type(combined_df['type_of_requests_queried_by_hosts']))
-    print(type(combined_df['type_of_responses_received_by_hosts']))
-    print("###") 
+    # print(type(combined_df['type_of_requests_queried_by_hosts']))
+    # print(type(combined_df['type_of_responses_received_by_hosts']))
+    # print("###") 
     
-    # display the entire dataframe type_of_requests
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-        print(combined_df['type_of_requests_queried_by_hosts'])
-        print("###")
+    # # display the entire dataframe type_of_requests
+    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    #     print(combined_df['type_of_requests_queried_by_hosts'])
+    #     print("###")
 
-    print("###")
-    print(combined_df['type_of_requests_queried_by_hosts'].unique())
-    print("###")
+    # print("###")
+    # print(combined_df['type_of_requests_queried_by_hosts'].unique())
+    # print("###")
 
-    print("###")
-    print(combined_df['average_time_for_a_session'].unique())
-    print(type(combined_df['average_time_for_a_session'].unique()))
-    print("###")
+    # print("###")
+    # print(combined_df['average_time_for_a_session'].unique())
+    # print(type(combined_df['average_time_for_a_session'].unique()))
+    # print("###")
     
     
     ### Fit the label encoder objects

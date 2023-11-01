@@ -36,18 +36,18 @@ def train_model(X_train, y_train, algorithm):
             clf = DecisionTreeClassifier(
                 criterion='gini',
                 splitter='best',
-                max_depth=100,  # completement arbitraire
-                min_samples_split=20,  # completement arbitraire
-                min_samples_leaf=10,  # completement arbitraire
-                min_weight_fraction_leaf=0.0,  # completement arbitraire
-                max_features=None,  # use all features
-                random_state=None,  # random seed
-                max_leaf_nodes=None,  # completement arbitraire
-                min_impurity_decrease=0.0,  # completement arbitraire
-                class_weight=None,  # use all classes
-                ccp_alpha=0.0  # completement arbitraire
+                max_depth=None,  
+                min_samples_split=2,  
+                min_samples_leaf=1,  #
+                min_weight_fraction_leaf=0,  
+                max_features=None, 
+                random_state=None,  
+                max_leaf_nodes=None,  
+                min_impurity_decrease=0.0, 
+                class_weight=None, 
+                ccp_alpha=0 
             )
-            
+                
     elif algorithm == "logistic_regression":
         clf = LogisticRegression(
             penalty="l2",
@@ -57,21 +57,64 @@ def train_model(X_train, y_train, algorithm):
             fit_intercept=True,
             intercept_scaling=1,
             class_weight=None,
-            random_state=42,
-            solver="liblinear",
+            random_state=None,
+            solver="lbfgs",
             max_iter=100,
             multi_class="auto",
             verbose=0,
             warm_start=False,
             n_jobs=None,
             l1_ratio=None
-        )
+        )       
         
     elif algorithm == "random_forest":
-        clf = RandomForestClassifier()
+        clf = RandomForestClassifier(
+            n_estimators=100,
+            criterion="gini",
+            max_depth=None,
+            min_samples_split=2,
+            min_samples_leaf=1,
+            min_weight_fraction_leaf=0,
+            max_features="sqrt",
+            max_leaf_nodes=None,
+            min_impurity_decrease=0,
+            bootstrap=True,
+            oob_score=False,
+            n_jobs=None,
+            random_state=None,
+            verbose=0,
+            warm_start=False,
+            class_weight=None,
+            ccp_alpha=0,
+            max_samples=None
+        )       
         
     elif algorithm == "neural_networks":
-        clf = MLPClassifier()
+        clf = MLPClassifier(
+            activation="relu",
+            solver="adam",
+            alpha=0.0001,
+            batch_size="auto",
+            learning_rate="constant",
+            learning_rate_init=0.001,
+            power_t=0.5,
+            max_iter=200,
+            shuffle=True,
+            random_state=None,
+            tol=0.0001,
+            verbose=False,
+            warm_start=False,
+            momentum=0.9,
+            nesterovs_momentum=True,
+            early_stopping=False,
+            validation_fraction=0.1,
+            beta_1=0.9,
+            beta_2=0.999,
+            epsilon=1e-08,
+            n_iter_no_change=10,
+            max_fun=15000
+        )
+          
         
     elif algorithm == "knn":
         clf = KNeighborsClassifier(

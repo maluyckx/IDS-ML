@@ -47,13 +47,13 @@ cd scripts
 
 
 
-In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`.
+    In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks`, `random_forest` or `knn`. 
 
 ---
 To train the model, run the following command :
 
 ```bash
-python3 train_IDS.py \
+python3 train.py \
 --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
 --bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
 --algo <algo> \
@@ -63,7 +63,7 @@ python3 train_IDS.py \
 For example, in this project, you could use the following command :
 
 ```bash
-python3 train_IDS.py \
+python3 train.py \
 --webclients ../training_datasets/tcpdumps/webclients_tcpdump.txt \
 --bots ../training_datasets/tcpdumps/bots_tcpdump.txt \
 --algo logistic_regression \
@@ -75,7 +75,7 @@ python3 train_IDS.py \
 To evaluate the model, run the following command :
 
 ```bash
-python3 eval_IDS.py \
+python3 eval.py \
 --trained_model ../trained_models/<algo>/trained_model_<algo>.pkl \
 --dataset ../evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
 --output ../suspicious_hosts/suspicious_hosts.txt
@@ -84,7 +84,7 @@ python3 eval_IDS.py \
 For example, in this project, you could use the following command :
 
 ```bash
-python3 eval_IDS.py \
+python3 eval.py \
 --trained_model ../trained_models/logistic_regression/trained_model_logistic_regression.pkl \
 --dataset ../evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
 --output ../suspicious_hosts/suspicious_hosts.txt
@@ -119,7 +119,17 @@ python3 main.py \
 
 ## Colors
 
-- **Green** : preprocessing phase
-- **Blue** : training phase
-- **Red** : evaluation phase
-- **Yellow** : saving or loading model
+TODO
+\begin{itemize}
+    \item \textbf{Green} : corresponds to the pre-processing steps. 
+    \item \textbf{Blue} : corresponds to the training phase.
+    \item \textbf{Red} : corresponds to the evaluation phase.
+    \item \textbf{Yellow} : corresponds to saving and loading the model.
+    \item \textbf{Purple} : corresponds to every data related to classification and accuracy. We also use light colors to differentiate the different rates during the classification : 
+        \begin{enumerate}
+            \item \textbf{Light cyan} : corresponds to the detection rate (true positive). 
+            \item \textbf{Light red} : corresponds to the false alarm rate (false positive).
+            \item \textbf{Light purple} : corresponds to the false negative.
+            \item \textbf{Light yellow} : corresponds to the true negative.
+        \end{enumerate}
+\end{itemize}

@@ -191,7 +191,7 @@ def convert_features_to_numerical(combined_df):
     ## Features MISC
     combined_df['average_of_request_length'] = combined_df['average_of_request_length'].astype('float64')
     combined_df['average_of_response_length'] = combined_df['average_of_response_length'].astype('float64')
-    combined_df['type_of_requests_queried_by_hosts'] = combined_df['type_of_requests_queried_by_hosts']
+    combined_df['type_of_requests_queried_by_hosts'] = combined_df['type_of_requests_queried_by_hosts'] 
     combined_df['type_of_responses_received_by_hosts'] = combined_df['type_of_responses_received_by_hosts']
     
     ## Features TIME
@@ -230,6 +230,34 @@ def encoding_features(combined_df):
     label_encoder_number_of_requests_in_a_session = LabelEncoder()
     label_encoder_number_of_unique_domains = LabelEncoder()
     label_encoder_average_counts = LabelEncoder()
+    
+    print("###") 
+    print(combined_df['average_of_response_length'])
+    print(type(combined_df['average_of_response_length']))
+    print("###") 
+    
+    print(combined_df['type_of_requests_queried_by_hosts'])
+    print(combined_df['type_of_responses_received_by_hosts'])
+    print("###") 
+    
+    print(type(combined_df['type_of_requests_queried_by_hosts']))
+    print(type(combined_df['type_of_responses_received_by_hosts']))
+    print("###") 
+    
+    # display the entire dataframe type_of_requests
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+        print(combined_df['type_of_requests_queried_by_hosts'])
+        print("###")
+
+    print("###")
+    print(combined_df['type_of_requests_queried_by_hosts'].unique())
+    print("###")
+
+    print("###")
+    print(combined_df['average_time_for_a_session'].unique())
+    print(type(combined_df['average_time_for_a_session'].unique()))
+    print("###")
+    
     
     ### Fit the label encoder objects
     ## Features MISC
@@ -367,7 +395,7 @@ def convert_to_dataframe_testing(eval_data, path_to_eval_dataset):
 
 
 #######################################
-# Functions to get new features by combining/aggregating the existing ones
+# Function that generate all the combinations of features
 #######################################
 
 def combinations_of_features():

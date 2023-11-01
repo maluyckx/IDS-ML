@@ -12,6 +12,7 @@ import eval_IDS as eval_IDS
 import train_IDS as train_IDS
 
 import utils.constants as constants
+import utils.features as features
 
 
     
@@ -50,6 +51,7 @@ def getting_args():
 
 def main():
     webclients, bots, algo, trained_model, eval_dataset, output_path_to_suspicious_hosts = getting_args()
+
     train_IDS.main_train(webclients, bots, algo, trained_model)
     eval_IDS.main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts)
 

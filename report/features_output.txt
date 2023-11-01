@@ -1,0 +1,55 @@
+
+#### LOGISTIC REGRESSION #### 
+all features :
+
+####
+False alarm rate and detection rate...
+Detection rate : 100.0 %
+False alarm rate : 11.11111111111111 %
+False negative rate : 0.0 %
+True negative rate : 88.88888888888889 %
+Accuracy : 90.0 %
+####
+
+--
+
+only numbers features
+
+####
+False alarm rate and detection rate...
+Detection rate : 58.333333333333336 %
+False alarm rate : 4.62962962962963 %
+False negative rate : 41.66666666666667 %
+True negative rate : 95.37037037037037 %
+Accuracy : 91.66666666666666 %
+####
+
+--
+
+only misc features
+
+####
+False alarm rate and detection rate...
+Detection rate : 100.0 %
+False alarm rate : 24.074074074074073 %
+False negative rate : 0.0 %
+True negative rate : 75.92592592592592 %
+Accuracy : 78.33333333333333 %
+####
+
+--
+
+only time features
+
+####
+False alarm rate and detection rate...
+Detection rate : 100.0 %
+False alarm rate : 6.481481481481481 %
+False negative rate : 0.0 %
+True negative rate : 93.51851851851852 %
+Accuracy : 94.16666666666667 %
+####
+
+
+--
+

@@ -48,36 +48,95 @@ def preprocessing(path_to_eval_dataset, algorithm):
 
     return X_test, y_test, hosts_lists
 
+
+def false_alarm_rate(y_pred, y_test, hosts_lists): # TODO : relire cette fonction après avoir lu les articles 
+    """
+    This function is extremely important for the CORRECT evaluation of the model. We cannot base our evaluation on the accuracy of the model. We need to take into account the false alarm rate and the detection rate.
+    
+    Detection rate = TP / (TP + FN)
+    False alarm rate = FP / (FP + TN)
+    False negative rate = FN / (TP + FN)
+    True negative rate = TN / (FP + TN)
+    """   
+
+    hosts = {"true positive": [], "false positive": [], "false negative": [], "true negative": []}
+    
+    suspicious_hosts = []
+    for i in range(len(y_test)):
+        if y_pred[i] == y_test[i] and y_pred[i] == "bot": # Detection rate
+            hosts["true positive"].append(hosts_lists[i])
+            suspicious_hosts.append(hosts_lists[i])
+            print(colors.Colors.LIGHTCYAN + hosts_lists[i] + " : true positive" + colors.Colors.RESET)
+            
+        elif y_pred[i] != y_test[i] and y_pred[i] == "bot": # False alarm rate
+            hosts["false positive"].append(hosts_lists[i])
+            suspicious_hosts.append(hosts_lists[i])
+            print(colors.Colors.LIGHTRED + hosts_lists[i] + " : false positive" + colors.Colors.RESET)
+            
+        elif y_pred[i] == y_test[i] and y_pred[i] == "human":
+            hosts["true negative"].append(hosts_lists[i])
+            print(colors.Colors.LIGHTYELLOW + hosts_lists[i] + " : true negative" + colors.Colors.RESET)
+            
+        elif y_pred[i] != y_test[i] and y_pred[i] == "human": 
+            hosts["false negative"].append(hosts_lists[i])
+            print(colors.Colors.LIGHTPURPLE + hosts_lists[i] + " : false negative" + colors.Colors.RESET)
+                
+
+    print(colors.Colors.RED + f"####\nFalse alarm rate and detection rate..." + colors.Colors.RESET) 
+    print(colors.Colors.RED + f"Detection rate : {len(hosts['true positive']) / (len(hosts['true positive']) + len(hosts['false negative'])) * 100} %" + colors.Colors.RESET)
+    print(colors.Colors.RED + f"False alarm rate : {len(hosts['false positive']) / (len(hosts['false positive']) + len(hosts['true negative'])) * 100} %" + colors.Colors.RESET)
+    print(colors.Colors.RED + f"False negative rate : {len(hosts['false negative']) / (len(hosts['true positive']) + len(hosts['false negative'])) * 100} %" + colors.Colors.RESET)
+    print(colors.Colors.RED + f"True negative rate : {len(hosts['true negative']) / (len(hosts['false positive']) + len(hosts['true negative'])) * 100} %" + colors.Colors.RESET)
+
+    print(colors.Colors.RED + f"Accuracy : {(len(hosts['true positive']) + len(hosts['true negative'])) / (len(hosts['true positive']) + len(hosts['false positive']) + len(hosts['true negative']) + len(hosts['false negative'])) * 100} %" + colors.Colors.RESET)
+    print(colors.Colors.RED + f"####\n" + colors.Colors.RESET)
+    
+
+    return suspicious_hosts
+
+
+def determine_threshold(y_pred_proba):
+    """
+    This function is used to separate the bots from the 'bots+humans' class.
+    
+    We need to pick an arbitrary threshold to separate the 2 classes but we need to be careful not to pick a threshold that is too low or too high.
+    
+    """
+    # determine the threshold to separate the bots from the humans
+    threshold = 0.2
+    for i in range(len(y_pred_proba)):
+        if abs(y_pred_proba[i][0] - y_pred_proba[i][1]) < threshold:
+            print("human+bot : ", y_pred_proba[i])
+
 def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
     
     X_test, y_test, hosts_lists = preprocessing(eval_dataset, algorithm)
-
     # Test the classifier's accuracy on the test set
+    y_pred_proba = clf.predict_proba(X_test)
+    print(y_pred_proba)
     y_pred = clf.predict(X_test)
 
-    suspicious_hosts = []
-
-    # check all the hosts that were classified as bots
-    for i in range(len(y_test)):
-        if y_pred[i] in y_test[i] and y_pred[i] == "bot":
-            print(hosts_lists[i] + " : true positive")
-            suspicious_hosts.append(hosts_lists[i])
-        elif y_pred[i] not in y_test[i] and y_pred[i] == "bot":
-            print(hosts_lists[i] + " : false positive")
-            suspicious_hosts.append(hosts_lists[i])
+    print(colors.Colors.RED + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
     
-    # write the result into a file in suspicious_hosts.txt
+    determine_threshold(y_pred_proba)
+
+    suspicious_hosts = false_alarm_rate(y_pred, y_test, hosts_lists)
     result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts)
 
-    print(colors.Colors.RED + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
+    # Classification report contains the precision, recall, f1-score and support that will be used for the diagrams
+    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['human', 'bot'], output_dict=True) 
+    print(colors.Colors.PURPLE + "Classification report : \n", classification, colors.Colors.RESET)
 
+    # Extract values
+    precision = classification['weighted avg']['precision']
+    recall = classification['weighted avg']['recall']
+    f1_score = classification['weighted avg']['f1-score']
+    support = classification['weighted avg']['support']
 
-
-    # check the accuracy
-    accuracy = np.mean(y_pred == y_test)
-    print(colors.Colors.PURPLE + f"Accuracy of the model : {accuracy}" + colors.Colors.RESET)
-    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['human', 'bot'])
-    print(colors.Colors.PURPLE + "Classification report : \n", classification + colors.Colors.RESET)
+    print(f"Precision: {precision}")
+    print(f"Recall: {recall}")
+    print(f"F1-Score: {f1_score}")
+    print(f"Support: {support}")
 
     
 

@@ -22,6 +22,13 @@ class Colors:
     ## Classification and accuracy
     PURPLE = "\033[95m"
     
-    ## Future use
+    ### Rates
+    ## Detection rate
     LIGHTCYAN = "\033[94m"
+    ## False alarm rate
+    LIGHTRED = "\033[91m"
+    ## False negative rate
+    LIGHTPURPLE = "\033[95m"
+    ## True negative rate
+    LIGHTYELLOW = "\033[93m"
     

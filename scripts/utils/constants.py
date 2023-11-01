@@ -30,7 +30,7 @@ LIST_OF_FEATURES = [
                     "type_of_requests_queried_by_hosts_encoded",
                     "type_of_responses_received_by_hosts_encoded",
                     
-                    ## Features TIME 
+                    # Features TIME 
                     "average_time_for_a_session_encoded",
                     "average_time_between_requests_encoded",
                     "frequency_of_repeated_requests_in_a_short_time_frame_encoded",

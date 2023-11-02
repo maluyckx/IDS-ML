@@ -1,5 +1,5 @@
 
-#### LOGISTIC REGRESSION #### 
+#### LOGISTIC REGRESSION #### For Eval 1
 all features :
 
 ####
@@ -53,3 +53,39 @@ Accuracy : 94.16666666666667 %
 
 --
 
+### Combination 1: High-Level Behavioral Traits
+Average number of dots in a domain
+Number of requests in a session
+Frequency of repeated requests in a short time frame
+Type of requests queried by hosts
+
+####
+
+####
+
+--
+
+### Combination 2: Domain Interaction and Traffic Patterns
+Number of unique domains
+Average counts
+Average time between requests
+Average of request length
+Type of responses received by hosts
+
+--
+
+### Combination 3: Response-Based and Session Duration Features
+Average of response length
+Average time for a session
+Average time between requests
+Frequency of repeated requests in a short time frame
+
+--
+
+### Combination 4: Detailed Request and Response Patterns
+Type of requests queried by hosts
+Type of responses received by hosts
+Average of request length
+Average of response length
+
+--

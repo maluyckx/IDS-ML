@@ -41,6 +41,59 @@ LIST_OF_FEATURES = [
                     "number_of_unique_domains_encoded",
                     "average_counts_encoded",
                     ]
+
+LIST_OF_FEATURES_MISC = [
+                    "average_of_request_length_encoded",
+                    "average_of_response_length_encoded",
+                    "type_of_requests_queried_by_hosts_encoded",
+                    "type_of_responses_received_by_hosts_encoded",
+                    ]
+
+LIST_OF_FEATURES_TIME = [
+                    "average_time_for_a_session_encoded",
+                    "average_time_between_requests_encoded",
+                    "frequency_of_repeated_requests_in_a_short_time_frame_encoded",
+                    ]
+
+LIST_OF_FEATURES_NUMBERS = [
+                    "average_number_of_dots_in_a_domain_encoded",
+                    "number_of_requests_in_a_session_encoded",
+                    "number_of_unique_domains_encoded",
+                    "average_counts_encoded",
+                    ]
+
+LIST_OF_FEATURES_COMBI1 = [
+                    "average_number_of_dots_in_a_domain_encoded",
+                    "number_of_requests_in_a_session_encoded",
+                    "frequency_of_repeated_requests_in_a_short_time_frame_encoded",
+                    "type_of_requests_queried_by_hosts_encoded",
+                    ]  
+
+
+LIST_OF_FEATURES_COMBI2 = [
+                    "number_of_unique_domains_encoded",
+                    "average_counts_encoded",
+                    "average_time_between_requests_encoded",
+                    "average_of_request_length_encoded",
+                    "type_of_responses_received_by_hosts_encoded",
+                    ]
+
+LIST_OF_FEATURES_COMBI3 = [
+                    "average_of_response_length_encoded",
+                    "average_time_for_a_session_encoded",
+                    "average_time_between_requests_encoded",
+                    "frequency_of_repeated_requests_in_a_short_time_frame_encoded",
+                    ]
+
+LIST_OF_FEATURES_COMBI4 = [
+                    "type_of_requests_queried_by_hosts_encoded",
+                    "type_of_responses_received_by_hosts_encoded",
+                    "average_of_request_length_encoded",
+                    "average_of_response_length_encoded",
+                    ]
+
+
+
 #######################################
 ## Constants for the features
 NOT_A_RESSOURCE_RECORD = "not_a_ressource_record_constant"

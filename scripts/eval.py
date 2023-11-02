@@ -91,6 +91,10 @@ def false_alarm_rate(y_pred, y_test, hosts_lists): # TODO : relire cette fonctio
     print(colors.Colors.RED + f"Accuracy : {(len(hosts['true positive']) + len(hosts['true negative'])) / (len(hosts['true positive']) + len(hosts['false positive']) + len(hosts['true negative']) + len(hosts['false negative'])) * 100} %" + colors.Colors.RESET)
     print(colors.Colors.RED + f"####\n" + colors.Colors.RESET)
     
+    print("true positive : ", len(hosts["true positive"]))
+    print("false positive : ", len(hosts["false positive"]))
+    print("false negative : ", len(hosts["false negative"]))
+    print("true negative : ", len(hosts["true negative"]))
 
     return suspicious_hosts
 
@@ -124,10 +128,9 @@ def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
     result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts)
 
     # Classification report contains the precision, recall, f1-score and support that will be used for the diagrams
-    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['human', 'bot'], output_dict=True) 
+    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['bot', 'human'], output_dict=True) 
     print(colors.Colors.PURPLE + "Classification report : \n", classification, colors.Colors.RESET)
 
-    # Extract values
     precision = classification['weighted avg']['precision']
     recall = classification['weighted avg']['recall']
     f1_score = classification['weighted avg']['f1-score']

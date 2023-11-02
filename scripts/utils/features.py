@@ -136,6 +136,8 @@ def generate_features(all_hosts, data):
         features[host]['average_of_response_length'] = average_of_response_length[host]
         features[host]['type_of_requests_queried_by_hosts'] = tuple(sorted(list((type_of_requests_queried_by_hosts[host])))) # sort the list to have always the same order
         features[host]['type_of_responses_received_by_hosts'] = tuple(sorted(list((type_of_responses_received_by_hosts[host])))) # sort the list to have always the same order
+
+
         
         ## Features TIME 
         features[host]['average_time_for_a_session'] = get_all_timing_for_each_host[host]
@@ -191,8 +193,8 @@ def convert_features_to_numerical(combined_df):
     ## Features MISC
     combined_df['average_of_request_length'] = combined_df['average_of_request_length'].astype('float64')
     combined_df['average_of_response_length'] = combined_df['average_of_response_length'].astype('float64')
-    combined_df['type_of_requests_queried_by_hosts'] = combined_df['type_of_requests_queried_by_hosts'] 
-    combined_df['type_of_responses_received_by_hosts'] = combined_df['type_of_responses_received_by_hosts']
+    combined_df['type_of_requests_queried_by_hosts'] = combined_df['type_of_requests_queried_by_hosts'].apply(lambda x: '_'.join(x))
+    combined_df['type_of_responses_received_by_hosts'] = combined_df['type_of_responses_received_by_hosts'].apply(lambda x: '_'.join(x))
     
     ## Features TIME
     combined_df['average_time_for_a_session'] = combined_df['average_time_for_a_session'].astype('float64')
@@ -231,23 +233,26 @@ def encoding_features(combined_df):
     label_encoder_number_of_unique_domains = LabelEncoder()
     label_encoder_average_counts = LabelEncoder()
     
-    # print("###") 
-    # print(combined_df['average_of_response_length'])
-    # print(type(combined_df['average_of_response_length']))
-    # print("###") 
     
-    # print(combined_df['type_of_requests_queried_by_hosts'])
-    # print(combined_df['type_of_responses_received_by_hosts'])
-    # print("###") 
-    
-    # print(type(combined_df['type_of_requests_queried_by_hosts']))
-    # print(type(combined_df['type_of_responses_received_by_hosts']))
-    # print("###") 
     
     # # display the entire dataframe type_of_requests
     # with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    #     print(combined_df['type_of_requests_queried_by_hosts'])
-    #     print("###")
+    #         print("###") 
+    #         print("Average of request length : ")
+    #         print(combined_df['average_of_response_length'])
+    #         print(type(combined_df['average_of_response_length']))
+    #         print("###") 
+    #         print("Average of response length : ")
+    #         print(combined_df['type_of_requests_queried_by_hosts'])
+    #         print(type(combined_df['type_of_requests_queried_by_hosts']))
+    #         print("###") 
+    #         print("Type of requests queried by hosts : ")
+    #         print(combined_df['type_of_responses_received_by_hosts'])
+    #         print(type(combined_df['type_of_responses_received_by_hosts']))
+    #         print("###") 
+
+    
+
 
     # print("###")
     # print(combined_df['type_of_requests_queried_by_hosts'].unique())
@@ -263,6 +268,10 @@ def encoding_features(combined_df):
     ## Features MISC
     combined_df['average_of_request_length_encoded'] = label_encoder_average_of_request_length.fit_transform(combined_df['average_of_request_length'])
     combined_df['average_of_response_length_encoded'] = label_encoder_average_of_response_length.fit_transform(combined_df['average_of_response_length'])
+
+    combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(combined_df['type_of_requests_queried_by_hosts'])
+    combined_df['type_of_responses_received_by_hosts_encoded'] = label_encoder_type_of_responses_received_by_hosts.fit_transform(combined_df['type_of_responses_received_by_hosts'])
+
     combined_df['type_of_requests_queried_by_hosts_encoded'] = label_encoder_type_of_requests_queried_by_hosts.fit_transform(combined_df['type_of_requests_queried_by_hosts'])
     combined_df['type_of_responses_received_by_hosts_encoded'] = label_encoder_type_of_responses_received_by_hosts.fit_transform(combined_df['type_of_responses_received_by_hosts'])
     
@@ -384,6 +393,9 @@ def convert_to_dataframe_testing(eval_data, path_to_eval_dataset):
         else:
             eval_features[i]['label'] = 'human'
     bots_features_df = pd.DataFrame(eval_features)
+
+    print(bots_features_df['type_of_requests_queried_by_hosts'])
+    print(type(bots_features_df['type_of_requests_queried_by_hosts']))
 
     combined_df = convert_features_to_numerical(bots_features_df)
 

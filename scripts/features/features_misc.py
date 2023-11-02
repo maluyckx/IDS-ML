@@ -65,6 +65,7 @@ def get_type_of_requests_queried_by_hosts(aggregated_data):
 
 def get_type_of_responses_received_by_hosts(aggregated_data):   
     """
+    Getting the type of responses received by each host
     Maybe the response type is also interesting ?? (response type received by each host)
     """
     type_of_responses_received_by_hosts = {}

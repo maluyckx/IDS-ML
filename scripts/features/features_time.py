@@ -156,4 +156,7 @@ def frequency_of_repeated_requests_in_a_short_time_frame(aggregated_data):
 
         frequency_of_repeated_requests_in_a_short_time_frame[key] = mean(value.values())
 
+    print(frequency_of_repeated_requests_in_a_short_time_frame)
+    print(mean(frequency_of_repeated_requests_in_a_short_time_frame.values()))
+
     return frequency_of_repeated_requests_in_a_short_time_frame

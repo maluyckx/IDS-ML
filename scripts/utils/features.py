@@ -330,7 +330,7 @@ def convert_to_dataframe_training(bots_data, webclients_data):
 
     ## Combine the two datasets ##
     combined_df = pd.DataFrame(bots_features_df)
-    combined_df = combined_df.append(pd.DataFrame(webclients_features_df), ignore_index=True)
+    combined_df = pd.concat([combined_df, pd.DataFrame(webclients_features_df)], ignore_index=True)
     ## \ Combine the two datasets ##
     
     ## Convert the features to numerical values ##

@@ -60,8 +60,24 @@ Frequency of repeated requests in a short time frame
 Type of requests queried by hosts
 
 ####
-
+False alarm rate and detection rate...
+Detection rate : 100.0 %
+False alarm rate : 2.7777777777777777 %
+False negative rate : 0.0 %
+True negative rate : 97.22222222222221 %
+Accuracy : 97.5 %
 ####
+
+true positive :  12
+false positive :  3
+false negative :  0
+true negative :  105
+Classification report : 
+ {'bot': {'precision': 0.8, 'recall': 1.0, 'f1-score': 0.888888888888889, 'support': 12.0}, 'human': {'precision': 1.0, 'recall': 0.9722222222222222, 'f1-score': 0.9859154929577464, 'support': 108.0}, 'accuracy': 0.975, 'macro avg': {'precision': 0.9, 'recall': 0.9861111111111112, 'f1-score': 0.9374021909233177, 'support': 120.0}, 'weighted avg': {'precision': 0.98, 'recall': 0.975, 'f1-score': 0.9762128325508607, 'support': 120.0}} 
+Precision: 0.98
+Recall: 0.975
+F1-Score: 0.9762128325508607
+Support: 120.0
 
 --
 
@@ -72,6 +88,26 @@ Average time between requests
 Average of request length
 Type of responses received by hosts
 
+####
+False alarm rate and detection rate...
+Detection rate : 100.0 %
+False alarm rate : 13.88888888888889 %
+False negative rate : 0.0 %
+True negative rate : 86.11111111111111 %
+Accuracy : 87.5 %
+####
+
+true positive :  12
+false positive :  15
+false negative :  0
+true negative :  93
+Classification report : 
+ {'bot': {'precision': 0.4444444444444444, 'recall': 1.0, 'f1-score': 0.6153846153846153, 'support': 12.0}, 'human': {'precision': 1.0, 'recall': 0.8611111111111112, 'f1-score': 0.9253731343283582, 'support': 108.0}, 'accuracy': 0.875, 'macro avg': {'precision': 0.7222222222222222, 'recall': 0.9305555555555556, 'f1-score': 0.7703788748564868, 'support': 120.0}, 'weighted avg': {'precision': 0.9444444444444444, 'recall': 0.875, 'f1-score': 0.894374282433984, 'support': 120.0}} 
+Precision: 0.9444444444444444
+Recall: 0.875
+F1-Score: 0.894374282433984
+Support: 120.0
+
 --
 
 ### Combination 3: Response-Based and Session Duration Features
@@ -79,6 +115,26 @@ Average of response length
 Average time for a session
 Average time between requests
 Frequency of repeated requests in a short time frame
+
+####
+False alarm rate and detection rate...
+Detection rate : 100.0 %
+False alarm rate : 10.185185185185185 %
+False negative rate : 0.0 %
+True negative rate : 89.81481481481481 %
+Accuracy : 90.83333333333333 %
+####
+
+true positive :  12
+false positive :  11
+false negative :  0
+true negative :  97
+Classification report : 
+ {'bot': {'precision': 0.5217391304347826, 'recall': 1.0, 'f1-score': 0.6857142857142856, 'support': 12.0}, 'human': {'precision': 1.0, 'recall': 0.8981481481481481, 'f1-score': 0.9463414634146341, 'support': 108.0}, 'accuracy': 0.9083333333333333, 'macro avg': {'precision': 0.7608695652173914, 'recall': 0.9490740740740741, 'f1-score': 0.8160278745644598, 'support': 120.0}, 'weighted avg': {'precision': 0.9521739130434782, 'recall': 0.9083333333333333, 'f1-score': 0.9202787456445993, 'support': 120.0}} 
+Precision: 0.9521739130434782
+Recall: 0.9083333333333333
+F1-Score: 0.9202787456445993
+Support: 120.0
 
 --
 

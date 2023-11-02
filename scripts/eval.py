@@ -97,7 +97,7 @@ def false_alarm_rate(y_pred, y_test, hosts_lists): # TODO : relire cette fonctio
     print(colors.Colors.RED + "Number of true negative : ", len(hosts["true negative"]) , colors.Colors.RESET)
     print(colors.Colors.RED + f"####\n" + colors.Colors.RESET)
 
-    return suspicious_hosts
+    return suspicious_hosts, hosts
 
 
 def determine_threshold(y_pred_proba):
@@ -118,8 +118,85 @@ def determine_threshold(y_pred_proba):
     return human_bot
 
 
+
+# def classification_report_with_human_bot(hosts):
+#     """
+#     Precision = True Positives / (True Positives + False Positives)
+#     Recall = True Positives / (True Positives + False Negatives)
+#     F1 Score = 2 * (Precision * Recall) / (Precision + Recall)
+#     """
+#     # compute precision, recall and f1-score for bots and human
+#     precision_bot = 0
+#     recall_bot = 0
+#     f1_score_bot = 0
+#     support_bot = 0
+    
+#     precision_human = 0
+#     recall_human = 0
+#     f1_score_human = 0
+#     support_human = 0
+
+#     # precision_human_bot = 0
+#     # recall_human_bot = 0
+#     # f1_score_human_bot = 0
+#     # support_human_bot = 0
+
+#     # precision, recall, f1-score and support for bots
+#     precision_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false positive"]))
+#     recall_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false negative"]))
+#     f1_score_bot = 2 * (precision_bot * recall_bot) / (precision_bot + recall_bot)
+#     support_bot = len(hosts["true positive"]) + len(hosts["false negative"])
+
+#     # precision, recall, f1-score and support for humans
+#     precision_human = len(hosts["true negative"]) / (len(hosts["true negative"]) + len(hosts["false negative"]))
+#     recall_human = len(hosts["true negative"]) / (len(hosts["true negative"]) + len(hosts["false positive"]))
+#     f1_score_human = 2 * (precision_human * recall_human) / (precision_human + recall_human)
+#     support_human = len(hosts["true negative"]) + len(hosts["false positive"])
+
+#     # precision, recall, f1-score and support for human+bot
+#     # precision_human_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false positive"]) + len(hosts["false negative"]))
+#     # recall_human_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false positive"]) + len(hosts["false negative"]))
+#     # f1_score_human_bot = 2 * (precision_human_bot * recall_human_bot) / (precision_human_bot + recall_human_bot)
+#     # support_human_bot = len(hosts["true positive"]) + len(hosts["false positive"]) + len(hosts["false negative"])
+    
+#     # weighted avg
+#     precision_weighted_avg = (precision_bot * support_bot + precision_human * support_human) / (support_bot + support_human)
+#     recall_weighted_avg = (recall_bot * support_bot + recall_human * support_human) / (support_bot + support_human)
+#     f1_score_weighted_avg = (f1_score_bot * support_bot + f1_score_human * support_human) / (support_bot + support_human)
+#     support_weighted_avg = support_bot + support_human
+
+#     print(colors.Colors.PURPLE + f"#### Classification report : \n" + colors.Colors.RESET)
+
+#     print(colors.Colors.PURPLE + "## Bot : \n")
+#     print(f"Precision: {precision_bot}")
+#     print(f"Recall: {recall_bot}")
+#     print(f"F1-Score: {f1_score_bot}")
+#     print(f"Support: {support_bot} \n", colors.Colors.RESET)
+
+#     print(colors.Colors.PURPLE + "## Human : \n" )
+#     print(f"Precision: {precision_human}")
+#     print(f"Recall: {recall_human}")
+#     print(f"F1-Score: {f1_score_human}")
+#     print(f"Support: {support_human} \n", colors.Colors.RESET)
+
+#     # print(colors.Colors.PURPLE + "## Human + Bot : \n" )
+#     # print(f"Precision: {precision_human_bot}")
+#     # print(f"Recall: {recall_human_bot}")
+#     # print(f"F1-Score: {f1_score_human_bot}")
+#     # print(f"Support: {support_human_bot} \n", colors.Colors.RESET)
+
+#     print(colors.Colors.PURPLE + "## Weighted avg : \n")
+#     print(f"Precision: {precision_weighted_avg}")
+#     print(f"Recall: {recall_weighted_avg}")
+#     print(f"F1-Score: {f1_score_weighted_avg}")
+#     print(f"Support: {support_weighted_avg}", colors.Colors.RESET)
+
+#     print(colors.Colors.PURPLE + f"####\n" + colors.Colors.RESET)
+
+
 def print_classification_report(y_pred, y_test):
-    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['bot', 'human'], output_dict=True) 
+    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['bot', 'human'], output_dict=True)    
+    
     print(colors.Colors.PURPLE + f"#### Classification report : \n" + colors.Colors.RESET) 
 
     print(colors.Colors.PURPLE + "## Bot : \n")
@@ -161,19 +238,17 @@ def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
     
     human_bot = determine_threshold(y_pred_proba)
 
-    # for index in human_bot:
-    #     print("#####")
-    #     print("before : ", y_pred[index])
-    #     y_pred[index] = "human_bot" 
-    #     print("after : ", y_pred[index])
 
-    suspicious_hosts = false_alarm_rate(y_pred, y_test, hosts_lists)
+    suspicious_hosts, hosts = false_alarm_rate(y_pred, y_test, hosts_lists)
     result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts)
 
     # Classification report contains the precision, recall, f1-score and support that will be used for the diagrams
-    # We will need to do our own classification report with 3 classes : bot, human and human_bot
     print_classification_report(y_pred, y_test)
 
+    # Post processing
+    for index in human_bot:
+        y_pred[index] = "human+bot" 
+    return clf, y_pred, y_test
     
 
 def main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts):
@@ -184,7 +259,7 @@ def main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts):
     algorithm = str(trained_model).split("/")[2]
 
     ## evaluate the model
-    eval_model(loaded_clf, eval_dataset, algorithm, output_path_to_suspicious_hosts)
+    clf, y_pred, y_test = eval_model(loaded_clf, eval_dataset, algorithm, output_path_to_suspicious_hosts)
     
     ## Diagrams
     # diagrams.main_diagrams(algorithm)

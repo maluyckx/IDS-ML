@@ -110,11 +110,86 @@ False negative rate : 83.33333333333334 %
 True negative rate : 91.66666666666666 %
 Accuracy : 84.16666666666667 %
 ####
+Total host :  120 
+Number of true positive :  2 
+Number of false positive :  9 
+Number of false negative :  10 
+Number of true negative :  99 
+####
 
-true positive :  2
-false positive :  9
-false negative :  10
-true negative :  99
+##############
+bot :  [0.45844816 0.54155184]
+bot :  bot
+bot :  human
+bot :  unamur039
+##############
+##############
+bot :  [0.25225027 0.74774973]
+bot :  bot
+bot :  human
+bot :  unamur034
+##############
+##############
+bot :  [0.47344668 0.52655332]
+bot :  bot
+bot :  human
+bot :  unamur040
+##############
+##############
+bot :  [0.59547402 0.40452598]
+bot :  bot
+bot :  human
+bot :  unamur03
+##############
+##############
+bot :  [0.4782191 0.5217809]
+bot :  bot
+bot :  human
+bot :  unamur028
+##############
+##############
+bot :  [0.30669043 0.69330957]
+bot :  bot
+bot :  bot
+bot :  unamur05
+##############
+##############
+bot :  [0.60761138 0.39238862]
+bot :  bot
+bot :  human
+bot :  unamur08
+##############
+##############
+bot :  [0.25271873 0.74728127]
+bot :  bot
+bot :  human
+bot :  unamur038
+##############
+##############
+bot :  [0.3221073 0.6778927]
+bot :  bot
+bot :  human
+bot :  unamur022
+##############
+##############
+bot :  [0.31279369 0.68720631]
+bot :  bot
+bot :  human
+bot :  unamur029
+##############
+##############
+bot :  [0.46496705 0.53503295]
+bot :  bot
+bot :  human
+bot :  unamur116
+##############
+##############
+bot :  [0.26913288 0.73086712]
+bot :  bot
+bot :  human
+bot :  unamur06
+##############
+
 Classification report : 
  {'bot': {'precision': 0.18181818181818182, 'recall': 0.16666666666666666, 'f1-score': 0.17391304347826086, 'support': 12.0}, 'human': {'precision': 0.908256880733945, 'recall': 0.9166666666666666, 'f1-score': 0.912442396313364, 'support': 108.0}, 'accuracy': 0.8416666666666667, 'macro avg': {'precision': 0.5450375312760634, 'recall': 0.5416666666666666, 'f1-score': 0.5431777198958124, 'support': 120.0}, 'weighted avg': {'precision': 0.8356130108423687, 'recall': 0.8416666666666667, 'f1-score': 0.8385894610298537, 'support': 120.0}} 
 Precision: 0.8356130108423687

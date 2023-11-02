@@ -59,6 +59,17 @@ True negative rate : 75.92592592592592 %
 Accuracy : 78.33333333333333 %
 ####
 
+true positive :  12
+false positive :  26
+false negative :  0
+true negative :  82
+Classification report : 
+ {'bot': {'precision': 0.3157894736842105, 'recall': 1.0, 'f1-score': 0.4799999999999999, 'support': 12.0}, 'human': {'precision': 1.0, 'recall': 0.7592592592592593, 'f1-score': 0.8631578947368421, 'support': 108.0}, 'accuracy': 0.7833333333333333, 'macro avg': {'precision': 0.6578947368421053, 'recall': 0.8796296296296297, 'f1-score': 0.671578947368421, 'support': 120.0}, 'weighted avg': {'precision': 0.931578947368421, 'recall': 0.7833333333333333, 'f1-score': 0.8248421052631579, 'support': 120.0}} 
+Precision: 0.931578947368421
+Recall: 0.7833333333333333
+F1-Score: 0.8248421052631579
+Support: 120.0
+
 --
 
 only time features
@@ -72,6 +83,16 @@ True negative rate : 93.51851851851852 %
 Accuracy : 94.16666666666667 %
 ####
 
+true positive :  12
+false positive :  7
+false negative :  0
+true negative :  101
+Classification report : 
+ {'bot': {'precision': 0.631578947368421, 'recall': 1.0, 'f1-score': 0.7741935483870968, 'support': 12.0}, 'human': {'precision': 1.0, 'recall': 0.9351851851851852, 'f1-score': 0.9665071770334929, 'support': 108.0}, 'accuracy': 0.9416666666666667, 'macro avg': {'precision': 0.8157894736842105, 'recall': 0.9675925925925926, 'f1-score': 0.8703503627102949, 'support': 120.0}, 'weighted avg': {'precision': 0.9631578947368421, 'recall': 0.9416666666666667, 'f1-score': 0.9472758141688532, 'support': 120.0}} 
+Precision: 0.9631578947368421
+Recall: 0.9416666666666667
+F1-Score: 0.9472758141688532
+Support: 120.0
 
 --
 

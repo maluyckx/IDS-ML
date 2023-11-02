@@ -26,3 +26,183 @@ Support: 120.0
 
 only numbers features
 
+####
+False alarm rate and detection rate...
+Detection rate : 0.0 %
+False alarm rate : 6.481481481481481 %
+False negative rate : 100.0 %
+True negative rate : 93.51851851851852 %
+Accuracy : 84.16666666666667 %
+####
+
+true positive :  0
+false positive :  7
+false negative :  12
+true negative :  101
+Classification report : 
+ {'bot': {'precision': 0.0, 'recall': 0.0, 'f1-score': 0.0, 'support': 12.0}, 'human': {'precision': 0.8938053097345132, 'recall': 0.9351851851851852, 'f1-score': 0.9140271493212669, 'support': 108.0}, 'accuracy': 0.8416666666666667, 'macro avg': {'precision': 0.4469026548672566, 'recall': 0.4675925925925926, 'f1-score': 0.45701357466063347, 'support': 120.0}, 'weighted avg': {'precision': 0.8044247787610619, 'recall': 0.8416666666666667, 'f1-score': 0.8226244343891402, 'support': 120.0}} 
+Precision: 0.8044247787610619
+Recall: 0.8416666666666667
+F1-Score: 0.8226244343891402
+Support: 120.0
+
+--
+
+only misc features
+
+####
+False alarm rate and detection rate...
+Detection rate : 66.66666666666666 %
+False alarm rate : 68.51851851851852 %
+False negative rate : 33.33333333333333 %
+True negative rate : 31.48148148148148 %
+Accuracy : 35.0 %
+####
+
+true positive :  8
+false positive :  74
+false negative :  4
+true negative :  34
+Classification report : 
+ {'bot': {'precision': 0.0975609756097561, 'recall': 0.6666666666666666, 'f1-score': 0.1702127659574468, 'support': 12.0}, 'human': {'precision': 0.8947368421052632, 'recall': 0.3148148148148148, 'f1-score': 0.4657534246575343, 'support': 108.0}, 'accuracy': 0.35, 'macro avg': {'precision': 0.4961489088575096, 'recall': 0.4907407407407407, 'f1-score': 0.3179830953074905, 'support': 120.0}, 'weighted avg': {'precision': 0.8150192554557125, 'recall': 0.35, 'f1-score': 0.4361993587875255, 'support': 120.0}} 
+Precision: 0.8150192554557125
+Recall: 0.35
+F1-Score: 0.4361993587875255
+Support: 120.0
+
+--
+
+only time features
+
+####
+False alarm rate and detection rate...
+Detection rate : 16.666666666666664 %
+False alarm rate : 6.481481481481481 %
+False negative rate : 83.33333333333334 %
+True negative rate : 93.51851851851852 %
+Accuracy : 85.83333333333333 %
+####
+
+true positive :  2
+false positive :  7
+false negative :  10
+true negative :  101
+Classification report : 
+ {'bot': {'precision': 0.2222222222222222, 'recall': 0.16666666666666666, 'f1-score': 0.1904761904761905, 'support': 12.0}, 'human': {'precision': 0.9099099099099099, 'recall': 0.9351851851851852, 'f1-score': 0.9223744292237445, 'support': 108.0}, 'accuracy': 0.8583333333333333, 'macro avg': {'precision': 0.5660660660660661, 'recall': 0.5509259259259259, 'f1-score': 0.5564253098499675, 'support': 120.0}, 'weighted avg': {'precision': 0.8411411411411412, 'recall': 0.8583333333333333, 'f1-score': 0.8491846053489892, 'support': 120.0}} 
+Precision: 0.8411411411411412
+Recall: 0.8583333333333333
+F1-Score: 0.8491846053489892
+Support: 120.0
+
+--
+
+### Combination 1: High-Level Behavioral Traits
+Average number of dots in a domain
+Number of requests in a session
+Frequency of repeated requests in a short time frame
+Type of requests queried by hosts
+
+####
+False alarm rate and detection rate...
+Detection rate : 16.666666666666664 %
+False alarm rate : 8.333333333333332 %
+False negative rate : 83.33333333333334 %
+True negative rate : 91.66666666666666 %
+Accuracy : 84.16666666666667 %
+####
+
+true positive :  2
+false positive :  9
+false negative :  10
+true negative :  99
+Classification report : 
+ {'bot': {'precision': 0.18181818181818182, 'recall': 0.16666666666666666, 'f1-score': 0.17391304347826086, 'support': 12.0}, 'human': {'precision': 0.908256880733945, 'recall': 0.9166666666666666, 'f1-score': 0.912442396313364, 'support': 108.0}, 'accuracy': 0.8416666666666667, 'macro avg': {'precision': 0.5450375312760634, 'recall': 0.5416666666666666, 'f1-score': 0.5431777198958124, 'support': 120.0}, 'weighted avg': {'precision': 0.8356130108423687, 'recall': 0.8416666666666667, 'f1-score': 0.8385894610298537, 'support': 120.0}} 
+Precision: 0.8356130108423687
+Recall: 0.8416666666666667
+F1-Score: 0.8385894610298537
+Support: 120.0
+
+--
+
+### Combination 2: Domain Interaction and Traffic Patterns
+Number of unique domains
+Average counts
+Average time between requests
+Average of request length
+Type of responses received by hosts
+
+####
+False alarm rate and detection rate...
+Detection rate : 33.33333333333333 %
+False alarm rate : 16.666666666666664 %
+False negative rate : 66.66666666666666 %
+True negative rate : 83.33333333333334 %
+Accuracy : 78.33333333333333 %
+####
+
+true positive :  4
+false positive :  18
+false negative :  8
+true negative :  90
+Classification report : 
+ {'bot': {'precision': 0.18181818181818182, 'recall': 0.3333333333333333, 'f1-score': 0.23529411764705885, 'support': 12.0}, 'human': {'precision': 0.9183673469387755, 'recall': 0.8333333333333334, 'f1-score': 0.8737864077669903, 'support': 108.0}, 'accuracy': 0.7833333333333333, 'macro avg': {'precision': 0.5500927643784786, 'recall': 0.5833333333333334, 'f1-score': 0.5545402627070246, 'support': 120.0}, 'weighted avg': {'precision': 0.8447124304267162, 'recall': 0.7833333333333333, 'f1-score': 0.8099371787549973, 'support': 120.0}} 
+Precision: 0.8447124304267162
+Recall: 0.7833333333333333
+F1-Score: 0.8099371787549973
+Support: 120.0
+
+--
+
+### Combination 3: Response-Based and Session Duration Features
+Average of response length
+Average time for a session
+Average time between requests
+Frequency of repeated requests in a short time frame
+
+####
+False alarm rate and detection rate...
+Detection rate : 16.666666666666664 %
+False alarm rate : 9.25925925925926 %
+False negative rate : 83.33333333333334 %
+True negative rate : 90.74074074074075 %
+Accuracy : 83.33333333333334 %
+####
+
+true positive :  2
+false positive :  10
+false negative :  10
+true negative :  98
+Classification report : 
+ {'bot': {'precision': 0.16666666666666666, 'recall': 0.16666666666666666, 'f1-score': 0.16666666666666666, 'support': 12.0}, 'human': {'precision': 0.9074074074074074, 'recall': 0.9074074074074074, 'f1-score': 0.9074074074074074, 'support': 108.0}, 'accuracy': 0.8333333333333334, 'macro avg': {'precision': 0.5370370370370371, 'recall': 0.5370370370370371, 'f1-score': 0.5370370370370371, 'support': 120.0}, 'weighted avg': {'precision': 0.8333333333333334, 'recall': 0.8333333333333334, 'f1-score': 0.8333333333333334, 'support': 120.0}} 
+Precision: 0.8333333333333334
+Recall: 0.8333333333333334
+F1-Score: 0.8333333333333334
+Support: 120.0
+
+--
+
+### Combination 4: Detailed Request and Response Patterns
+Type of requests queried by hosts
+Type of responses received by hosts
+Average of request length
+Average of response length
+
+####
+False alarm rate and detection rate...
+Detection rate : 66.66666666666666 %
+False alarm rate : 68.51851851851852 %
+False negative rate : 33.33333333333333 %
+True negative rate : 31.48148148148148 %
+Accuracy : 35.0 %
+####
+
+true positive :  8
+false positive :  74
+false negative :  4
+true negative :  34
+Classification report : 
+ {'bot': {'precision': 0.0975609756097561, 'recall': 0.6666666666666666, 'f1-score': 0.1702127659574468, 'support': 12.0}, 'human': {'precision': 0.8947368421052632, 'recall': 0.3148148148148148, 'f1-score': 0.4657534246575343, 'support': 108.0}, 'accuracy': 0.35, 'macro avg': {'precision': 0.4961489088575096, 'recall': 0.4907407407407407, 'f1-score': 0.3179830953074905, 'support': 120.0}, 'weighted avg': {'precision': 0.8150192554557125, 'recall': 0.35, 'f1-score': 0.4361993587875255, 'support': 120.0}} 
+Precision: 0.8150192554557125
+Recall: 0.35
+F1-Score: 0.4361993587875255
+Support: 120.0

@@ -42,7 +42,7 @@ def preprocessing(path_to_eval_dataset, algorithm):
 
     combined_df = features.encoding_features(combined_df)
 
-    X_test = combined_df[constants.LIST_OF_FEATURES_COMBI4]
+    X_test = combined_df[constants.LIST_OF_FEATURES_COMBI1]
     y_test = combined_df['label']
     hosts_lists = combined_df['host']
 
@@ -107,7 +107,7 @@ def determine_threshold(y_pred_proba):
     
     """
     # determine the threshold to separate the bots from the humans
-    threshold = 0.2
+    threshold = 0.45
     for i in range(len(y_pred_proba)):
         if abs(y_pred_proba[i][0] - y_pred_proba[i][1]) < threshold:
             print("human+bot : ", y_pred_proba[i])

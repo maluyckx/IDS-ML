@@ -89,12 +89,13 @@ def false_alarm_rate(y_pred, y_test, hosts_lists): # TODO : relire cette fonctio
     print(colors.Colors.RED + f"True negative rate : {len(hosts['true negative']) / (len(hosts['false positive']) + len(hosts['true negative'])) * 100} %" + colors.Colors.RESET)
 
     print(colors.Colors.RED + f"Accuracy : {(len(hosts['true positive']) + len(hosts['true negative'])) / (len(hosts['true positive']) + len(hosts['false positive']) + len(hosts['true negative']) + len(hosts['false negative'])) * 100} %" + colors.Colors.RESET)
-    print(colors.Colors.RED + f"####\n" + colors.Colors.RESET)
     
-    print("true positive : ", len(hosts["true positive"]))
-    print("false positive : ", len(hosts["false positive"]))
-    print("false negative : ", len(hosts["false negative"]))
-    print("true negative : ", len(hosts["true negative"]))
+    print(colors.Colors.RED + f"####\nTotal host : ", len(hosts_lists), colors.Colors.RESET)
+    print(colors.Colors.RED + "Number of true positive : ", len(hosts["true positive"]), colors.Colors.RESET)
+    print(colors.Colors.RED + "Number of false positive : ", len(hosts["false positive"]), colors.Colors.RESET)
+    print(colors.Colors.RED + "Number of false negative : ", len(hosts["false negative"]), colors.Colors.RESET)
+    print(colors.Colors.RED + "Number of true negative : ", len(hosts["true negative"]) , colors.Colors.RESET)
+    print(colors.Colors.RED + f"####\n" + colors.Colors.RESET)
 
     return suspicious_hosts
 
@@ -107,39 +108,71 @@ def determine_threshold(y_pred_proba):
     
     """
     # determine the threshold to separate the bots from the humans
-    threshold = 0.45
+    human_bot = []
+    threshold = 0.5
     for i in range(len(y_pred_proba)):
         if abs(y_pred_proba[i][0] - y_pred_proba[i][1]) < threshold:
             print("human+bot : ", y_pred_proba[i])
+            human_bot.append(i)
+
+    return human_bot
+
+
+def print_classification_report(y_pred, y_test):
+    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['bot', 'human'], output_dict=True) 
+    print(colors.Colors.PURPLE + f"#### Classification report : \n" + colors.Colors.RESET) 
+
+    print(colors.Colors.PURPLE + "## Bot : \n")
+    print(f"Precision: {classification['bot']['precision']}")
+    print(f"Recall: {classification['bot']['recall']}")
+    print(f"F1-Score: {classification['bot']['f1-score']}")
+    print(f"Support: {classification['bot']['support']} \n", colors.Colors.RESET)
+    
+    print(colors.Colors.PURPLE + "## Human : \n" )
+    print(f"Precision: {classification['human']['precision']}")
+    print(f"Recall: {classification['human']['recall']}")
+    print(f"F1-Score: {classification['human']['f1-score']}")
+    print(f"Support: {classification['human']['support']} \n", colors.Colors.RESET)
+    
+    # print(colors.Colors.PURPLE + "## Human + Bot : \n" )
+    # print(f"Precision: {classification['human_bot']['precision']}")
+    # print(f"Recall: {classification['human_bot']['recall']}")
+    # print(f"F1-Score: {classification['human_bot']['f1-score']}")
+    # print(f"Support: {classification['human_bot']['support']} \n", colors.Colors.RESET)
+    
+    print(colors.Colors.PURPLE + "## Weighted avg : \n")
+    print(f"Precision: {classification['weighted avg']['precision']}")
+    print(f"Recall: {classification['weighted avg']['recall']}")
+    print(f"F1-Score: {classification['weighted avg']['f1-score']}")
+    print(f"Support: {classification['weighted avg']['support']}", colors.Colors.RESET)
+    
+    print(colors.Colors.PURPLE + f"####\n" + colors.Colors.RESET)
+
 
 def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
     
     X_test, y_test, hosts_lists = preprocessing(eval_dataset, algorithm)
     # Test the classifier's accuracy on the test set
     y_pred_proba = clf.predict_proba(X_test)
-    print(y_pred_proba)
+    # print(y_pred_proba)
     y_pred = clf.predict(X_test)
 
     print(colors.Colors.RED + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
     
-    determine_threshold(y_pred_proba)
+    human_bot = determine_threshold(y_pred_proba)
+
+    # for index in human_bot:
+    #     print("#####")
+    #     print("before : ", y_pred[index])
+    #     y_pred[index] = "human_bot" 
+    #     print("after : ", y_pred[index])
 
     suspicious_hosts = false_alarm_rate(y_pred, y_test, hosts_lists)
     result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts)
 
     # Classification report contains the precision, recall, f1-score and support that will be used for the diagrams
-    classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['bot', 'human'], output_dict=True) 
-    print(colors.Colors.PURPLE + "Classification report : \n", classification, colors.Colors.RESET)
-
-    precision = classification['weighted avg']['precision']
-    recall = classification['weighted avg']['recall']
-    f1_score = classification['weighted avg']['f1-score']
-    support = classification['weighted avg']['support']
-
-    print(f"Precision: {precision}")
-    print(f"Recall: {recall}")
-    print(f"F1-Score: {f1_score}")
-    print(f"Support: {support}")
+    # We will need to do our own classification report with 3 classes : bot, human and human_bot
+    print_classification_report(y_pred, y_test)
 
     
 

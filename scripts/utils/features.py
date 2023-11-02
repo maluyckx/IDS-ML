@@ -234,37 +234,6 @@ def encoding_features(combined_df):
     label_encoder_average_counts = LabelEncoder()
     
     
-    
-    # # display the entire dataframe type_of_requests
-    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    #         print("###") 
-    #         print("Average of request length : ")
-    #         print(combined_df['average_of_response_length'])
-    #         print(type(combined_df['average_of_response_length']))
-    #         print("###") 
-    #         print("Average of response length : ")
-    #         print(combined_df['type_of_requests_queried_by_hosts'])
-    #         print(type(combined_df['type_of_requests_queried_by_hosts']))
-    #         print("###") 
-    #         print("Type of requests queried by hosts : ")
-    #         print(combined_df['type_of_responses_received_by_hosts'])
-    #         print(type(combined_df['type_of_responses_received_by_hosts']))
-    #         print("###") 
-
-    
-
-
-    # print("###")
-    # print(combined_df['type_of_requests_queried_by_hosts'].unique())
-    # print("###")
-
-    # print("###")
-    # print(combined_df['average_time_for_a_session'].unique())
-    # print(type(combined_df['average_time_for_a_session'].unique()))
-    # print("###")
-    
-    
-    ### Fit the label encoder objects
     ## Features MISC
     combined_df['average_of_request_length_encoded'] = label_encoder_average_of_request_length.fit_transform(combined_df['average_of_request_length'])
     combined_df['average_of_response_length_encoded'] = label_encoder_average_of_response_length.fit_transform(combined_df['average_of_response_length'])
@@ -393,9 +362,6 @@ def convert_to_dataframe_testing(eval_data, path_to_eval_dataset):
         else:
             eval_features[i]['label'] = 'human'
     bots_features_df = pd.DataFrame(eval_features)
-
-    print(bots_features_df['type_of_requests_queried_by_hosts'])
-    print(type(bots_features_df['type_of_requests_queried_by_hosts']))
 
     combined_df = convert_features_to_numerical(bots_features_df)
 

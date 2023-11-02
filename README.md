@@ -45,9 +45,7 @@ First of all, navigate to the `scripts` folder :
 cd scripts
 ```
 
-
-
-    In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks`, `random_forest` or `knn`. 
+In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks`, `random_forest` or `knn`. 
 
 ---
 To train the model, run the following command :

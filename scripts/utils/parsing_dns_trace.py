@@ -238,7 +238,7 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
     with open(path_to_webclients_tcpdump, 'r') as webclient_file:
         webclients_data = parsing_file(webclient_file)
 
-    print(colors.Colors.GREEN + "Parsing TRAINING datasets completed!\n####\n" + colors.Colors.RESET)
+    print(colors.Colors.GREEN + "Parsing TRAINING datasets completed!\n####" + colors.Colors.RESET)
     return bots_data, webclients_data
 
 

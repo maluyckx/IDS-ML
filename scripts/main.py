@@ -36,8 +36,8 @@ def getting_args():
     bots = args.bots
     algo = str(args.algo)
     
-    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest":
-        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest`")
+    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn" and algo != "naive_bayes":
+        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn` or 'naive_bayes'")
         print("The script will continue with the default algorithm : logistic_regression")
         algo = "logistic_regression"
 

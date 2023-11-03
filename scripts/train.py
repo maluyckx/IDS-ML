@@ -17,6 +17,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
+from sklearn.naive_bayes import GaussianNB
 
 
 #### Importing the utils
@@ -127,6 +128,9 @@ def train_model(X_train, y_train, algorithm):
             metric_params=None,
             n_jobs=None
         )    
+
+    elif algorithm == "naive_bayes":
+        clf = GaussianNB()
     else:
         print("The algorithm provided is not supported")
         exit(0)
@@ -179,8 +183,8 @@ def getting_args():
     algo = str(args.algo)
     output_path_to_saved_model = args.output
     
-    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn":
-        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn`")
+    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn" and algo != "naive_bayes":
+        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn` or `naive_bayes`")
         print("The script will continue with the default algorithm : logistic_regression")
         algo = "logistic_regression"
         output_path_to_saved_model = "../trained_models/decision_tree/trained_model_decision_tree.pkl"

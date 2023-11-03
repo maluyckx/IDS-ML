@@ -13,6 +13,7 @@ ALGORITHMS_NAMES = {
                     "random_forest" : "Random forest", 
                     "neural_networks":"Neural networks",
                     "knn" : "KNN",
+                    "naive_bayes" : "Naive Bayes",
                     }
 #######################################
 ## Path to training datasets
@@ -106,13 +107,17 @@ NAME_TRAINED_MODEL_DECISION_TREE = "trained_model_decision_tree.pkl"
 NAME_TRAINED_MODEL_RANDOM_FOREST = "trained_model_random_forest.pkl"
 NAME_TRAINED_MODEL_LOGISTIC_REGRESSION = "trained_model_logistic_regression.pkl"
 NAME_TRAINED_MODEL_NEURAL_NETWORK = "trained_model_neural_network.pkl"
+NAME_TRAINED_MODEL_KNN = "trained_model_knn.pkl"
+NAME_TRAINED_MODEL_NAIVE_BAYES = "trained_model_naive_bayes.pkl"
 #######################################
 ## Dictionary to math the name of the trained model with the name of the algorithm
 NAME_TRAINED_MODEL = {
     "decision_tree" : NAME_TRAINED_MODEL_DECISION_TREE,
     "random_forest" : NAME_TRAINED_MODEL_RANDOM_FOREST,
     "logistic_regression" : NAME_TRAINED_MODEL_LOGISTIC_REGRESSION,
-    "neural_networks" : NAME_TRAINED_MODEL_NEURAL_NETWORK
+    "neural_networks" : NAME_TRAINED_MODEL_NEURAL_NETWORK,
+    "knn" : NAME_TRAINED_MODEL_KNN,
+    "naive_bayes" : NAME_TRAINED_MODEL_NAIVE_BAYES,
 }
 #######################################
 PATH_TO_BOTLISTS = "../evaluation_datasets/botlists/"

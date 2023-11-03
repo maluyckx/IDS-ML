@@ -20,7 +20,7 @@ import utils.constants as constants
 import utils.features as features
 import utils.colors as colors
 import utils.saving_model as saving_model
-import utils.diagrams as diagrams
+import scripts.utils.diagrams.diagrams_algo as diagrams_algo
 
 
 #######################################
@@ -42,7 +42,7 @@ def preprocessing(path_to_eval_dataset, algorithm):
 
     combined_df = features.encoding_features(combined_df)
 
-    X_test = combined_df[constants.LIST_OF_FEATURES_COMBI4]
+    X_test = combined_df[constants.LIST_OF_FEATURES]
     y_test = combined_df['label']
     hosts_lists = combined_df['host']
 

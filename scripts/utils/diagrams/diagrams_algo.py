@@ -89,7 +89,7 @@ def diagram_neural_networks(clf):
 
 
 
-def main_diagrams(algorithm):
+def main_diagrams_algo(algorithm):
     if algorithm == "decision_tree":
         diagram_decision_tree()
         
@@ -111,10 +111,5 @@ def main_diagrams(algorithm):
     
     
 if __name__ == "__main__":
-    main_diagrams()
-
-
-
-
-
+    main_diagrams_algo()
 

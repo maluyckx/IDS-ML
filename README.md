@@ -180,6 +180,7 @@ When running the scripts, we use colors to differentiate the different steps of 
     2. **Light red** : corresponds to the false alarm rate (false positive).
     3. **Light purple** : corresponds to the false negative.
     4. **Light yellow** : corresponds to the true negative.
+    5. TODO grey for human+bot
 
 
 ## Structure of the project

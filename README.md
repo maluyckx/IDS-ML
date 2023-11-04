@@ -20,6 +20,8 @@ and report our methodology, results and analysis.
 
 We are free to choose the method to classify but we need to justify our choice of method.
 
+As specified in the project statement, we tried to follow as much as possible the **pep0008** style guide.
+
 ## Report
 
 ⚠️⚠️⚠️ Detailed information, methodology, results and analysis can be found in the [project report](report/IDS_ML_LUYCKX_BOUHNINE.pdf).
@@ -55,7 +57,13 @@ For evaluation, two lists of known bot hosts are used :
 ## Commands
 
 Do not forget to install the requirements before running the scripts ! You can do it by running the following command :
+First, create a virtual environment and activate it :
 
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+```
+
+Finally, install the requirements :
 ```bash
 pip3 install -r requirements.txt
 ```
@@ -135,6 +143,27 @@ python3 main.py \
 --dataset ../evaluation_datasets/tcpdumps/eval1_tcpdump.txt \
 --output ../suspicious_hosts/suspicious_hosts.txt 
 ```
+
+### Diagrams
+
+First, starting for the root directory of the project, navigate to the `scripts/utils/diagrams/` directory :
+
+```bash
+cd scripts/utils/diagrams/
+```
+
+To create plots related to algorithms, run the following command :
+
+```bash
+python3 diagram_algo.py
+```
+
+To create plots related to metrics, run the following command :
+
+```bash
+python3 diagram_metrics.py
+```
+
 
 
 ## Colors

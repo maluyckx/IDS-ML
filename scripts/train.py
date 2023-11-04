@@ -27,10 +27,27 @@ import utils.features as features
 import utils.colors as colors
 
 import scripts.utils.saving_and_loading as saving_and_loading
-#######################################
 
 
-def train_model(X_train, y_train, algorithm):    
+def train_model(X_train, y_train, algorithm):   
+    """
+    Train a classifier on the given training data using the specified algorithm.
+
+    Args:
+        X_train: Training data.
+        y_train: Training labels.
+        algorithm: The name of the algorithm to use for training.
+            - decision_tree
+            - logistic_regression
+            - random_forest
+            - neural_networks
+            - knn
+            - naive_bayes
+
+    Returns:
+        The trained classifier.
+    """
+     
     print(colors.Colors.CYAN + f"####\nTraining the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
     
     if algorithm == "decision_tree":
@@ -143,6 +160,18 @@ def train_model(X_train, y_train, algorithm):
 
 
 def preprocessing(bots, webclients):
+    """
+    Preprocesses the bots and webclients datasets by parsing the data, converting it to a dataframe, encoding the features and returning the training data and labels.
+    
+    Args:
+    bots: Path to the bots dataset.
+    webclients: Path to the webclients dataset.
+    
+    Returns:
+    X_train: Training data.
+    y_train: Training labels.
+    """
+    
     print(colors.Colors.GREEN + f"####\nParsing the bots and webclients datasets..." + colors.Colors.RESET)
     
     ### Parsing the datasets
@@ -155,10 +184,23 @@ def preprocessing(bots, webclients):
     y_train = combined_df['label']
     
     print(colors.Colors.GREEN + f"Parsed the bots and webclients datasets successfully!\n####\n" + colors.Colors.RESET)
-    
+        
     return X_train, y_train
 
 def main_train(webclients, bots, algorithm, output_path_saved_model):
+    """
+    Train a machine learning model to detect bots based on webclient data.
+
+    Args:
+        webclients: Path to the webclients dataset.
+        bots: Path to the bots dataset.
+        algorithm: Machine learning algorithm to use for training.
+        output_path_saved_model: Path to save the trained model.
+
+    Returns:
+        Trained machine learning model.
+    """
+    
     ## Preprocessing before training : parsing and encoding the features
     X_train, y_train = preprocessing(bots, webclients)
     
@@ -172,16 +214,26 @@ def main_train(webclients, bots, algorithm, output_path_saved_model):
 
 
 def getting_args():
+    """
+    Parse command line arguments for classifier training.
+
+    Returns:
+    webclients: Path to webclients dataset.
+    bots: Path to bots dataset.
+    algo: Algorithm to use for training. Default is logistic_regression.
+    output_path_to_saved_model: Path to save the trained model.
+    """
+    
     parser = argparse.ArgumentParser(description="Optional classifier training")
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
     parser.add_argument("--algo", required=False, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
     args = parser.parse_args()
-    webclients = args.webclients
-    bots = args.bots
+    webclients = str(args.webclients)
+    bots = str(args.bots)
     algo = str(args.algo)
-    output_path_to_saved_model = args.output
+    output_path_to_saved_model = str(args.output)
     
     if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn" and algo != "naive_bayes":
         print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn` or `naive_bayes`")

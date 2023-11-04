@@ -9,7 +9,6 @@ Authors :
 #### Common dependencies
 import argparse
 import pathlib
-import numpy as np
 
 #### ML dependencies
 from sklearn.metrics import classification_report
@@ -21,6 +20,7 @@ import utils.features as features
 import utils.colors as colors
 import scripts.utils.saving_and_loading as saving_and_loading
 import scripts.utils.diagrams.diagrams_algo as diagrams_algo
+import scripts.utils.diagrams.diagrams_metrics as diagrams_metrics
 
 
 #######################################
@@ -28,6 +28,10 @@ import scripts.utils.diagrams.diagrams_algo as diagrams_algo
 def result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts):
     """
     Write the result of the evaluation into a file
+    
+    Args:
+    - suspicious_hosts: a list of suspicious hosts
+    - output_path_to_suspicious_hosts: a string representing the path to the output file for suspicious hosts   
     """
     with open(output_path_to_suspicious_hosts, "w") as f:
         for host in suspicious_hosts:
@@ -35,6 +39,19 @@ def result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts):
 
 
 def preprocessing(path_to_eval_dataset, algorithm):
+    """
+    Preprocesses the evaluation dataset by parsing the data, converting it to a dataframe, encoding the features 
+    and returning the preprocessed data.
+    
+    Args:
+    - path_to_eval_dataset: the path to the evaluation dataset.
+    - algorithm: the algorithm to be used for classification.
+    
+    Returns:
+    - X_test: the preprocessed feature data for evaluation.
+    - y_test: the preprocessed label data for evaluation.
+    - hosts_lists: the preprocessed host data for evaluation.
+    """
     eval_data = parser.parse_eval_data(path_to_eval_dataset)     
     print(colors.Colors.RED + f"####\nTesting the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
     
@@ -49,7 +66,7 @@ def preprocessing(path_to_eval_dataset, algorithm):
     return X_test, y_test, hosts_lists
 
 
-def false_alarm_rate(y_pred, y_test, hosts_lists): # TODO : relire cette fonction après avoir lu les articles 
+def false_alarm_rate(y_pred, y_test, hosts_lists):
     """
     This function is extremely important for the CORRECT evaluation of the model. We cannot base our evaluation on the accuracy of the model. We need to take into account the false alarm rate and the detection rate.
     
@@ -57,6 +74,15 @@ def false_alarm_rate(y_pred, y_test, hosts_lists): # TODO : relire cette fonctio
     False alarm rate = FP / (FP + TN)
     False negative rate = FN / (TP + FN)
     True negative rate = TN / (FP + TN)
+    
+    Args:
+    - y_pred: a list of predicted labels
+    - y_test: a list of true labels
+    - hosts_lists: a list of hosts
+
+    Returns:
+    - suspicious_hosts: a list of suspicious hosts
+    - hosts: a dictionary containing the true positive, false positive, false negative and true negative hosts
     """   
 
     hosts = {"true positive": [], "false positive": [], "false negative": [], "true negative": []}
@@ -100,12 +126,16 @@ def false_alarm_rate(y_pred, y_test, hosts_lists): # TODO : relire cette fonctio
     return suspicious_hosts, hosts
 
 
-def determine_threshold(y_pred_proba):
+def determine_threshold(y_pred_proba): # TODO revoir ce commentaire
     """
-    This function is used to separate the bots from the 'bots+humans' class.
+    This function is used to separate the bots from the 'bots+humans' class by using a threshold.
+    We need to pick an 'arbitrary' threshold to separate the 2 classes but we need to be careful not to pick a threshold that is too low or too high.
     
-    We need to pick an arbitrary threshold to separate the 2 classes but we need to be careful not to pick a threshold that is too low or too high.
-    
+    Args:
+    - y_pred_proba: a list of predicted probabilities for each class.
+
+    Returns:
+    - human_bot: a list of indices corresponding to the 'bots+humans' class.
     """
     # determine the threshold to separate the bots from the humans
     human_bot = []
@@ -118,83 +148,14 @@ def determine_threshold(y_pred_proba):
     return human_bot
 
 
-
-# def classification_report_with_human_bot(hosts):
-#     """
-#     Precision = True Positives / (True Positives + False Positives)
-#     Recall = True Positives / (True Positives + False Negatives)
-#     F1 Score = 2 * (Precision * Recall) / (Precision + Recall)
-#     """
-#     # compute precision, recall and f1-score for bots and human
-#     precision_bot = 0
-#     recall_bot = 0
-#     f1_score_bot = 0
-#     support_bot = 0
-    
-#     precision_human = 0
-#     recall_human = 0
-#     f1_score_human = 0
-#     support_human = 0
-
-#     # precision_human_bot = 0
-#     # recall_human_bot = 0
-#     # f1_score_human_bot = 0
-#     # support_human_bot = 0
-
-#     # precision, recall, f1-score and support for bots
-#     precision_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false positive"]))
-#     recall_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false negative"]))
-#     f1_score_bot = 2 * (precision_bot * recall_bot) / (precision_bot + recall_bot)
-#     support_bot = len(hosts["true positive"]) + len(hosts["false negative"])
-
-#     # precision, recall, f1-score and support for humans
-#     precision_human = len(hosts["true negative"]) / (len(hosts["true negative"]) + len(hosts["false negative"]))
-#     recall_human = len(hosts["true negative"]) / (len(hosts["true negative"]) + len(hosts["false positive"]))
-#     f1_score_human = 2 * (precision_human * recall_human) / (precision_human + recall_human)
-#     support_human = len(hosts["true negative"]) + len(hosts["false positive"])
-
-#     # precision, recall, f1-score and support for human+bot
-#     # precision_human_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false positive"]) + len(hosts["false negative"]))
-#     # recall_human_bot = len(hosts["true positive"]) / (len(hosts["true positive"]) + len(hosts["false positive"]) + len(hosts["false negative"]))
-#     # f1_score_human_bot = 2 * (precision_human_bot * recall_human_bot) / (precision_human_bot + recall_human_bot)
-#     # support_human_bot = len(hosts["true positive"]) + len(hosts["false positive"]) + len(hosts["false negative"])
-    
-#     # weighted avg
-#     precision_weighted_avg = (precision_bot * support_bot + precision_human * support_human) / (support_bot + support_human)
-#     recall_weighted_avg = (recall_bot * support_bot + recall_human * support_human) / (support_bot + support_human)
-#     f1_score_weighted_avg = (f1_score_bot * support_bot + f1_score_human * support_human) / (support_bot + support_human)
-#     support_weighted_avg = support_bot + support_human
-
-#     print(colors.Colors.PURPLE + f"#### Classification report : \n" + colors.Colors.RESET)
-
-#     print(colors.Colors.PURPLE + "## Bot : \n")
-#     print(f"Precision: {precision_bot}")
-#     print(f"Recall: {recall_bot}")
-#     print(f"F1-Score: {f1_score_bot}")
-#     print(f"Support: {support_bot} \n", colors.Colors.RESET)
-
-#     print(colors.Colors.PURPLE + "## Human : \n" )
-#     print(f"Precision: {precision_human}")
-#     print(f"Recall: {recall_human}")
-#     print(f"F1-Score: {f1_score_human}")
-#     print(f"Support: {support_human} \n", colors.Colors.RESET)
-
-#     # print(colors.Colors.PURPLE + "## Human + Bot : \n" )
-#     # print(f"Precision: {precision_human_bot}")
-#     # print(f"Recall: {recall_human_bot}")
-#     # print(f"F1-Score: {f1_score_human_bot}")
-#     # print(f"Support: {support_human_bot} \n", colors.Colors.RESET)
-
-#     print(colors.Colors.PURPLE + "## Weighted avg : \n")
-#     print(f"Precision: {precision_weighted_avg}")
-#     print(f"Recall: {recall_weighted_avg}")
-#     print(f"F1-Score: {f1_score_weighted_avg}")
-#     print(f"Support: {support_weighted_avg}", colors.Colors.RESET)
-
-#     print(colors.Colors.PURPLE + f"####\n" + colors.Colors.RESET)
-
-
 def print_classification_report(y_pred, y_test):
+    """
+    Prints the classification report for the given predicted and true labels.
+    
+    Args:
+    - y_pred: predicted labels
+    - y_test: true labels
+    """
     classification = classification_report(y_true=y_test, y_pred=y_pred, target_names=['bot', 'human'], output_dict=True)    
     
     print(colors.Colors.PURPLE + f"#### Classification report : \n" + colors.Colors.RESET) 
@@ -227,11 +188,24 @@ def print_classification_report(y_pred, y_test):
 
 
 def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
+    """
+    Evaluate a classifier on a given dataset and return the classifier, the predicted labels and the true labels.
+
+    Args:
+    - clf: a classifier object
+    - eval_dataset: a dataset to evaluate the classifier on
+    - algorithm: an integer representing the algorithm used for classification
+    - output_path_to_suspicious_hosts: a string representing the path to the output file for suspicious hosts
+
+    Returns:
+    - clf: a classifier object of the trained model
+    - y_pred: a list of predicted labels
+    - y_test: a list of true labels
+    """
     
     X_test, y_test, hosts_lists = preprocessing(eval_dataset, algorithm)
     # Test the classifier's accuracy on the test set
     y_pred_proba = clf.predict_proba(X_test)
-    # print(y_pred_proba)
     y_pred = clf.predict(X_test)
 
     print(colors.Colors.RED + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
@@ -252,6 +226,15 @@ def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
     
 
 def main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts):
+    """
+    Evaluate a trained model on a given dataset and generate diagrams.
+
+    Args:
+        trained_model: Path to the trained model file.
+        eval_dataset: Path to the evaluation dataset file.
+        output_path_to_suspicious_hosts: Path to the output file where the suspicious hosts will be saved.
+
+    """
     ## Load the model
     loaded_clf = saving_and_loading.load_saved_model(trained_model)
 
@@ -262,19 +245,28 @@ def main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts):
     clf, y_pred, y_test = eval_model(loaded_clf, eval_dataset, algorithm, output_path_to_suspicious_hosts)
     
     ## Diagrams
-    # diagrams.main_diagrams(algorithm)
-
+    # Those functions need to be called by hand, they only serve for the report
+    # diagrams_algo.main_diagrams_algo(algorithm)
+    # diagrams_metrics.main_diagrams_metrics(y_pred, y_test, algorithm)
 
 def getting_args():
+    """
+    Parse command line arguments for dataset evaluation.
+
+    Returns:
+    trained_model: path to trained model
+    eval_dataset: path to evaluation dataset
+    output_path_to_suspicious_hosts: path to output file for suspicious hosts
+    """
     parser = argparse.ArgumentParser(description="Dataset evaluation")
     parser.add_argument("--trained_model", type=pathlib.Path)
     parser.add_argument("--dataset", required=True, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
     args = parser.parse_args()
     
-    trained_model = args.trained_model
-    eval_dataset = args.dataset
-    output_path_to_suspicious_hosts = args.output
+    trained_model = str(args.trained_model)
+    eval_dataset = str(args.dataset)
+    output_path_to_suspicious_hosts = str(args.output)
     
     return trained_model, eval_dataset, output_path_to_suspicious_hosts
 

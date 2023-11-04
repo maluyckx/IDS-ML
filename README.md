@@ -22,7 +22,7 @@ We are free to choose the method to classify but we need to justify our choice o
 
 ### Evaluation datasets
 
-They both cintain **human** and **bot** traffic.
+They both contain **human** and **bot** traffic.
 
 - `eval1_tcpdump.txt` : bots and humans are guaranteed to be a separate set of hosts. 
 - `eval2_tcpdump.txt` : some hosts emit traffic from a human and from a bot.

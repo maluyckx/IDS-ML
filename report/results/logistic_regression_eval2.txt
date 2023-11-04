@@ -9,17 +9,36 @@ False negative rate : 75.0 %
 True negative rate : 84.25925925925925 %
 Accuracy : 78.33333333333333 %
 ####
+Total host :  120 
+Number of true positive :  3 
+Number of false positive :  17 
+Number of false negative :  9 
+Number of true negative :  91 
+####
 
-true positive :  3
-false positive :  17
-false negative :  9
-true negative :  91
-Classification report : 
- {'bot': {'precision': 0.15, 'recall': 0.25, 'f1-score': 0.18749999999999997, 'support': 12.0}, 'human': {'precision': 0.91, 'recall': 0.8425925925925926, 'f1-score': 0.8749999999999999, 'support': 108.0}, 'accuracy': 0.7833333333333333, 'macro avg': {'precision': 0.53, 'recall': 0.5462962962962963, 'f1-score': 0.5312499999999999, 'support': 120.0}, 'weighted avg': {'precision': 0.834, 'recall': 0.7833333333333333, 'f1-score': 0.8062499999999999, 'support': 120.0}} 
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.15
+Recall: 0.25
+F1-Score: 0.18749999999999997
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.91
+Recall: 0.8425925925925926
+F1-Score: 0.8749999999999999
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.834
 Recall: 0.7833333333333333
 F1-Score: 0.8062499999999999
-Support: 120.0
+Support: 120.0 
+####
 
 
 --
@@ -34,18 +53,36 @@ False negative rate : 100.0 %
 True negative rate : 93.51851851851852 %
 Accuracy : 84.16666666666667 %
 ####
+Total host :  120 
+Number of true positive :  0 
+Number of false positive :  7 
+Number of false negative :  12 
+Number of true negative :  101 
+####
 
-true positive :  0
-false positive :  7
-false negative :  12
-true negative :  101
-Classification report : 
- {'bot': {'precision': 0.0, 'recall': 0.0, 'f1-score': 0.0, 'support': 12.0}, 'human': {'precision': 0.8938053097345132, 'recall': 0.9351851851851852, 'f1-score': 0.9140271493212669, 'support': 108.0}, 'accuracy': 0.8416666666666667, 'macro avg': {'precision': 0.4469026548672566, 'recall': 0.4675925925925926, 'f1-score': 0.45701357466063347, 'support': 120.0}, 'weighted avg': {'precision': 0.8044247787610619, 'recall': 0.8416666666666667, 'f1-score': 0.8226244343891402, 'support': 120.0}} 
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.0
+Recall: 0.0
+F1-Score: 0.0
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.8938053097345132
+Recall: 0.9351851851851852
+F1-Score: 0.9140271493212669
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.8044247787610619
 Recall: 0.8416666666666667
 F1-Score: 0.8226244343891402
-Support: 120.0
-
+Support: 120.0 
+####
 --
 
 only misc features
@@ -58,17 +95,36 @@ False negative rate : 33.33333333333333 %
 True negative rate : 31.48148148148148 %
 Accuracy : 35.0 %
 ####
+Total host :  120 
+Number of true positive :  8 
+Number of false positive :  74 
+Number of false negative :  4 
+Number of true negative :  34 
+####
 
-true positive :  8
-false positive :  74
-false negative :  4
-true negative :  34
-Classification report : 
- {'bot': {'precision': 0.0975609756097561, 'recall': 0.6666666666666666, 'f1-score': 0.1702127659574468, 'support': 12.0}, 'human': {'precision': 0.8947368421052632, 'recall': 0.3148148148148148, 'f1-score': 0.4657534246575343, 'support': 108.0}, 'accuracy': 0.35, 'macro avg': {'precision': 0.4961489088575096, 'recall': 0.4907407407407407, 'f1-score': 0.3179830953074905, 'support': 120.0}, 'weighted avg': {'precision': 0.8150192554557125, 'recall': 0.35, 'f1-score': 0.4361993587875255, 'support': 120.0}} 
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.0975609756097561
+Recall: 0.6666666666666666
+F1-Score: 0.1702127659574468
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.8947368421052632
+Recall: 0.3148148148148148
+F1-Score: 0.4657534246575343
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.8150192554557125
 Recall: 0.35
 F1-Score: 0.4361993587875255
-Support: 120.0
+Support: 120.0 
+####
 
 --
 
@@ -82,17 +138,36 @@ False negative rate : 83.33333333333334 %
 True negative rate : 93.51851851851852 %
 Accuracy : 85.83333333333333 %
 ####
+Total host :  120 
+Number of true positive :  2 
+Number of false positive :  7 
+Number of false negative :  10 
+Number of true negative :  101 
+####
 
-true positive :  2
-false positive :  7
-false negative :  10
-true negative :  101
-Classification report : 
- {'bot': {'precision': 0.2222222222222222, 'recall': 0.16666666666666666, 'f1-score': 0.1904761904761905, 'support': 12.0}, 'human': {'precision': 0.9099099099099099, 'recall': 0.9351851851851852, 'f1-score': 0.9223744292237445, 'support': 108.0}, 'accuracy': 0.8583333333333333, 'macro avg': {'precision': 0.5660660660660661, 'recall': 0.5509259259259259, 'f1-score': 0.5564253098499675, 'support': 120.0}, 'weighted avg': {'precision': 0.8411411411411412, 'recall': 0.8583333333333333, 'f1-score': 0.8491846053489892, 'support': 120.0}} 
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.2222222222222222
+Recall: 0.16666666666666666
+F1-Score: 0.1904761904761905
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.9099099099099099
+Recall: 0.9351851851851852
+F1-Score: 0.9223744292237445
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.8411411411411412
 Recall: 0.8583333333333333
 F1-Score: 0.8491846053489892
-Support: 120.0
+Support: 120.0 
+####
 
 --
 
@@ -117,85 +192,29 @@ Number of false negative :  10
 Number of true negative :  99 
 ####
 
-##############
-bot :  [0.45844816 0.54155184]
-bot :  bot
-bot :  human
-bot :  unamur039
-##############
-##############
-bot :  [0.25225027 0.74774973]
-bot :  bot
-bot :  human
-bot :  unamur034
-##############
-##############
-bot :  [0.47344668 0.52655332]
-bot :  bot
-bot :  human
-bot :  unamur040
-##############
-##############
-bot :  [0.59547402 0.40452598]
-bot :  bot
-bot :  human
-bot :  unamur03
-##############
-##############
-bot :  [0.4782191 0.5217809]
-bot :  bot
-bot :  human
-bot :  unamur028
-##############
-##############
-bot :  [0.30669043 0.69330957]
-bot :  bot
-bot :  bot
-bot :  unamur05
-##############
-##############
-bot :  [0.60761138 0.39238862]
-bot :  bot
-bot :  human
-bot :  unamur08
-##############
-##############
-bot :  [0.25271873 0.74728127]
-bot :  bot
-bot :  human
-bot :  unamur038
-##############
-##############
-bot :  [0.3221073 0.6778927]
-bot :  bot
-bot :  human
-bot :  unamur022
-##############
-##############
-bot :  [0.31279369 0.68720631]
-bot :  bot
-bot :  human
-bot :  unamur029
-##############
-##############
-bot :  [0.46496705 0.53503295]
-bot :  bot
-bot :  human
-bot :  unamur116
-##############
-##############
-bot :  [0.26913288 0.73086712]
-bot :  bot
-bot :  human
-bot :  unamur06
-##############
+#### Classification report : 
 
-Classification report : 
- {'bot': {'precision': 0.18181818181818182, 'recall': 0.16666666666666666, 'f1-score': 0.17391304347826086, 'support': 12.0}, 'human': {'precision': 0.908256880733945, 'recall': 0.9166666666666666, 'f1-score': 0.912442396313364, 'support': 108.0}, 'accuracy': 0.8416666666666667, 'macro avg': {'precision': 0.5450375312760634, 'recall': 0.5416666666666666, 'f1-score': 0.5431777198958124, 'support': 120.0}, 'weighted avg': {'precision': 0.8356130108423687, 'recall': 0.8416666666666667, 'f1-score': 0.8385894610298537, 'support': 120.0}} 
+## Bot : 
+
+Precision: 0.18181818181818182
+Recall: 0.16666666666666666
+F1-Score: 0.17391304347826086
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.908256880733945
+Recall: 0.9166666666666666
+F1-Score: 0.912442396313364
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.8356130108423687
 Recall: 0.8416666666666667
 F1-Score: 0.8385894610298537
-Support: 120.0
+Support: 120.0 
+####
 
 --
 
@@ -214,17 +233,36 @@ False negative rate : 66.66666666666666 %
 True negative rate : 83.33333333333334 %
 Accuracy : 78.33333333333333 %
 ####
+Total host :  120 
+Number of true positive :  4 
+Number of false positive :  18 
+Number of false negative :  8 
+Number of true negative :  90 
+####
 
-true positive :  4
-false positive :  18
-false negative :  8
-true negative :  90
-Classification report : 
- {'bot': {'precision': 0.18181818181818182, 'recall': 0.3333333333333333, 'f1-score': 0.23529411764705885, 'support': 12.0}, 'human': {'precision': 0.9183673469387755, 'recall': 0.8333333333333334, 'f1-score': 0.8737864077669903, 'support': 108.0}, 'accuracy': 0.7833333333333333, 'macro avg': {'precision': 0.5500927643784786, 'recall': 0.5833333333333334, 'f1-score': 0.5545402627070246, 'support': 120.0}, 'weighted avg': {'precision': 0.8447124304267162, 'recall': 0.7833333333333333, 'f1-score': 0.8099371787549973, 'support': 120.0}} 
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.18181818181818182
+Recall: 0.3333333333333333
+F1-Score: 0.23529411764705885
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.9183673469387755
+Recall: 0.8333333333333334
+F1-Score: 0.8737864077669903
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.8447124304267162
 Recall: 0.7833333333333333
 F1-Score: 0.8099371787549973
-Support: 120.0
+Support: 120.0 
+####
 
 --
 
@@ -242,17 +280,36 @@ False negative rate : 83.33333333333334 %
 True negative rate : 90.74074074074075 %
 Accuracy : 83.33333333333334 %
 ####
+Total host :  120 
+Number of true positive :  2 
+Number of false positive :  10 
+Number of false negative :  10 
+Number of true negative :  98 
+####
 
-true positive :  2
-false positive :  10
-false negative :  10
-true negative :  98
-Classification report : 
- {'bot': {'precision': 0.16666666666666666, 'recall': 0.16666666666666666, 'f1-score': 0.16666666666666666, 'support': 12.0}, 'human': {'precision': 0.9074074074074074, 'recall': 0.9074074074074074, 'f1-score': 0.9074074074074074, 'support': 108.0}, 'accuracy': 0.8333333333333334, 'macro avg': {'precision': 0.5370370370370371, 'recall': 0.5370370370370371, 'f1-score': 0.5370370370370371, 'support': 120.0}, 'weighted avg': {'precision': 0.8333333333333334, 'recall': 0.8333333333333334, 'f1-score': 0.8333333333333334, 'support': 120.0}} 
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.16666666666666666
+Recall: 0.16666666666666666
+F1-Score: 0.16666666666666666
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.9074074074074074
+Recall: 0.9074074074074074
+F1-Score: 0.9074074074074074
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.8333333333333334
 Recall: 0.8333333333333334
 F1-Score: 0.8333333333333334
-Support: 120.0
+Support: 120.0 
+####
 
 --
 
@@ -270,14 +327,33 @@ False negative rate : 33.33333333333333 %
 True negative rate : 31.48148148148148 %
 Accuracy : 35.0 %
 ####
+Total host :  120 
+Number of true positive :  8 
+Number of false positive :  74 
+Number of false negative :  4 
+Number of true negative :  34 
+####
 
-true positive :  8
-false positive :  74
-false negative :  4
-true negative :  34
-Classification report : 
- {'bot': {'precision': 0.0975609756097561, 'recall': 0.6666666666666666, 'f1-score': 0.1702127659574468, 'support': 12.0}, 'human': {'precision': 0.8947368421052632, 'recall': 0.3148148148148148, 'f1-score': 0.4657534246575343, 'support': 108.0}, 'accuracy': 0.35, 'macro avg': {'precision': 0.4961489088575096, 'recall': 0.4907407407407407, 'f1-score': 0.3179830953074905, 'support': 120.0}, 'weighted avg': {'precision': 0.8150192554557125, 'recall': 0.35, 'f1-score': 0.4361993587875255, 'support': 120.0}} 
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.0975609756097561
+Recall: 0.6666666666666666
+F1-Score: 0.1702127659574468
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 0.8947368421052632
+Recall: 0.3148148148148148
+F1-Score: 0.4657534246575343
+Support: 108.0 
+ 
+## Weighted avg : 
+
 Precision: 0.8150192554557125
 Recall: 0.35
 F1-Score: 0.4361993587875255
-Support: 120.0
+Support: 120.0 
+####

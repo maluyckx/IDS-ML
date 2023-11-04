@@ -1,5 +1,5 @@
 """
-Goal of the script : Script containing the diagrams for the different algorithms
+Goal of the script : Script containing the code to create the diagrams for the different algorithms
 
 Authors : 
     - LUYCKX Marco 496283

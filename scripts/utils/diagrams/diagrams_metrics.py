@@ -29,33 +29,33 @@ def diagram_features_TP_TN_FP_FN():
 
     # True Positive
     axes[0, 0].bar(feature_combination, tp_per_features, color='green')
-    axes[0, 0].set_title('True Positive vs. Features')
+    axes[0, 0].set_title('True positive vs. Features')
     axes[0, 0].set_xlabel('Feature')
-    axes[0, 0].set_ylabel('True Positive Average Impact')
+    axes[0, 0].set_ylabel('True positive average Iimpact')
     axes[0, 0].set_xticks(feature_combination)
     set_vertical_xticklabels(axes[0, 0], feature_combination)
 
     # True Negative
     axes[0, 1].bar(feature_combination, fp_per_feature, color='blue')
-    axes[0, 1].set_title('True Negative vs. Features')
+    axes[0, 1].set_title('True negative vs. Features')
     axes[0, 1].set_xlabel('Feature')
-    axes[0, 1].set_ylabel('True Negative Average Impact')
+    axes[0, 1].set_ylabel('True negative average impact')
     axes[0, 1].set_xticks(feature_combination)
     set_vertical_xticklabels(axes[0, 1], feature_combination)
 
     # False Positive
     axes[1, 0].bar(feature_combination, fn_per_feature, color='red')
-    axes[1, 0].set_title('False Positive vs. Features')
+    axes[1, 0].set_title('False positive vs. Features')
     axes[1, 0].set_xlabel('Feature')
-    axes[1, 0].set_ylabel('False Positive Average Impact')
+    axes[1, 0].set_ylabel('False positive average impact')
     axes[1, 0].set_xticks(feature_combination)
     set_vertical_xticklabels(axes[1, 0], feature_combination)
 
     # False Negative
     axes[1, 1].bar(feature_combination, tn_per_feature, color='orange')
-    axes[1, 1].set_title('False Negative vs. Features')
+    axes[1, 1].set_title('False negative vs. Features')
     axes[1, 1].set_xlabel('Feature')
-    axes[1, 1].set_ylabel('False Negative Average Impact')
+    axes[1, 1].set_ylabel('False negative average impact')
     axes[1, 1].set_xticks(feature_combination)
     set_vertical_xticklabels(axes[1, 1], feature_combination)
 
@@ -63,8 +63,8 @@ def diagram_features_TP_TN_FP_FN():
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
     # Show the plots
-    plt.show()
-
+    plt.savefig("../../../diagrams/metrics/1_graph/diagram_features_TP_TN_FP_FN.png")
+    
 def main_diagrams_metrics():
     diagram_features_TP_TN_FP_FN()
 

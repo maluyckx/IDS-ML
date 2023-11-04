@@ -14,7 +14,7 @@ def set_vertical_xticklabels(ax, feature_combination):
     ax.set_xticks(feature_combination)
     ax.set_xticklabels(feature_combination, rotation='vertical')
 
-def diagram_features_TP_TN_FP_FN():
+def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     # Define the feature indices
 
     feature_combination = ["All features", "Miscellaneous", "Time", "Numbers", "Combination 1", "Combination 2", "Combination 3", "Combination 4"]
@@ -63,10 +63,30 @@ def diagram_features_TP_TN_FP_FN():
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
     # Show the plots
-    plt.savefig("../../../diagrams/metrics/1_graph/diagram_features_TP_TN_FP_FN.png")
+    plt.savefig(f"../../../diagrams/metrics/1_graph/diagram_features_TP_TN_FP_FN_{eval_number}.png")
+    
+    
+    
+def diagram_bayesian_detection_rate(eval_number): # Graph 2 in the report
+    pass
+    
+    
+def diagram_accuracy_false_alarm_rate(eval_number): # Graph 3 in the report
+    pass
+    
+    
+def diagram_roc_curve(eval_number): # Graph 4 in the report
+    # we should not do it in my opinion
+    pass
+    
     
 def main_diagrams_metrics():
-    diagram_features_TP_TN_FP_FN()
+    
+    for element in ["eval1", "eval2"]:
+        diagram_features_TP_TN_FP_FN(element)
+        diagram_bayesian_detection_rate(element)
+        diagram_accuracy_false_alarm_rate(element)
+        
 
 
 

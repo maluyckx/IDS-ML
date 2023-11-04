@@ -21,6 +21,13 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
+#### ML dependencies feature selection
+from sklearn.feature_selection import SelectKBest
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import StratifiedKFold
+from sklearn.feature_selection import f_classif
 
 #### Importing the utils
 import utils.parsing_dns_trace as parser
@@ -182,7 +189,7 @@ def preprocessing(bots, webclients):
     combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
     combined_df = features.encoding_features(combined_df)
 
-    X_train = combined_df[constants.LIST_OF_FEATURES_COMBI1]
+    X_train = combined_df[constants.LIST_OF_FEATURES_NUMBERS]
     y_train = combined_df['label']
     
     print(colors.Colors.GREEN + f"Parsed the bots and webclients datasets successfully!\n####\n" + colors.Colors.RESET)
@@ -208,7 +215,9 @@ def main_train(webclients, bots, algorithm, output_path_saved_model):
 
     ## Generating the tsne
     visualization_tsne(X_train, y_train)
-    
+
+    # feature_selection(X_train, y_train)
+
     ## Training the model
     clf = train_model(X_train, y_train, algorithm) 
     
@@ -216,6 +225,37 @@ def main_train(webclients, bots, algorithm, output_path_saved_model):
     saving_and_loading.save_trained_model(clf, algorithm, output_path_saved_model)
     
     return clf
+
+def feature_selection(X_train, y_train): 
+    """
+    Feature selection using SelectKBest.
+
+    This fucntion is not used at the moment in the project, but it WAS used to try to select the best feature but unluckily the feature selected by the SelectKBest made the model overfit and so less accurate on the evaluation datasets  
+
+    Model Accuracy: 1.0
+    Selected Feature Indices: [0 2 5 6 7]
+    Selected Feature Names: ['average_of_request_length_encoded', 'type_of_requests_queried_by_hosts_encoded', 'average_time_between_requests_encoded', 'frequency_of_repeated_requests_in_a_short_time_frame_encoded', 'average_number_of_dots_in_a_domain_encoded']
+    """
+
+    feature_selection = SelectKBest(f_classif, k=5)
+    pipeline = Pipeline([
+        ('feature_selection', feature_selection),
+        ('classification', GaussianNB())
+    ])
+
+    X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.15)
+
+    pipeline.fit(X_train, y_train)
+
+    score = pipeline.score(X_test, y_test)
+    print(f"Model Accuracy: {score}")
+
+    selected_features = pipeline.named_steps['feature_selection'].get_support(indices=True)
+    print(f"Selected Feature Indices: {selected_features}")
+
+    feature_names = list(X_train.columns[selected_features])
+    print(f"Selected Feature Names: {feature_names}")
+
 
 def visualization_tsne(X, y, perplexity=30):
     """
@@ -238,9 +278,9 @@ def visualization_tsne(X, y, perplexity=30):
 
     plt.figure(figsize=(10, 5))
     plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=colors)
-    plt.colorbar()  # Shows the color scale.
+    plt.colorbar()
     plt.title('t-SNE visualization of the data')
-    plt.savefig(f"./visualization_tsne_dataset.png")
+    plt.savefig(f"../diagrams/visualization/visualization_tsne_dataset.png")
     
 
 def getting_args():

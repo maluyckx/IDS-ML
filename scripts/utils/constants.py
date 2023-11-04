@@ -94,6 +94,15 @@ LIST_OF_FEATURES_COMBI4 = [
                     ]
 
 
+LIST_OF_FEATURES_AFTER_FEATURE_SELECTION = [
+                    'average_of_request_length_encoded', 
+                    'type_of_requests_queried_by_hosts_encoded', 
+                    'average_time_between_requests_encoded', 
+                    'frequency_of_repeated_requests_in_a_short_time_frame_encoded', 
+                    'average_number_of_dots_in_a_domain_encoded'
+                    ]
+
+
 
 #######################################
 ## Constants for the features

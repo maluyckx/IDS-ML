@@ -59,7 +59,7 @@ def preprocessing(path_to_eval_dataset, algorithm):
 
     combined_df = features.encoding_features(combined_df)
 
-    X_test = combined_df[constants.LIST_OF_FEATURES_COMBI1]
+    X_test = combined_df[constants.LIST_OF_FEATURES_NUMBERS]
     y_test = combined_df['label']
     hosts_list = combined_df['host']
 

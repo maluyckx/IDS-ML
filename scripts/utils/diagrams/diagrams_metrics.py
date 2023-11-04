@@ -73,7 +73,7 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
     # Show the plots
-    plt.savefig(f"../../../diagrams/metrics/1_graph/diagram_features_TP_TN_FP_FN_{eval_number}.png")
+    plt.savefig(f"../../../diagrams/metrics/features_TP_TN_FP_FN/diagram_features_TP_TN_FP_FN_{eval_number}.png")
     
     
     
@@ -120,7 +120,7 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
 #     plt.xlabel('Features')
 #     plt.ylabel('Bayesian Detection Rate (%)')
 
-#     plt.savefig(f"../../../diagrams/metrics/2_graph/diagram_features_bayesian_rate_{eval_number}.png")
+#     plt.savefig(f"../../../diagrams/metrics/bayesian_detection_rate/diagram_features_bayesian_rate_{eval_number}.png")
 
     
 def diagram_accuracy_false_alarm_rate(eval_number): # Graph 3 in the report
@@ -136,30 +136,33 @@ ordonné : 0 à 100%
     if eval_number == "eval1":
         accuracy_rates = [90, 78.3, 94.16, 91.66, 97.5, 97.5, 90.83, 78.33]
         false_alarm_rates = [11.11, 24.07, 6.48, 4.63, 2.77, 13.88, 10.18, 24.07]
+        detection_rate = [100, 100, 100, 58.33, 100, 100, 100, 100]
     elif eval_number == "eval2":
         accuracy_rates = [78.3, 84.16, 35.0, 85.83, 84.17, 78.33, 83.33, 35.0]
         false_alarm_rates = [15.7, 6.48, 68.52, 6.48, 8.33, 16.67, 9.26, 68.52]
+        detection_rate = [25, 0, 66.67, 16.67, 16.67, 33.33, 16.67, 66.67]
   
     # Set up the plot
     fig, ax = plt.subplots(figsize=(12, 6))
 
     # Define the width of a bar and positions
-    bar_width = 0.35
+    bar_width = 0.23
     indices = np.arange(len(feature_combination))
 
     # Plotting both accuracy and false alarm rates
     bar1 = ax.bar(indices, accuracy_rates, bar_width, label='Accuracy', color='blue')
     bar2 = ax.bar(indices + bar_width, false_alarm_rates, bar_width, label='False Alarm', color='red')
+    bar3 = ax.bar(indices + bar_width*2, detection_rate, bar_width, label='Detection Rate', color='green')
 
     # Set the title and labels
     ax.set_title('Accuracy and False alarm rates by feature')
     ax.set_xlabel('Features')
-    ax.set_ylabel('False alarm rates (%)')
-    ax.set_xticks(indices + bar_width / 2)
+    ax.set_ylabel('Percentage')
+    ax.set_xticks(indices + bar_width)
     ax.set_xticklabels(feature_combination)
     ax.legend()
 
-    plt.savefig(f"../../../diagrams/metrics/3_graph/diagram_features_accuracy_false_alarm_rate_{eval_number}.png")
+    plt.savefig(f"../../../diagrams/metrics/accuracy_false_alarm_rate/diagram_features_accuracy_false_alarm_rate_{eval_number}.png")
     
 def main_diagrams_metrics():
     

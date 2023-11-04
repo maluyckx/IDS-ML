@@ -18,10 +18,19 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     # Define the feature indices
 
     feature_combination = ["All features", "Miscellaneous", "Time", "Numbers", "Combination 1", "Combination 2", "Combination 3", "Combination 4"]
-    tp_per_features = [12, 12, 12, 7, 12, 12, 12, 12]
-    fp_per_feature = [12, 26, 7, 5, 3, 15, 11, 26]
-    fn_per_feature = [0, 0, 0, 5, 0, 0, 0, 0]
-    tn_per_feature = [96, 82, 101, 103, 105, 93, 97, 82]
+    
+    
+    if eval_number == "eval1":
+        tp_per_features = [12, 12, 12, 7, 12, 12, 12, 12]
+        fp_per_feature = [12, 26, 7, 5, 3, 15, 11, 26]
+        fn_per_feature = [0, 0, 0, 5, 0, 0, 0, 0]
+        tn_per_feature = [96, 82, 101, 103, 105, 93, 97, 82]
+    elif eval_number == "eval2":
+        tp_per_features = [0, 0, 0, 0, 0, 0, 0, 0]
+        fp_per_feature = [0, 0, 0, 0, 0, 0, 0, 0]
+        fn_per_feature = [0, 0, 0, 0, 0, 0, 0, 0]
+        tn_per_feature = [0, 0, 0, 0, 0, 0, 0, 0]
+
 
     # Create a figure with 4 subplots
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(14, 10))

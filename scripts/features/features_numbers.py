@@ -11,8 +11,13 @@ from statistics import mean
 
 def get_average_number_of_dots_in_a_domain(aggregated_data):
     """
-    This function is used to get the number of dots in the domains queried by each host.
-        
+    Calculates the average number of dots in a domain for each host in the aggregated data.
+
+    Args:
+        - aggregated_data: a list of dictionaries containing the aggregated data.
+
+    Returns:
+        - number_of_dots_domains: a dictionary where the keys are the hosts and the values are the average number of dots in a domain for that host.
     """
     number_of_dots_domains = {}
     for data in aggregated_data:
@@ -22,15 +27,6 @@ def get_average_number_of_dots_in_a_domain(aggregated_data):
         else:
             number_of_dots_domains[host] = [data['domain'].count(".")]
     
-    # # beautiful print
-    # for key, value in number_of_dots_domains.items():
-    #     print(f"{key} : \n {value} \n \n")
-
-
-    # TODO when we decided the model, we either need to choose one of the 2 options
-    # 1. on averaged sur la moyenne du nombres de dots et on passe ça en paramètre pour l'host => we choose this one
-    # 2. on donne complétement les données brutes PAR aggrégation de request/response
-
     for key, value in number_of_dots_domains.items():
         number_of_dots_domains[key] = mean(value)
 
@@ -38,8 +34,13 @@ def get_average_number_of_dots_in_a_domain(aggregated_data):
 
 def get_number_of_requests_in_a_session(aggregated_data): 
     """ 
-    Getting the number of requests in a session for each host
-    
+    Returns a dictionary containing the number of requests made in a session by each host in the aggregated data.
+
+    Args:
+        - aggregated_data: a list of dictionaries containing the aggregated data.
+        
+    Returns:
+        - number_of_requests_in_a_session: a dictionary containing the number of requests made in a session by each host in the aggregated data.
     """
     get_number_of_requests = {}
     for data in aggregated_data:
@@ -54,11 +55,15 @@ def get_number_of_requests_in_a_session(aggregated_data):
     return get_number_of_requests
     
 
-def get_number_of_unique_domains(aggregated_data): # and we should also get the ratio of those domains
+def get_number_of_unique_domains(aggregated_data): 
     """
-    Getting the number of unique domains queried by each host
+    Getting the number of unique domains queried by each host. For each host, we look at the domains that they query and we make a set of these domains and then we take the length of each host.
     
-    TODO: remove le français. Pour chaque host, on regarde les domains qui query et on fait un set de ces domains et puis on fait un len de chaque host
+    Args:
+        - aggregated_data: a list of dictionaries containing the aggregated data.
+        
+    Returns:
+        - number_of_unique_domains: a dictionary containing the number of unique domains queried by each host.
     """
 
     number_of_unique_domains = {}
@@ -69,22 +74,20 @@ def get_number_of_unique_domains(aggregated_data): # and we should also get the
         else:
             number_of_unique_domains[host] = {data['domain']}
 
-    # # beautiful print
-    # for key, value in number_of_unique_domains.items():
-    #     print(f"{key} : \n {value} \n \n")
-
     number_of_unique_domains = {key: len(value) for key, value in number_of_unique_domains.items()}  
     
-    # print(number_of_unique_domains)
-    # print(mean(number_of_unique_domains.values()))
-
     return number_of_unique_domains
     
     
 def get_average_counts(aggregated_data):
     """
-    Getting the average of counts for each host
+    Getting the average of counts for each host.
     
+    Args:
+        - aggregated_data: a list of dictionaries containing the aggregated data.
+        
+    Returns:
+        - average_counts: a dictionary containing the average of counts for each host.
     """
     average_counts = {}
     for data in aggregated_data:

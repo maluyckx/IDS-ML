@@ -26,7 +26,7 @@ import features
 #########################################
 ##### \ BEGINNING OF RAW FEATURES / ##### 
 """
-Taken example for the next functions from the DNS trace dataset : 
+Taken example for the comments in the next functions from the DNS trace dataset : 
 Request  : 13:22:44.546969 IP unamur021.55771 > one.one.one.one.domain: 18712+ A? kumparan.com. (30)
 Response : 13:22:44.580851 IP one.one.one.one.domain > unamur021.55771: 18712 2/0/0 A 104.18.130.231, A 104.18.129.231 (62)
 """
@@ -77,7 +77,6 @@ def extract_dns_query_type(line):
     possible_query_types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
     pattern_to_find = r'\b(?:' + '|'.join(re.escape(word) for word in possible_query_types) + r')\b'
     query_type_match = re.findall(pattern_to_find, line)
-    # print(query_type_match)
     return query_type_match if query_type_match else None
         
 
@@ -130,7 +129,7 @@ def extract_DNS_response(line):
             results["ServFail"] = [constants.SERVFAIL_ERROR]
         else:
             print("You should investigate for this RR type since it is not handled yet !")
-            exit(0)
+            # exit(0)
         return results
 
 
@@ -168,7 +167,15 @@ def extract_counts(line):
 
 
 def parse_dns_trace(line):
-    """Parse a single line from the DNS trace dataset with additional features."""
+    """
+    Parse a single line from the DNS trace dataset with additional features.
+    
+    Args:
+        - line: the line to parse.
+        
+    Returns:
+        - A dictionary containing the parsed data.
+    """
     return {
         "timestamp": extract_timestamp(line),
         # Protocol is not needed in our analysis since for all lines it is 'IP'
@@ -184,16 +191,41 @@ def parse_dns_trace(line):
 
 
 def is_response(line):
-    """Check if a line is a response."""
+    """
+    Check if a line is a response.
+    
+    Args:
+        - line: the line to check.
+    
+    Returns:
+        - True if the line is a response, False otherwise.
+    """
     return extract_hostname(line) == "one"
 
 def parse_timestamp(ts):
+    """
+    Parse a timestamp from the DNS trace dataset.
+    
+    Args:
+        - ts: the timestamp string.
+        
+    Returns:
+        - A timedelta object representing the timestamp.
+    """
     hours, minutes, seconds = ts.strip().split(':')
     seconds, microseconds = seconds.split('.')
     return timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds), microseconds=int(microseconds))
 
 def parsing_file(lines):
-    """Pair DNS lines based on their IDs using the adjusted parser."""
+    """
+    Pair DNS lines based on their IDs using the adjusted parser.
+    
+    Args:
+        - lines: the lines of the DNS trace dataset.
+    
+    Returns:
+        - paired_data: a dictionary containing the parsed data.
+    """
     paired_data = {}
     
     for line in lines:
@@ -227,6 +259,17 @@ def parsing_file(lines):
     return paired_data
 
 def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
+    """
+    Parse the DNS training datasets.
+
+    Args:
+        - path_to_bots_tcpdump: the path to the tcpdump file containing the bots data.
+        - path_to_webclients_tcpdump: the path to the tcpdump file containing the webclients data.
+
+    Returns:
+        - bots_data: a dictionary containing the parsed data for the bots.
+        - webclients_data: a dictionary containing the parsed data for the webclients.
+    """
     print(colors.Colors.GREEN + "####\nParsing the DNS line TRAINING datasets..." + colors.Colors.RESET)
     
     # Parse both datasets
@@ -243,13 +286,22 @@ def parse_training_data(path_to_bots_tcpdump, path_to_webclients_tcpdump):
 
 
 def parse_eval_data(path_to_eval_tcpdump):
+    """
+    Parse the DNS evaluation dataset.
+
+    Args:
+    - path_to_eval_tcpdump: the path to the evaluation tcpdump file.
+
+    Returns:
+    - eval_data: a dictionary containing the parsed data.
+    """
     print(colors.Colors.GREEN + "####\nParsing the DNS line EVALUATION dataset..." + colors.Colors.RESET)
     
     # Parse both datasets
     eval_data = {}
     with open(path_to_eval_tcpdump, 'r') as eval_file:
         eval_data = parsing_file(eval_file)
-    
+
     print(colors.Colors.GREEN + "Parsing EVALUATION dataset completed!\n####\n" + colors.Colors.RESET)
     return eval_data
 

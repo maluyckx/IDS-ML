@@ -26,11 +26,16 @@ import scripts.utils.constants as constants
 
 def aggregate_data(data):
     """
-    TODO explain function
+    Aggregate the data from a DNS request and its corresponding response.
+    
+    Args:
+        - data (dict): a dictionary containing the request and response data
+    
+    Returns:
+        - dict: a dictionary containing the aggregated data
     
     Example of data : 
     {'request': {'timestamp': '13:22:44.546969', 'host': 'unamur021', 'query_id': 18712, 'query_type': ['A'], 'domain': 'kumparan.com', 'length': 30, 'responses': None, 'counts': None}, 'response': {'timestamp': '13:22:44.580851', 'host': 'one', 'query_id': 18712, 'query_type': ['A', 'A'], 'domain': None, 'length': 62, 'responses': {'A': ['104.18.130.231', '104.18.129.231']}, 'counts': (2, 0, 0)}}
-    
     """
     
     request = data['request']
@@ -92,7 +97,13 @@ def aggregate_data(data):
 
 def get_all_hosts(aggregated_data):
     """
-    Getting all the hosts from the dataset
+    Getting all the hosts from the dataset.
+    
+    Args:
+        - aggregated_data: the dataset
+        
+    Returns:
+        - set_of_hosts: the set of all hosts in the dataset
     """
 
     set_of_hosts = set()
@@ -110,6 +121,13 @@ def generate_features(all_hosts, data):
     1) bots datasets 
     2) webclients datasets
     3) evaluation datasets
+    
+    Args:
+        - all_hosts: the set of all hosts in the dataset
+        - data: the dataset
+        
+    Returns:
+        - features: a dictionary containing the features of the dataset    
     """
     ## Features MISC
     average_of_request_length, average_of_response_length = features_misc.get_average_of_query_length(data)
@@ -137,8 +155,6 @@ def generate_features(all_hosts, data):
         features[host]['type_of_requests_queried_by_hosts'] = tuple(sorted(list((type_of_requests_queried_by_hosts[host])))) # sort the list to have always the same order
         features[host]['type_of_responses_received_by_hosts'] = tuple(sorted(list((type_of_responses_received_by_hosts[host])))) # sort the list to have always the same order
 
-
-        
         ## Features TIME 
         features[host]['average_time_for_a_session'] = get_all_timing_for_each_host[host]
         features[host]['average_time_between_requests'] = get_average_time_between_requests[host]
@@ -156,6 +172,12 @@ def removing_hosts_from_features(features):
     """
     Removing the hosts (that are the keys of the feature dictionary) to have a list of features that are not dependent on the host (since the machine learning algorithm should not depend on the host)
     
+    Args:
+        - features: the dictionary containing the features
+    
+    Returns:
+        - list(features.values()): a list of features that are not dependent on the host
+    
     """
     return list(features.values())
 
@@ -163,6 +185,13 @@ def removing_hosts_from_features(features):
 def convert_features_to_numerical(combined_df):
     """
     Convert the features to numerical values to be able to use them in the machine learning algorithms.
+    
+    Args:
+        - combined_df: The dataframe containing the features to convert.
+        
+    Returns:
+        - combined_df: The dataframe containing the converted features.
+    
     
     Example of combined_df :
     {
@@ -210,9 +239,16 @@ def convert_features_to_numerical(combined_df):
     return combined_df
 
 
+
 def encoding_features(combined_df):
     """
-    Encode categorical features of the input DataFrame using LabelEncoder.    
+    Encode categorical features of the input DataFrame using LabelEncoder. 
+    
+    Args:
+        - combined_df: The dataframe containing the features to encode.
+    
+    Returns:
+        - combined_df: The encoded dataframe.
     """
 
     ### Create a label encoder objects
@@ -263,6 +299,16 @@ def encoding_features(combined_df):
 #######################################
 
 def convert_to_dataframe_training(bots_data, webclients_data):
+    """
+    Convert raw data from bots and webclients into a combined pandas dataframe with relevant features and labels.
+    
+    Args:
+        - bots_data: a dictionary containing raw data from bots.
+        - webclients_data: a dictionary containing raw data from webclients.
+    
+    Returns:
+        - combined_df: a combined pandas dataframe with relevant features and labels.
+    """
     
     ## Aggregate the data ##
     bots = []
@@ -320,6 +366,12 @@ def convert_to_dataframe_training(bots_data, webclients_data):
 def read_botlist(path_to_botlist):
     """
     Read the botlist from the file
+
+    Args:
+        - path_to_botlist: the path to the botlist
+        
+    Returns:
+        - botlist: the list of bots
     """
     botlist = []
     with open(path_to_botlist, 'r') as file:
@@ -330,6 +382,12 @@ def read_botlist(path_to_botlist):
 def get_associated_botlist(path_to_eval_dataset):
     """
     Get the botlist associated to the evaluation data
+    
+    Args:
+        - path_to_eval_dataset: the path to the evaluation dataset
+    
+    Returns:
+        - the path to the botlist associated to the evaluation dataset
     """
     filename = str(path_to_eval_dataset).split('/')[-1]
     eval_data = filename.split('_')[0]
@@ -337,6 +395,16 @@ def get_associated_botlist(path_to_eval_dataset):
 
 
 def convert_to_dataframe_testing(eval_data, path_to_eval_dataset):
+    """
+    Convert evaluation data to a pandas dataframe with numerical features.
+
+    Args:
+        - eval_data: dictionary containing evaluation data
+        - path_to_eval_dataset: path to the evaluation dataset
+
+    Returns:
+        - combined_df: pandas dataframe with numerical features
+    """
     eval_list = []
     for key in eval_data.keys():
         trace = aggregate_data(eval_data[key])
@@ -377,6 +445,13 @@ def convert_to_dataframe_testing(eval_data, path_to_eval_dataset):
 #######################################
 
 def combinations_of_features():
+    """
+    Generate all possible combinations of features from the list of features in constants.LIST_OF_FEATURES.
+    This function is NOT used in the project.
+
+    Returns:
+        - all_combinations: a list of lists, where each inner list represents a combination of features.
+    """
     all_combinations = []
     for r in range(1, len(constants.LIST_OF_FEATURES) + 1):
         combinations = itertools.combinations(constants.LIST_OF_FEATURES, r)

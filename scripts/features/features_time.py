@@ -6,7 +6,7 @@ Authors :
     - BOUHNINE Ayoub 500048
 """
 
-
+# Common dependencies
 from statistics import mean
 import datetime
 
@@ -28,17 +28,21 @@ import utils.parsing_dns_trace as parser
     
     
     
-def get_timing_of_all_queries(aggregated_data): # NOT A FEATURE, JUST A USEFUL FUNCTION FOR THE TIMINGS
+def get_timing_of_all_queries(aggregated_data):
     """
-    Getting all the timestamps of all requests and responses for each host
-    
+    Creating a dictionary containing all the timestamps of all requests and responses for each host.
+
+    Args:
+        - aggregated_data: a list of dictionaries containing the aggregated data.
+        
+    Returns:
+        - timing_of_all_queries: a dictionary containing all the timestamps of all requests and responsess for each host.
     """
     
     timing_of_all_queries = {}
 
     for data in aggregated_data:
         host = data['host']
-        
         timestamp_req = parser.parse_timestamp(data['timestamp_req'])
         if data['timestamp_resp'] == '0': # ATTENTION : whenever the response is not present, we discard the request => IT IS AN ADDITIONAL ASSUMPTION THAT WE MAKE, it can impact the model if the traffic is composed of a lot of requests without responses (and thus the model might behave differently)
             continue
@@ -57,12 +61,12 @@ def get_timing_of_all_queries(aggregated_data): # NOT A FEATURE, JUST A USEFUL F
 def get_timing_for_a_session(aggregated_data):
     """
     Regroup all the requests and responses for a session and get the timing between the first request and the last response
-    
-        {1:
-        timestamp_aggregate_data1_request
-        timestamp_aggregate_datalast_response
-        }
-    
+
+    Args:
+        - aggregated_data: a dictionary containing the aggregated data for each session.
+
+    Returns:
+        list_of_timing_for_a_session: a dictionary containing the timing for each session.
     """   
     timing_for_a_session = get_timing_of_all_queries(aggregated_data)
     
@@ -70,8 +74,6 @@ def get_timing_for_a_session(aggregated_data):
     for key, value in timing_for_a_session.items(): # key = host and value = list of timestamps (beginning with request and ending with response)
         list_of_timing_for_a_session[key] = (abs(value[-1][1] - value[0][0])).total_seconds() # value[0][0] : first timestamp_request of the fist timestamp_tuple and value[-1][1] : last timestamp_response of the last timestamp_tuple
 
-    # get_average_of_timing_for_a_session(list_of_timing_for_a_session) # Not sure what it is used for
-    # print(list_of_timing_for_a_session)
     # print(mean(list_of_timing_for_a_session.values())) # Not a feature, just for the report
 
     return list_of_timing_for_a_session
@@ -80,10 +82,14 @@ def get_timing_for_a_session(aggregated_data):
 
 def get_average_time_between_requests(aggregated_data):
     """
-    Getting the average time between each request for each host
-    Prendre la difference des timestamps entre chaque requests/responses d'un host -> donc agréger les données en fonction des hosts et non en fonction du request ID seulement.
+    Getting the average time between each request for each host. We are taking the difference between the timestamps of each request and response and then we are taking the mean of all the differences for each host.
+    It kind of answers the question : "After how much time does a host make a new request ?"
     
-    En gros, après combien de temps un host fait une nouvelle requête ? 
+    Args:
+        - aggregated_data: a list of dictionaries containing the aggregated data.
+        
+    Returns:
+        - average_time_between_requests: a dictionary containing the average time between each request for each host.
     
     """
     timing_for_a_session = get_timing_of_all_queries(aggregated_data)  
@@ -107,7 +113,13 @@ def get_average_time_between_requests(aggregated_data):
 
 def frequency_of_repeated_requests_in_a_short_time_frame(aggregated_data):
     """
-    Getting the frequency of repeated requests for the same domain in a short time frame for each host
+    Getting the frequency of repeated requests for the same domain in a short time frame for each host.
+    
+    Args:
+        - aggregated_data: a list of dictionaries containing the aggregated data.
+        
+    Returns:
+        - frequency_of_repeated_requests_in_a_short_time_frame: a dictionary containing the frequency of repeated requests for the same domain in a short time frame for each host.
     
     """
     list_of_time_frames = [datetime.timedelta(seconds=10)] # in seconds
@@ -136,13 +148,7 @@ def frequency_of_repeated_requests_in_a_short_time_frame(aggregated_data):
         else:
             frequency_of_repeated_requests_in_a_short_time_frame[host] = {data['domain']: [[data['timestamp_req']]]}
 
-    # # beautiful print
-    # for key, value in frequency_of_repeated_requests_in_a_short_time_frame.items():
-    #     print(f"{key} : \n {value} \n \n")
-
-    # [[t1,t2,t3], [t3]]
-
-    # take the len of the longest timestamp list for each domain of each host (key)
+    # taking the length of the longest timestamp list for each domain of each host (key)
     # for each host, we take the mean of the longest timestamp list for each domain
     for key, value in frequency_of_repeated_requests_in_a_short_time_frame.items():
         for domain in value:

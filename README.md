@@ -1,4 +1,13 @@
-# IDS-ML
+# ICYBM201 : Flagging suspicious hosts from DNS traces
+
+## Authors and ULB matricules
+- LUYCKX Marco 496283
+- BOUHNINE Ayoub 500048
+
+## Introduction
+
+This README provides an overview of our project, which aims to build a classifier to distinguish network hosts as either human, bot or a combination of both. The document outlines the project's objectives, datasets used, available commands and an overview of the project's structure.
+
 
 ## Goal
 
@@ -6,38 +15,51 @@ Build a classifier to classify each host from the dataset as either :
 1) human; 
 2) bot;
 3) human+bot; 
-and report your methodology, results and analysis.
+
+and report our methodology, results and analysis.
 
 We are free to choose the method to classify but we need to justify our choice of method.
 
+## Report
+
+⚠️⚠️⚠️ Detailed information, methodology, results and analysis can be found in the [project report](report/IDS_ML_LUYCKX_BOUHNINE.pdf).
+
+
 ## Datasets
 
-- **Public resolver** : `1.1.1.1` (`one.one.one.one`)
-- Some of their DNS traffic has been captured from a vantage point in the network using tcpdump on port `53`.
+### Public resolver data
+
+The project focuses only on data from a public resolver with the following details :
+- **IP address** : `1.1.1.1` (`one.one.one.one`)
+- **Data source** : DNS traffic captured via tcpdump on port `53`
 
 ### Training datasets
 
-1) `webclients_tcpdump.txt` : contains the DNS traces of 120 UNamur hosts browsing several frontpages of the top-1000 Alexa list.
-2) `bots_tcpdump.txt` : contains the DNS traces of 120 bots, also in relation to the top-1000 Alexa list.
+The training data includes two datasets :
+1. `webclients_tcpdump.txt` : Contains DNS traces from 120 UNamur hosts browsing various top-1000 Alexa-listed websites.
+2. `bots_tcpdump.txt` : Contains DNS traces from 120 bots, also interacting with top-1000 Alexa-listed websites.
 
 ### Evaluation datasets
 
 They both contain **human** and **bot** traffic.
 
-- `eval1_tcpdump.txt` : bots and humans are guaranteed to be a separate set of hosts. 
-- `eval2_tcpdump.txt` : some hosts emit traffic from a human and from a bot.
+1. `eval1_tcpdump.txt` : bots and humans are guaranteed to be a separate set of hosts. 
+2. `eval2_tcpdump.txt` : some hosts emit traffic from a human and from a bot.
 
 #### Lists of bots
 
-- `eval1_botlist.txt` : list of bots
-- `eval2_botlist.txt` : list of bots
-
-
-## Report
-
-The report is located in the [report folder](report/IDS_ML_LUYCKX_BOUHNINE.pdf) .
+For evaluation, two lists of known bot hosts are used :
+- `eval1_botlist.txt`
+- `eval2_botlist.txt`
 
 ## Commands
+
+Do not forget to install the requirements before running the scripts ! You can do it by running the following command :
+
+```bash
+pip3 install -r requirements.txt
+```
+--- 
 
 First of all, navigate to the `scripts` folder :
 
@@ -58,7 +80,7 @@ python3 train.py \
 --output ../trained_models/<algo>/trained_model_<algo>.pkl
 ```
 
-For example, in this project, you could use the following command :
+For example, you could use the following command :
 
 ```bash
 python3 train.py \
@@ -90,7 +112,7 @@ python3 eval.py \
 
 ---
 
-To do both, run the following command :
+To do both at the same time, run the following command :
 
 ```bash
 python3 main.py \
@@ -117,17 +139,44 @@ python3 main.py \
 
 ## Colors
 
-TODO
-\begin{itemize}
-    \item \textbf{Green} : corresponds to the pre-processing steps. 
-    \item \textbf{Blue} : corresponds to the training phase.
-    \item \textbf{Red} : corresponds to the evaluation phase.
-    \item \textbf{Yellow} : corresponds to saving and loading the model.
-    \item \textbf{Purple} : corresponds to every data related to classification and accuracy. We also use light colors to differentiate the different rates during the classification : 
-        \begin{enumerate}
-            \item \textbf{Light cyan} : corresponds to the detection rate (true positive). 
-            \item \textbf{Light red} : corresponds to the false alarm rate (false positive).
-            \item \textbf{Light purple} : corresponds to the false negative.
-            \item \textbf{Light yellow} : corresponds to the true negative.
-        \end{enumerate}
-\end{itemize}
+When running the scripts, we use colors to differentiate the different steps of the process :
+- **Green** : corresponds to the pre-processing steps.
+- **Blue** : corresponds to the training phase.
+- **Red** : corresponds to the evaluation phase.
+- **Yellow** : corresponds to saving and loading the model.
+- **Purple** : corresponds to every data related to classification and accuracy. 
+
+- We also use light colors to differentiate the different rates during the classification :
+    1. **Light cyan** : corresponds to the detection rate (true positive).
+    2. **Light red** : corresponds to the false alarm rate (false positive).
+    3. **Light purple** : corresponds to the false negative.
+    4. **Light yellow** : corresponds to the true negative.
+
+
+## Structure of the project
+
+- `diagrams` : contains the diagrams produced for in the report.
+- `docs` : contains the articles that we need to read for the project. TODO REMOVE THIS ONE
+- `evaluation_datasets` : contains the evaluation datasets given by the professor and the botlists.
+- `report` : contains the report of the project.
+- `scripts` : contains the scripts used to train and evaluate the models.
+  - `features` : contains the 3 scripts (time, misc and numbers) used to create the new features based on the aggregated raw features.
+  - `utils` : 
+    - `colors.py` : contains the colors used in the scripts.
+    - `constants.py` : contains the constants used in the scripts.
+    - `features.py` : contains the functions used to orchestrate everything related to the features.
+    - `parsing_dns_trace.py` : contains the functions used to parse the DNS traces.
+    - `saving_and_loading.py` : contains the functions used to save and load the models.
+    - `diagrams` :
+      - `diagram_algo.py` : contains the functions used to create the diagrams related to the algorithms.
+      - `diagram_metrics.py` : contains the functions used to create the diagrams related to the metrics.   
+  - `eval.py` : contains the functions used to evaluate the models.
+  - `main.py` : contains the functions used to both do the training and evaluation of the models.
+  - `train.py` : contains the functions used to train the models.
+- `suspicious_hosts` : contains the suspicious hosts found by the models.
+- `trained_models` : contains the trained models. There is a subdirectory for each algorithm.
+- `training_datasets` : contains the training datasets given by the professor.
+
+---
+
+

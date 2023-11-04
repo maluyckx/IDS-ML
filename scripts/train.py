@@ -26,7 +26,7 @@ import utils.constants as constants
 import utils.features as features
 import utils.colors as colors
 
-import utils.saving_model as saving_model
+import scripts.utils.saving_and_loading as saving_and_loading
 #######################################
 
 
@@ -166,7 +166,7 @@ def main_train(webclients, bots, algorithm, output_path_saved_model):
     clf = train_model(X_train, y_train, algorithm) 
     
     ## Saving the model
-    saving_model.save_trained_model(clf, algorithm, output_path_saved_model)
+    saving_and_loading.save_trained_model(clf, algorithm, output_path_saved_model)
     
     return clf
 

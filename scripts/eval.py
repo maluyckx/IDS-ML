@@ -19,7 +19,7 @@ import utils.parsing_dns_trace as parser
 import utils.constants as constants
 import utils.features as features
 import utils.colors as colors
-import utils.saving_model as saving_model
+import scripts.utils.saving_and_loading as saving_and_loading
 import scripts.utils.diagrams.diagrams_algo as diagrams_algo
 
 
@@ -253,7 +253,7 @@ def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
 
 def main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts):
     ## Load the model
-    loaded_clf = saving_model.load_saved_model(trained_model)
+    loaded_clf = saving_and_loading.load_saved_model(trained_model)
 
     # extract algorithm name from the path
     algorithm = str(trained_model).split("/")[2]

@@ -32,3 +32,7 @@ class Colors:
     ## True negative rate
     LIGHTYELLOW = "\033[93m"
     
+    
+    ### Human+bot
+    GREY = "\033[90m"
+    

@@ -18,6 +18,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
 
 
 #### Importing the utils
@@ -180,7 +182,7 @@ def preprocessing(bots, webclients):
     combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
     combined_df = features.encoding_features(combined_df)
 
-    X_train = combined_df[constants.LIST_OF_FEATURES_COMBI4]
+    X_train = combined_df[constants.LIST_OF_FEATURES_COMBI1]
     y_train = combined_df['label']
     
     print(colors.Colors.GREEN + f"Parsed the bots and webclients datasets successfully!\n####\n" + colors.Colors.RESET)
@@ -203,6 +205,9 @@ def main_train(webclients, bots, algorithm, output_path_saved_model):
     
     ## Preprocessing before training : parsing and encoding the features
     X_train, y_train = preprocessing(bots, webclients)
+
+    ## Generating the tsne
+    visualization_tsne(X_train, y_train)
     
     ## Training the model
     clf = train_model(X_train, y_train, algorithm) 
@@ -212,6 +217,31 @@ def main_train(webclients, bots, algorithm, output_path_saved_model):
     
     return clf
 
+def visualization_tsne(X, y, perplexity=30):
+    """
+    Visualize the data using t-SNE.
+
+    Args:
+    X: The data to visualize.
+    y: The labels of the data.
+    perplexity: The perplexity parameter for t-SNE.
+    """    
+    tsne = TSNE(n_components=2, random_state=42, perplexity=perplexity)
+    X_tsne = tsne.fit_transform(X)
+
+    colors = []
+    for i in y:
+        if i == "bot":
+            colors.append("red")
+        elif i == "human":
+            colors.append("blue")
+
+    plt.figure(figsize=(10, 5))
+    plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=colors)
+    plt.colorbar()  # Shows the color scale.
+    plt.title('t-SNE visualization of the data')
+    plt.savefig(f"./visualization_tsne_dataset.png")
+    
 
 def getting_args():
     """
@@ -246,4 +276,3 @@ def getting_args():
 if __name__ == "__main__":
     webclients, bots, algo, output_path_saved_model = getting_args()
     clf = main_train(webclients, bots, algo, output_path_saved_model)
-

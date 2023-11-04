@@ -59,11 +59,11 @@ def preprocessing(path_to_eval_dataset, algorithm):
 
     combined_df = features.encoding_features(combined_df)
 
-    X_test = combined_df[constants.LIST_OF_FEATURES_COMBI4]
+    X_test = combined_df[constants.LIST_OF_FEATURES_COMBI1]
     y_test = combined_df['label']
-    hosts_lists = combined_df['host']
+    hosts_list = combined_df['host']
 
-    return X_test, y_test, hosts_lists
+    return X_test, y_test, hosts_list
 
 
 def false_alarm_rate(y_pred, y_test, hosts_lists):
@@ -126,13 +126,14 @@ def false_alarm_rate(y_pred, y_test, hosts_lists):
     return suspicious_hosts, hosts
 
 
-def determine_threshold(y_pred_proba): # TODO revoir ce commentaire
+def determine_threshold(y_pred_proba, hosts_list): # TODO revoir ce commentaire
     """
     This function is used to separate the bots from the 'bots+humans' class by using a threshold.
     We need to pick an 'arbitrary' threshold to separate the 2 classes but we need to be careful not to pick a threshold that is too low or too high.
     
     Args:
     - y_pred_proba: a list of predicted probabilities for each class.
+    - hosts_list: a list of hosts
 
     Returns:
     - human_bot: a list of indices corresponding to the 'bots+humans' class.
@@ -140,10 +141,13 @@ def determine_threshold(y_pred_proba): # TODO revoir ce commentaire
     # determine the threshold to separate the bots from the humans
     human_bot = []
     threshold = 0.5
+    print(colors.Colors.GREY + "####\n Human+bot" + colors.Colors.RESET)
     for i in range(len(y_pred_proba)):
         if abs(y_pred_proba[i][0] - y_pred_proba[i][1]) < threshold:
-            print("human+bot : ", y_pred_proba[i])
+            print(colors.Colors.GREY + f"{hosts_list[i]} : {y_pred_proba[i]}" + colors.Colors.RESET)
             human_bot.append(i)
+
+    print(colors.Colors.GREY + "#### End of Human+bot \n" + colors.Colors.RESET)
 
     return human_bot
 
@@ -203,17 +207,17 @@ def eval_model(clf, eval_dataset, algorithm, output_path_to_suspicious_hosts):
     - y_test: a list of true labels
     """
     
-    X_test, y_test, hosts_lists = preprocessing(eval_dataset, algorithm)
+    X_test, y_test, hosts_list = preprocessing(eval_dataset, algorithm)
     # Test the classifier's accuracy on the test set
     y_pred_proba = clf.predict_proba(X_test)
     y_pred = clf.predict(X_test)
 
     print(colors.Colors.RED + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier tested successfully!\n####\n" + colors.Colors.RESET)
     
-    human_bot = determine_threshold(y_pred_proba)
+    human_bot = determine_threshold(y_pred_proba, hosts_list)
 
 
-    suspicious_hosts, hosts = false_alarm_rate(y_pred, y_test, hosts_lists)
+    suspicious_hosts, hosts = false_alarm_rate(y_pred, y_test, hosts_list)
     result_suspicious_hosts(suspicious_hosts, output_path_to_suspicious_hosts)
 
     # Classification report contains the precision, recall, f1-score and support that will be used for the diagrams

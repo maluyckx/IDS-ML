@@ -77,10 +77,24 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     
     
 def diagram_bayesian_detection_rate(eval_number): # Graph 2 in the report
+    """
+    2eme : 
+absisse : combinaisons de features
+ordonée : bayesian detection rate    : on devrait voir le base-rate fallacy
+    
+    """
     pass
     
     
 def diagram_accuracy_false_alarm_rate(eval_number): # Graph 3 in the report
+    """
+    3eme graphe : 
+absisse : deux columns pour represnter une combination de features (premiere column = accuracy et deuxieme column = false alarm rate)
+ordonné : 0 à 100%
+    
+    """
+    
+    
     pass
     
     

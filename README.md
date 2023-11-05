@@ -24,7 +24,7 @@ As specified in the project statement, we tried to follow as much as possible th
 
 ## Report
 
-⚠️⚠️⚠️ Detailed information, methodology, results and analysis can be found in the [project report](report/IDS_ML_LUYCKX_BOUHNINE.pdf).
+⚠️⚠️⚠️ Detailed information, methodology, results and analysis can be found in the [project report](report/ICYBM201_project_LUYCKX_BOUHNINE.pdf).
 
 
 ## Datasets
@@ -165,7 +165,6 @@ python3 diagram_metrics.py
 ```
 
 
-
 ## Colors
 
 When running the scripts, we use colors to differentiate the different steps of the process :
@@ -180,13 +179,12 @@ When running the scripts, we use colors to differentiate the different steps of 
     2. **Light red** : corresponds to the false alarm rate (false positive).
     3. **Light purple** : corresponds to the false negative.
     4. **Light yellow** : corresponds to the true negative.
-    5. TODO grey for human+bot
+    5. **Grey** :  corresponds to a human+bot host.
 
 
 ## Structure of the project
 
 - `diagrams` : contains the diagrams produced for in the report.
-- `docs` : contains the articles that we need to read for the project. TODO REMOVE THIS ONE
 - `evaluation_datasets` : contains the evaluation datasets given by the professor and the botlists.
 - `report` : contains the report of the project.
 - `scripts` : contains the scripts used to train and evaluate the models.
@@ -208,5 +206,7 @@ When running the scripts, we use colors to differentiate the different steps of 
 - `training_datasets` : contains the training datasets given by the professor.
 
 ---
+
+
 
 

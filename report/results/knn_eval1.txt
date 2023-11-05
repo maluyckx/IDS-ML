@@ -1,0 +1,40 @@
+Combi 1:
+
+####
+False alarm rate and detection rate...
+Detection rate : 100.0 %
+False alarm rate : 9.25925925925926 %
+False negative rate : 0.0 %
+True negative rate : 90.74074074074075 %
+Accuracy : 91.66666666666666 %
+####
+Total host :  120 
+Number of true positive :  12 
+Number of false positive :  10 
+Number of false negative :  0 
+Number of true negative :  98 
+####
+
+#### Classification report : 
+
+## Bot : 
+
+Precision: 0.5454545454545454
+Recall: 1.0
+F1-Score: 0.7058823529411764
+Support: 12.0 
+ 
+## Human : 
+
+Precision: 1.0
+Recall: 0.9074074074074074
+F1-Score: 0.9514563106796117
+Support: 108.0 
+ 
+## Weighted avg : 
+
+Precision: 0.9545454545454546
+Recall: 0.9166666666666666
+F1-Score: 0.9268989149057681
+Support: 120.0 
+####

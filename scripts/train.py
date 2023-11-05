@@ -186,7 +186,7 @@ def preprocessing(bots, webclients):
     combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
     combined_df = features.encoding_features(combined_df)
 
-    X_train = combined_df[constants.LIST_OF_FEATURES_NUMBERS]
+    X_train = combined_df[constants.LIST_OF_FEATURES_COMBI1]
     y_train = combined_df['label']
     
     print(colors.Colors.GREEN + f"Parsed the bots and webclients datasets successfully!\n####\n" + colors.Colors.RESET)

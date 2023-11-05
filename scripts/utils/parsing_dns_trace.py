@@ -73,7 +73,6 @@ def extract_dns_query_type(line):
     Request  : A
     Response : A A
     """
-    # query_type_match = re.search(r"\s(A|AAAA|NXDomain|CNAME|ServFail)(?=[\s\?])", line) # TODO: checker CNAME 
     possible_query_types = ["A", "AAAA", "NXDomain", "CNAME", "ServFail"]
     pattern_to_find = r'\b(?:' + '|'.join(re.escape(word) for word in possible_query_types) + r')\b'
     query_type_match = re.findall(pattern_to_find, line)

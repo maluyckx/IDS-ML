@@ -59,7 +59,7 @@ def preprocessing(path_to_eval_dataset, algorithm):
 
     combined_df = features.encoding_features(combined_df)
 
-    X_test = combined_df[constants.LIST_OF_FEATURES_NUMBERS]
+    X_test = combined_df[constants.LIST_OF_FEATURES_COMBI1]
     y_test = combined_df['label']
     hosts_list = combined_df['host']
 
@@ -126,7 +126,7 @@ def false_alarm_rate(y_pred, y_test, hosts_lists):
     return suspicious_hosts, hosts
 
 
-def determine_threshold(y_pred_proba, hosts_list): # TODO revoir ce commentaire
+def determine_threshold(y_pred_proba, hosts_list):
     """
     This function is used to separate the bots from the 'bots+humans' class by using a threshold.
     We need to pick an 'arbitrary' threshold to separate the 2 classes but we need to be careful not to pick a threshold that is too low or too high.
@@ -138,7 +138,7 @@ def determine_threshold(y_pred_proba, hosts_list): # TODO revoir ce commentaire
     Returns:
     - human_bot: a list of indices corresponding to the 'bots+humans' class.
     """
-    # determine the threshold to separate the bots from the humans
+
     human_bot = []
     threshold = 0.5
     print(colors.Colors.GREY + "####\n Human+bot" + colors.Colors.RESET)

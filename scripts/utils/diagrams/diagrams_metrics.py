@@ -45,7 +45,7 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     set_vertical_xticklabels(axes[0, 0], feature_combination)
 
     # True Negative
-    axes[0, 1].bar(feature_combination, fp_per_feature, color='blue')
+    axes[0, 1].bar(feature_combination, tn_per_feature, color='blue')
     axes[0, 1].set_title('True negative vs. Features')
     axes[0, 1].set_xlabel('Feature')
     axes[0, 1].set_ylabel('True negative average impact')
@@ -53,7 +53,7 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     set_vertical_xticklabels(axes[0, 1], feature_combination)
 
     # False Positive
-    axes[1, 0].bar(feature_combination, fn_per_feature, color='red')
+    axes[1, 0].bar(feature_combination, fp_per_feature, color='red')
     axes[1, 0].set_title('False positive vs. Features')
     axes[1, 0].set_xlabel('Feature')
     axes[1, 0].set_ylabel('False positive average impact')
@@ -61,7 +61,7 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     set_vertical_xticklabels(axes[1, 0], feature_combination)
 
     # False Negative
-    axes[1, 1].bar(feature_combination, tn_per_feature, color='orange')
+    axes[1, 1].bar(feature_combination, fn_per_feature, color='orange')
     axes[1, 1].set_title('False negative vs. Features')
     axes[1, 1].set_xlabel('Feature')
     axes[1, 1].set_ylabel('False negative average impact')

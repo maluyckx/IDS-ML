@@ -22,12 +22,12 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     feature_combination = ["All features", "Miscellaneous", "Time", "Numbers", "Combination 1", "Combination 2", "Combination 3", "Combination 4"]
     
     if eval_number == "eval1":
-        tp_per_features = [12, 12, 12, 7, 12, 12, 12, 12]
+        tp_per_feature = [12, 12, 12, 7, 12, 12, 12, 12]
         fp_per_feature = [12, 26, 7, 5, 3, 15, 11, 26]
         fn_per_feature = [0, 0, 0, 5, 0, 0, 0, 0]
         tn_per_feature = [96, 82, 101, 103, 105, 93, 97, 82]
     elif eval_number == "eval2":
-        tp_per_features = [3, 0, 8, 2, 2, 4, 2, 8]
+        tp_per_feature = [3, 0, 8, 2, 2, 4, 2, 8]
         fp_per_feature = [17, 7, 74, 7, 9, 18, 10, 74]
         fn_per_feature = [9, 12, 4, 10, 10, 8, 10, 4]
         tn_per_feature = [91, 101, 34, 101, 99, 90, 98, 34]
@@ -37,7 +37,7 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
     fig.suptitle('Classification outcomes vs. set of features', fontsize=16)
 
     # True Positive
-    axes[0, 0].bar(feature_combination, tp_per_features, color='green')
+    axes[0, 0].bar(feature_combination, tp_per_feature, color='green')
     axes[0, 0].set_title('True positive vs. Features')
     axes[0, 0].set_xlabel('Feature')
     axes[0, 0].set_ylabel('True positive average Iimpact')

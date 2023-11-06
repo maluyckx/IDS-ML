@@ -74,13 +74,103 @@ def diagram_features_TP_TN_FP_FN(eval_number): # Graph 1 in the report
 
     plt.savefig(f"../../../diagrams/metrics/features_TP_TN_FP_FN/diagram_features_TP_TN_FP_FN_{eval_number}.png")
     
+
+# def diagram_bayesian_detection_rate(eval_number):
+#     """
+#     2eme : 
+#     absisse : combinaisons de features
+#     ordonée : bayesian detection rate    : on devrait voir le base-rate fallacy
+
+#     P(D|B) : probabilité de detection sachant que c'est un vrai positif
+#     bayesian detection rate
+#     P(B|D) : probabilité que ce soit un vrai positif sachant que c'est une detection
+#     P(D) : probabilité de detection
+#     P(B) : probabilité que ce soit un vrai positif
+
+#     P(B|D) = P(D|B) * P(B) / P(D)
+#     P(D) = P(D|B) * P(B) + P(D|neg B) * P(neg B)
+
+#     """
+
+#     feature_combination = ["All features", "Miscellaneous", "Time", "Numbers", "Combination 1", "Combination 2", "Combination 3", "Combination 4"]
+
+#     p_bot = 12/120 # the probability that a host is a bot for eval 1 and eval 2 is the same
+
+#     if eval_number == "eval1":
+#         # Bayesian detection rates for each feature
+#         detection_rate = [100, 100, 100, 58.33, 100, 100, 100, 100]
+#         false_alarm_rates = [11.11, 24.07, 6.48, 4.63, 2.77, 13.88, 10.18, 24.07]
+#         bayesian_detection_rates = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0]
+#     elif eval_number == "eval2":
+#         detection_rate = [25, 0, 66.67, 16.67, 16.67, 33.33, 16.67, 66.67]
+#         false_alarm_rates = [15.7, 6.48, 68.52, 6.48, 8.33, 16.67, 9.26, 68.52]
+#         bayesian_detection_rates = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0]
+
+#     for i in range(len(bayesian_detection_rates)):
+#         bayesian_detection_rates[i] = ((detection_rate[i] * p_bot) / ((detection_rate[i] * p_bot) + (false_alarm_rates[i] * (1 - p_bot)))) * 100
+
+#     fig, ax = plt.subplots(figsize=(21, 16))
+#     ax.bar(feature_combination, bayesian_detection_rates, color='skyblue')
+#     ax.set_title('Bayesian Detection Rate vs Features', fontsize=20)
+#     ax.set_xlabel('Features', fontsize=18)
+#     ax.set_ylabel('Bayesian Detection Rate (%)', fontsize=18)
+#     ax.set_xticks(feature_combination)
+#     ax.set_xticklabels(feature_combination, rotation='vertical', fontsize=16)
+#     current_yticks = ax.get_yticks()
+#     ax.set_yticklabels(current_yticks, fontsize=16) 
+
+#     plt.savefig(f"../../../diagrams/metrics/bayesian_detection_rate/diagram_features_bayesian_rate_{eval_number}.png")
+        
+   
+   
+def diagram_bayesian_detection_rate(eval_number):
+    """
+    2eme : 
+    absisse : combinaisons de features
+    ordonée : bayesian detection rate    : on devrait voir le base-rate fallacy
+
+    P(D|B) : probabilité de detection sachant que c'est un vrai positif
+    bayesian detection rate
+    P(B|D) : probabilité que ce soit un vrai positif sachant que c'est une detection
+    P(D) : probabilité de detection
+    P(B) : probabilité que ce soit un vrai positif
+
+    P(B|D) = P(D|B) * P(B) / P(D)
+    P(D) = P(D|B) * P(B) + P(D|neg B) * P(neg B)
+
+    """
+
+    feature_combination = ["All features", "Miscellaneous", "Time", "Numbers", "Combination 1", "Combination 2", "Combination 3", "Combination 4"]
+
+    p_bot = 12/120 # the probability that a host is a bot for eval 1 and eval 2 is the same
+
+    if eval_number == "eval1":
+        detection_rate = [100, 100, 100, 58.33, 100, 100, 100, 100]
+        false_alarm_rates = [11.11, 24.07, 6.48, 4.63, 2.77, 13.88, 10.18, 24.07]
+        bayesian_detection_rates = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0]
+    elif eval_number == "eval2":
+        detection_rate = [25, 0, 66.67, 16.67, 16.67, 33.33, 16.67, 66.67]
+        false_alarm_rates = [15.7, 6.48, 68.52, 6.48, 8.33, 16.67, 9.26, 68.52]
+        bayesian_detection_rates = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0]
+
+    for i in range(len(bayesian_detection_rates)):
+        bayesian_detection_rates[i] = ((detection_rate[i] * p_bot) / ((detection_rate[i] * p_bot) + (false_alarm_rates[i] * (1 - p_bot)))) * 100
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.bar(feature_combination, bayesian_detection_rates, color='skyblue')
+    ax.set_title('Bayesian Detection Rate vs Features')
+    ax.set_xlabel('Features')
+    ax.set_ylabel('Bayesian Detection Rate (%)')
+    ax.set_xticks(feature_combination)
+
+    plt.savefig(f"../../../diagrams/metrics/bayesian_detection_rate/diagram_features_bayesian_rate_{eval_number}.png")
+   
+        
         
 def diagram_accuracy_false_alarm_rate(eval_number): # Graph 3 in the report
     """
-    3eme graphe : 
-    absisse : deux columns pour represnter une combination de features (premiere column = accuracy et deuxieme column = false alarm rate)
-    ordonné : 0 à 100%
-    
+    Fait avec algo logistic regression
+        
     """
     feature_combination = ["All features", "Miscellaneous", "Time", "Numbers", "Combination 1", "Combination 2", "Combination 3", "Combination 4"]
 
@@ -117,6 +207,7 @@ def main_diagrams_metrics():
     
     for element in ["eval1", "eval2"]:
         diagram_features_TP_TN_FP_FN(element)
+        diagram_bayesian_detection_rate(element)
         diagram_accuracy_false_alarm_rate(element)
         
 

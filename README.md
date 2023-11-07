@@ -187,6 +187,7 @@ python3 diagrams_metrics.py
 - `diagrams` : contains the diagrams produced for in the report.
 - `evaluation_datasets` : contains the evaluation datasets given by the professor and the botlists.
 - `report` : contains the report of the project.
+  - `results` : contains several files with the results of the different algorithms/features (not all of them of course).
 - `scripts` : contains the scripts used to train and evaluate the models.
   - `features` : contains the 3 scripts (time, misc and numbers) used to create the new features based on the aggregated raw features.
   - `utils` : 

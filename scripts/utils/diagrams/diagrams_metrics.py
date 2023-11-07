@@ -176,7 +176,7 @@ def diagram_accuracy_false_alarm_rate(eval_number): # Graph 3 in the report
 
 
     if eval_number == "eval1":
-        accuracy_rates = [90, 78.3, 94.16, 91.66, 97.5, 97.5, 90.83, 78.33]
+        accuracy_rates = [90, 78.3, 94.16, 91.66, 97.5, 87.5, 90.83, 78.33]
         false_alarm_rates = [11.11, 24.07, 6.48, 4.63, 2.77, 13.88, 10.18, 24.07]
         detection_rate = [100, 100, 100, 58.33, 100, 100, 100, 100]
     elif eval_number == "eval2":

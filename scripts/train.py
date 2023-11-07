@@ -1,5 +1,5 @@
 """
-Goal of the script : Training the model
+Goal of the script : Training the model on the training dataset and saving the trained model
 
 Authors : 
     - LUYCKX Marco 496283
@@ -9,9 +9,8 @@ Authors :
 
 import argparse
 import pathlib
-import sys 
 
-#### ML dependencies
+# ML dependencies
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -21,15 +20,13 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
-#### ML dependencies feature selection
+# ML dependencies feature selection
 from sklearn.feature_selection import SelectKBest
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import StratifiedKFold
 from sklearn.feature_selection import f_classif
 
-#### Importing the utils
+# Importing the utils
 import utils.parsing_dns_trace as parser
 import utils.constants as constants
 import utils.features as features
@@ -38,14 +35,14 @@ import utils.colors as colors
 import scripts.utils.saving_and_loading as saving_and_loading
 
 
-def train_model(X_train, y_train, algorithm):   
+def train_model(X_train, y_train, algorithm):
     """
     Train a classifier on the given training data using the specified algorithm.
 
     Args:
-        X_train: Training data.
-        y_train: Training labels.
-        algorithm: The name of the algorithm to use for training.
+        - X_train: training data.
+        - y_train: training labels.
+        - algorithm: the name of the algorithm to use for training.
             - decision_tree
             - logistic_regression
             - random_forest
@@ -53,27 +50,28 @@ def train_model(X_train, y_train, algorithm):
             - knn
 
     Returns:
-        The trained classifier.
+        - clf: the trained classifier.
     """
-     
-    print(colors.Colors.CYAN + f"####\nTraining the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
-    
+
+    print(colors.Colors.CYAN +
+          f"####\nTraining the {constants.ALGORITHMS_NAMES[algorithm]} classifier..." + colors.Colors.RESET)
+
     if algorithm == "decision_tree":
-            clf = DecisionTreeClassifier(
-                criterion='gini',
-                splitter='best',
-                max_depth=None,  
-                min_samples_split=2,  
-                min_samples_leaf=1,  #
-                min_weight_fraction_leaf=0,  
-                max_features=None, 
-                random_state=None,  
-                max_leaf_nodes=None,  
-                min_impurity_decrease=0.0, 
-                class_weight=None, 
-                ccp_alpha=0 
-            )
-                
+        clf = DecisionTreeClassifier(
+            criterion='gini',
+            splitter='best',
+            max_depth=None,
+            min_samples_split=2,
+            min_samples_leaf=1,  #
+            min_weight_fraction_leaf=0,
+            max_features=None,
+            random_state=None,
+            max_leaf_nodes=None,
+            min_impurity_decrease=0.0,
+            class_weight=None,
+            ccp_alpha=0
+        )
+
     elif algorithm == "logistic_regression":
         clf = LogisticRegression(
             penalty="l2",
@@ -91,8 +89,8 @@ def train_model(X_train, y_train, algorithm):
             warm_start=False,
             n_jobs=None,
             l1_ratio=None
-        )       
-        
+        )
+
     elif algorithm == "random_forest":
         clf = RandomForestClassifier(
             n_estimators=100,
@@ -113,8 +111,8 @@ def train_model(X_train, y_train, algorithm):
             class_weight=None,
             ccp_alpha=0,
             max_samples=None
-        )       
-        
+        )
+
     elif algorithm == "neural_networks":
         clf = MLPClassifier(
             activation="relu",
@@ -140,8 +138,7 @@ def train_model(X_train, y_train, algorithm):
             n_iter_no_change=10,
             max_fun=15000
         )
-          
-        
+
     elif algorithm == "knn":
         clf = KNeighborsClassifier(
             n_neighbors=5,
@@ -152,86 +149,100 @@ def train_model(X_train, y_train, algorithm):
             metric="minkowski",
             metric_params=None,
             n_jobs=None
-        )    
+        )
 
     else:
         print("The algorithm provided is not supported")
         exit(0)
-    
-    
+
     clf.fit(X_train, y_train)
 
-    print(colors.Colors.CYAN + f"{constants.ALGORITHMS_NAMES[algorithm]} classifier trained successfully!\n####\n" + colors.Colors.RESET)
+    print(colors.Colors.CYAN +
+          f"{constants.ALGORITHMS_NAMES[algorithm]} classifier trained successfully!\n####\n" + colors.Colors.RESET)
     return clf
 
 
 def preprocessing(bots, webclients):
     """
     Preprocesses the bots and webclients datasets by parsing the data, converting it to a dataframe, encoding the features and returning the training data and labels.
-    
+
     Args:
-    bots: Path to the bots dataset.
-    webclients: Path to the webclients dataset.
-    
+        - bots: path to the bots dataset.
+        - webclients: path to the webclients dataset.
+
     Returns:
-    X_train: Training data.
-    y_train: Training labels.
+        - X_train: training data.
+        - y_train: training labels.
     """
-    
-    print(colors.Colors.GREEN + f"####\nParsing the bots and webclients datasets..." + colors.Colors.RESET)
-    
-    ### Parsing the datasets
+
+    print(colors.Colors.GREEN +
+          f"####\nParsing the bots and webclients datasets..." + colors.Colors.RESET)
+
+    # Parsing the datasets
     bots_data, webclients_data = parser.parse_training_data(bots, webclients)
-    
-    combined_df = features.convert_to_dataframe_training(bots_data, webclients_data)
+
+    combined_df = features.convert_to_dataframe_training(
+        bots_data, webclients_data)
     combined_df = features.encoding_features(combined_df)
 
     X_train = combined_df[constants.LIST_OF_FEATURES_COMBI1]
     y_train = combined_df['label']
-    
-    print(colors.Colors.GREEN + f"Parsed the bots and webclients datasets successfully!\n####\n" + colors.Colors.RESET)
-        
+
+    print(colors.Colors.GREEN +
+          f"Parsed the bots and webclients datasets successfully!\n####\n" + colors.Colors.RESET)
+
     return X_train, y_train
+
 
 def main_train(webclients, bots, algorithm, output_path_saved_model):
     """
     Train a machine learning model to detect bots based on webclient data.
 
     Args:
-        webclients: Path to the webclients dataset.
-        bots: Path to the bots dataset.
-        algorithm: Machine learning algorithm to use for training.
-        output_path_saved_model: Path to save the trained model.
+        - webclients: path to the webclients dataset.
+        - bots: path to the bots dataset.
+        - algorithm: machine learning algorithm to use for training.
+        - output_path_saved_model: path to save the trained model.
 
     Returns:
-        Trained machine learning model.
+        - trained machine learning model.
     """
-    
-    ## Preprocessing before training : parsing and encoding the features
+
+    # Preprocessing before training : parsing and encoding the features
     X_train, y_train = preprocessing(bots, webclients)
 
-    ## Generating the tsne
     visualization_tsne(X_train, y_train)
+    # feature_selection(X_train, y_train) # Not used for the project, see the docstring of the function for more details
 
-    # feature_selection(X_train, y_train)
+    clf = train_model(X_train, y_train, algorithm)
 
-    ## Training the model
-    clf = train_model(X_train, y_train, algorithm) 
-    
-    ## Saving the model
-    saving_and_loading.save_trained_model(clf, algorithm, output_path_saved_model)
-    
+    # Saving the model
+    saving_and_loading.save_trained_model(
+        clf, algorithm, output_path_saved_model)
+
     return clf
 
-def feature_selection(X_train, y_train): 
+
+def feature_selection(X_train, y_train):
     """
     Feature selection using SelectKBest.
 
-    This fucntion is not used at the moment in the project, but it WAS used to try to select the best feature but unluckily the feature selected by the SelectKBest made the model overfit and so less accurate on the evaluation datasets  
+    This function is not used at the moment in the project, but it WAS meant to try to select the best features. But unluckily, the features selected by the SelectKBest made the model overfit and thus, less accurate on the evaluation datasets.
 
-    Model Accuracy: 1.0
-    Selected Feature Indices: [0 2 5 6 7]
-    Selected Feature Names: ['average_of_request_length_encoded', 'type_of_requests_queried_by_hosts_encoded', 'average_time_between_requests_encoded', 'frequency_of_repeated_requests_in_a_short_time_frame_encoded', 'average_number_of_dots_in_a_domain_encoded']
+    Args:
+        X_train: training data.
+        y_train: training labels.
+
+    Print output example :
+        Model Accuracy: 1.0
+        Selected Feature Indices: [0 2 5 6 7]
+        Selected Feature Names: [
+                                'average_of_request_length_encoded', 
+                                'type_of_requests_queried_by_hosts_encoded', 
+                                'average_time_between_requests_encoded', 
+                                'frequency_of_repeated_requests_in_a_short_time_frame_encoded', 
+                                'average_number_of_dots_in_a_domain_encoded'
+                                ]
     """
 
     feature_selection = SelectKBest(f_classif, k=5)
@@ -240,14 +251,16 @@ def feature_selection(X_train, y_train):
         ('classification', GaussianNB())
     ])
 
-    X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.15)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_train, y_train, test_size=0.15)
 
     pipeline.fit(X_train, y_train)
 
     score = pipeline.score(X_test, y_test)
     print(f"Model Accuracy: {score}")
 
-    selected_features = pipeline.named_steps['feature_selection'].get_support(indices=True)
+    selected_features = pipeline.named_steps['feature_selection'].get_support(
+        indices=True)
     print(f"Selected Feature Indices: {selected_features}")
 
     feature_names = list(X_train.columns[selected_features])
@@ -259,10 +272,10 @@ def visualization_tsne(X, y, perplexity=30):
     Visualize the data using t-SNE.
 
     Args:
-    X: The data to visualize.
-    y: The labels of the data.
-    perplexity: The perplexity parameter for t-SNE.
-    """    
+        - X: the data to visualize.
+        - y: the labels of the data.
+        - perplexity: the perplexity parameter for t-SNE.
+    """
     tsne = TSNE(n_components=2, random_state=42, perplexity=perplexity)
     X_tsne = tsne.fit_transform(X)
 
@@ -278,20 +291,21 @@ def visualization_tsne(X, y, perplexity=30):
     plt.colorbar()
     plt.title('t-SNE visualization of the data')
     plt.savefig(f"../diagrams/visualization/visualization_tsne_dataset.png")
-    
+
 
 def getting_args():
     """
     Parse command line arguments for classifier training.
 
     Returns:
-    webclients: Path to webclients dataset.
-    bots: Path to bots dataset.
-    algo: Algorithm to use for training. Default is logistic_regression.
-    output_path_to_saved_model: Path to save the trained model.
+        - webclients: path to webclients dataset.
+        - bots: path to bots dataset.
+        - algo: algorithm to use for training. Default is logistic_regression.
+        - output_path_to_saved_model: path to save the trained model.
     """
-    
-    parser = argparse.ArgumentParser(description="Optional classifier training")
+
+    parser = argparse.ArgumentParser(
+        description="Optional classifier training")
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
     parser.add_argument("--algo", required=False, type=pathlib.Path)
@@ -301,7 +315,7 @@ def getting_args():
     bots = str(args.bots)
     algo = str(args.algo)
     output_path_to_saved_model = str(args.output)
-    
+
     if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn":
         print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn`")
         print("The script will continue with the default algorithm : logistic_regression")
@@ -309,6 +323,7 @@ def getting_args():
         output_path_to_saved_model = "../trained_models/decision_tree/trained_model_decision_tree.pkl"
 
     return webclients, bots, algo, output_path_to_saved_model
+
 
 if __name__ == "__main__":
     webclients, bots, algo, output_path_saved_model = getting_args()

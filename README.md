@@ -8,7 +8,7 @@
 
 This README provides an overview of our project, which aims to build a classifier to distinguish network hosts as either human, bot or a combination of both. The document outlines the project's objectives, datasets used, available commands and an overview of the project's structure.
 
-For your information, the project has been tested successfully on a **Linux** machine with python version **3.8**.
+For your information, the project has been tested successfully on a **Linux** machine with python version **3.8+**.
 
 ## Goal
 
@@ -207,7 +207,3 @@ python3 diagrams_metrics.py
 - `training_datasets` : contains the training datasets given by the professor.
 
 ---
-
-
-
-

@@ -11,48 +11,49 @@ import pathlib
 import eval as eval
 import scripts.train as train
 
-    
+
 def getting_args():
     """
     Parse the command line arguments for training and evaluating the model.
 
     Returns:
-    webclients: Path to the webclients dataset.
-    bots: Path to the bots dataset.
-    algo: Algorithm to use for training the model. Default is 'logistic_regression'.
-    trained_model: Path to the trained model to evaluate.
-    eval_dataset: Path to the dataset to evaluate.
-    output_path_to_suspicious_hosts: Path to the output file containing the suspicious hosts.
+        - webclients: path to the webclients dataset.
+        - bots: path to the bots dataset.
+        - algo: algorithm to use for training the model. Default is 'logistic_regression'.
+        - trained_model: path to the trained model to evaluate.
+        - eval_dataset: path to the dataset to evaluate.
+        - output_path_to_suspicious_hosts: path to the output file containing the suspicious hosts.
     """
-    parser = argparse.ArgumentParser(description="Main script for training and evaluating the model")    
-    
-    ## Arguments for train_IDS.py   
+    parser = argparse.ArgumentParser(
+        description="Main script for training and evaluating the model")
+
+    # Arguments for train_IDS.py
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
     parser.add_argument("--algo", required=False, type=pathlib.Path)
-    
-    ## Arguments for eval_IDS.py
+
+    # Arguments for eval_IDS.py
     parser.add_argument("--trained_model", type=pathlib.Path)
     parser.add_argument("--dataset", required=True, type=pathlib.Path)
     parser.add_argument("--output", required=True, type=pathlib.Path)
-    
+
     args = parser.parse_args()
-    
-    ## Assigning the arguments to variables for train.py
+
+    # Assigning the arguments to variables for train.py
     webclients = str(args.webclients)
     bots = str(args.bots)
     algo = str(args.algo)
-    
-    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn" :
+
+    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn":
         print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn`")
         print("The script will continue with the default algorithm : logistic_regression")
         algo = "logistic_regression"
 
-    ## Assigning the arguments to variables for eval.py
-    trained_model = str(args.trained_model) 
+    # Assigning the arguments to variables for eval.py
+    trained_model = str(args.trained_model)
     eval_dataset = str(args.dataset)
     output_path_to_suspicious_hosts = str(args.output)
-    
+
     return webclients, bots, algo, trained_model, eval_dataset, output_path_to_suspicious_hosts
 
 
@@ -64,9 +65,9 @@ def main():
     webclients, bots, algo, trained_model, eval_dataset, output_path_to_suspicious_hosts = getting_args()
 
     train.main_train(webclients, bots, algo, trained_model)
-    eval.main_eval(trained_model, eval_dataset, output_path_to_suspicious_hosts)
+    eval.main_eval(trained_model, eval_dataset,
+                   output_path_to_suspicious_hosts)
+
 
 if __name__ == "__main__":
     main()
-
-

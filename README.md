@@ -8,6 +8,7 @@
 
 This README provides an overview of our project, which aims to build a classifier to distinguish network hosts as either human, bot or a combination of both. The document outlines the project's objectives, datasets used, available commands and an overview of the project's structure.
 
+For your information, the project has been tested successfully on a **Linux** machine with python version **3.8**.
 
 ## Goal
 
@@ -53,6 +54,23 @@ They both contain **human** and **bot** traffic.
 For evaluation, two lists of known bot hosts are used :
 - `eval1_botlist.txt`
 - `eval2_botlist.txt`
+
+## Colors
+
+When running the scripts, we use colors to differentiate the different steps of the process :
+- **Green** : corresponds to the pre-processing steps.
+- **Blue** : corresponds to the training phase.
+- **Red** : corresponds to the evaluation phase.
+- **Yellow** : corresponds to saving and loading the model.
+- **Purple** : corresponds to every data related to classification and accuracy. 
+
+- We also use light colors to differentiate the different rates during the classification :
+    1. **Light cyan** : corresponds to the detection rate (true positive).
+    2. **Light red** : corresponds to the false alarm rate (false positive).
+    3. **Light purple** : corresponds to the false negative.
+    4. **Light yellow** : corresponds to the true negative.
+    5. **Grey** :  corresponds to a human+bot host.
+
 
 ## Commands
 
@@ -155,32 +173,14 @@ cd scripts/utils/diagrams/
 To create plots related to algorithms, run the following command :
 
 ```bash
-python3 diagram_algo.py
+python3 diagrams_algo.py
 ```
 
 To create plots related to metrics, run the following command :
 
 ```bash
-python3 diagram_metrics.py
+python3 diagrams_metrics.py
 ```
-
-
-## Colors
-
-When running the scripts, we use colors to differentiate the different steps of the process :
-- **Green** : corresponds to the pre-processing steps.
-- **Blue** : corresponds to the training phase.
-- **Red** : corresponds to the evaluation phase.
-- **Yellow** : corresponds to saving and loading the model.
-- **Purple** : corresponds to every data related to classification and accuracy. 
-
-- We also use light colors to differentiate the different rates during the classification :
-    1. **Light cyan** : corresponds to the detection rate (true positive).
-    2. **Light red** : corresponds to the false alarm rate (false positive).
-    3. **Light purple** : corresponds to the false negative.
-    4. **Light yellow** : corresponds to the true negative.
-    5. **Grey** :  corresponds to a human+bot host.
-
 
 ## Structure of the project
 

@@ -1,4 +1,3 @@
-
 """
 Colors class to print colored text in the terminal.
 
@@ -10,29 +9,27 @@ Authors :
 
 class Colors:
     RESET = "\033[0m"
-    
-    ## Parsing
+
+    # Parsing
     GREEN = "\033[92m"
-    ## Training
+    # Training
     CYAN = "\033[96m"
-    ## Evaluation
+    # Evaluation
     RED = "\033[91m"
-    ## Saving and loading the model
+    # Saving and loading the model
     YELLOW = "\033[93m"
-    ## Classification and accuracy
+    # Classification and accuracy
     PURPLE = "\033[95m"
-    
-    ### Rates
-    ## Detection rate
+
+    # Rates
+    # Detection rate
     LIGHTCYAN = "\033[94m"
-    ## False alarm rate
+    # False alarm rate
     LIGHTRED = "\033[91m"
-    ## False negative rate
+    # False negative rate
     LIGHTPURPLE = "\033[95m"
-    ## True negative rate
+    # True negative rate
     LIGHTYELLOW = "\033[93m"
-    
-    
-    ### Human+bot
+
+    # Human+bot
     GREY = "\033[90m"
-    

@@ -106,7 +106,7 @@ python3 train.py \
 --output ../trained_models/<algo>/trained_model_<algo>.pkl
 ```
 
-For example, you could use the following command :
+For example, you could use :
 
 ```bash
 python3 train.py \
@@ -127,7 +127,7 @@ python3 eval.py \
 --output ../suspicious_hosts/suspicious_hosts.txt
 ```
 
-For example, in this project, you could use the following command :
+For example, you could use  :
 
 ```bash
 python3 eval.py \
@@ -150,7 +150,7 @@ python3 main.py \
 --output ../suspicious_hosts/suspicious_hosts.txt 
 ```
 
-For example, in this project, you could use the following command :
+For example, you could use :
 
 ```bash
 python3 main.py \

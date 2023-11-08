@@ -320,7 +320,6 @@ def getting_args():
         print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn`")
         print("The script will continue with the default algorithm : logistic_regression")
         algo = "logistic_regression"
-        output_path_to_saved_model = "../trained_models/decision_tree/trained_model_decision_tree.pkl"
 
     return webclients, bots, algo, output_path_to_saved_model
 

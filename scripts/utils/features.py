@@ -345,7 +345,7 @@ def convert_to_dataframe_training(bots_data, webclients_data):
         - combined_df: a combined pandas dataframe with relevant features and labels.
     """
 
-    #Aggregate the data
+    # Aggregate the data
     bots = []
     for key in bots_data.keys():
         trace = aggregate_data(bots_data[key])
@@ -371,7 +371,6 @@ def convert_to_dataframe_training(bots_data, webclients_data):
     # Label the data
     bots_features_df = pd.DataFrame(bots_features)
     bots_features_df['label'] = 'bot'
-
     webclients_features_df = pd.DataFrame(webclients_features)
     webclients_features_df['label'] = 'human'
 

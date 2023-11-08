@@ -93,7 +93,7 @@ First of all, navigate to the `scripts` folder :
 cd scripts
 ```
 
-In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks`, `random_forest` or `knn`. 
+In the next commands, `<algo>` can be replaced by `decision_tree`, `logistic_regression`, `neural_networks`, `random_forest` or `knn`. It is not a mandatory argument for `train.py`, but if you do not specify it, the default algorithm will be `logistic_regression`. We made it mandatory for `main.py` because this script is not required by the project statement.
 
 ---
 To train the model, run the following command :

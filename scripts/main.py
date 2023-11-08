@@ -30,7 +30,7 @@ def getting_args():
     # Arguments for train_IDS.py
     parser.add_argument("--webclients", required=True, type=pathlib.Path)
     parser.add_argument("--bots", required=True, type=pathlib.Path)
-    parser.add_argument("--algo", required=False, type=pathlib.Path)
+    parser.add_argument("--algo", required=True, type=pathlib.Path)
 
     # Arguments for eval_IDS.py
     parser.add_argument("--trained_model", type=pathlib.Path)
@@ -44,15 +44,17 @@ def getting_args():
     bots = str(args.bots)
     algo = str(args.algo)
 
-    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn":
-        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn`")
-        print("The script will continue with the default algorithm : logistic_regression")
-        algo = "logistic_regression"
-
     # Assigning the arguments to variables for eval.py
     trained_model = str(args.trained_model)
     eval_dataset = str(args.dataset)
     output_path_to_suspicious_hosts = str(args.output)
+
+    if algo != "decision_tree" and algo != "logistic_regression" and algo != "neural_networks" and algo != "random_forest" and algo != "knn":
+        print("Wrong algorithm : supported algorithm are `decision_tree`, `logistic_regression`, `neural_networks` or `random_forest` or `knn`")
+        print("The script will continue with the default algorithm : logistic_regression")
+        algo = "logistic_regression"
+        trained_model = "../trained_models/decision_tree/trained_model_decision_tree.pkl"
+
 
     return webclients, bots, algo, trained_model, eval_dataset, output_path_to_suspicious_hosts
 

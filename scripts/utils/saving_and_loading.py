@@ -43,7 +43,7 @@ def save_trained_model(clf, algorithm, output_path_saved_model):
     """
     print(colors.Colors.YELLOW +
           f"####\nTrying to save the model..." + colors.Colors.RESET)
-    # f"../../trained_models/{algorithm}/{constants.NAME_TRAINED_MODEL[algorithm]}"
+
     with open(output_path_saved_model, "wb") as saved_model:
         pickle.dump(clf, saved_model)
 

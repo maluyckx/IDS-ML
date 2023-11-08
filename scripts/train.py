@@ -62,7 +62,7 @@ def train_model(X_train, y_train, algorithm):
             splitter='best',
             max_depth=None,
             min_samples_split=2,
-            min_samples_leaf=1,  #
+            min_samples_leaf=1,
             min_weight_fraction_leaf=0,
             max_features=None,
             random_state=None,
@@ -152,7 +152,7 @@ def train_model(X_train, y_train, algorithm):
         )
 
     else:
-        print("The algorithm provided is not supported")
+        print("The algorithm provided is not supported.")
         exit(0)
 
     clf.fit(X_train, y_train)

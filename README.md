@@ -1,5 +1,7 @@
 # ICYBM201 : Flagging suspicious hosts from DNS traces
 
+## Grade : 20/20
+
 ## Authors and ULB matricules
 - LUYCKX Marco 496283
 - BOUHNINE Ayoub 500048
